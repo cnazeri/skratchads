@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scratch Banner in Sidebar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      display: flex; /* Use flexbox for main layout */
+    }
+
+    /* Main content area */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .main-content h1 {
+      font-size: 2rem;
+    }
+
+    .main-content p {
+      margin-bottom: 20px;
+    }
+
+    /* Right sidebar */
+    .sidebar {
+      width: 450px; /* Sidebar width */
+      padding: 8px;
+      background-color: #f4f4f4;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ✅ Updated Scratch banner container */
+    #scratch-banner, canvas {
+        display: block;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        vertical-align: top;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <h1>Testing Scratch Banner in Sidebar</h1>
+    <p>
+      This page demonstrates how the scratch banner behaves when it’s placed in a right sidebar.
+      The sidebar is a fixed width and scrolls independently with the rest of the page content.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur et dui ut lorem efficitur
+      scelerisque sit amet id neque. Nullam aliquam, felis a interdum eleifend, nulla sapien
+      dictum justo, vitae luctus quam erat a lorem.
+    </p>
+    <p>
+      Scroll the page to test how the banner behaves when it’s part of a sidebar layout. The banner
+      should scroll naturally with the sidebar content.
+    </p>
+  </div>
+
+  <!-- Right Sidebar -->
+  <div class="sidebar">
+    <h2>Sidebar</h2>
+    <p>
+      This is the sidebar content. The scratch banner is placed below this text and behaves like a
+      normal part of the sidebar.
+    </p>
+
+    <!-- ✅ Scratch Banner -->
+    <div id="scratch-banner">
+      <script src="https://banner.skratchads.com/banners/js/11/banner.js"></script>
+  </div>
+  </div>
+
+</body>
+</html>

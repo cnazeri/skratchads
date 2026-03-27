@@ -1,0 +1,7 @@
+{
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(app)/dashboard/page": "app/(app)/dashboard/page.js",
+  "/(app)/campaign/[id]/variations/page": "app/(app)/campaign/[id]/variations/page.js",
+  "/(app)/campaign/[id]/export/page": "app/(app)/campaign/[id]/export/page.js",
+  "/(app)/creatives/page": "app/(app)/creatives/page.js"
+}

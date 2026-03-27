@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+/* ═══ Design Tokens ═══ */
+:root {
+  --brand-primary: #6366f1;
+  --brand-primary-hover: #4f46e5;
+  --brand-primary-light: #eef2ff;
+  --brand-secondary: #f59e0b;
+  --brand-secondary-light: #fffbeb;
+  --brand-accent: #10b981;
+  --brand-dark: #1e1b4b;
+  --brand-surface: #fafbff;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-card-hover: 0 10px 25px rgba(99,102,241,0.1), 0 4px 10px rgba(0,0,0,0.06);
+  --shadow-elevated: 0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.04);
+  --radius-card: 12px;
+  --radius-btn: 10px;
+  --radius-pill: 9999px;
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ═══ Base Styles ═══ */
+body {
+  background: var(--brand-surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ Smooth transitions for interactive elements ═══ */
+button, a, input, select, textarea {
+  transition: all var(--transition-base);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+
+/* ═══ Custom scrollbar ═══ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* ═══ Scratch-to-Win preview animations ═══ */
+@keyframes scratchPop {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  10% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  20% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes scratchGlow {
+  0%, 100% {
+    text-shadow: 0 2px 16px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.6), 0 0 80px rgba(0,0,0,0.3);
+  }
+  50% {
+    text-shadow: 0 2px 16px rgba(0,0,0,0.9), 0 0 40px rgba(255,215,0,0.6), 0 0 80px rgba(255,215,0,0.3);
+  }
+}
+
+@keyframes sparkleFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-4px) scale(0.9);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.1);
+  }
+}
+
+@keyframes sparkleFloat2 {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) scale(0.4) rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-12px) scale(1) rotate(45deg);
+  }
+  60% {
+    opacity: 0.6;
+    transform: translateY(-6px) scale(0.8) rotate(90deg);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-14px) scale(1.05) rotate(135deg);
+  }
+}
+
+@keyframes youWonPop {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  15% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* ═══ Gradient animation for auth pages ═══ */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.auth-gradient {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #4338ca 50%, #6366f1 75%, #818cf8 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
+}
+
+/* ═══ Floating scratch card animation ═══ */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-12px) rotate(1deg); }
+}
+
+@keyframes floatCard2 {
+  0%, 100% { transform: translateY(0) rotate(3deg); }
+  50% { transform: translateY(-8px) rotate(-1deg); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.float-card-1 {
+  animation: floatCard 4s ease-in-out infinite;
+}
+
+.float-card-2 {
+  animation: floatCard2 5s ease-in-out infinite;
+}

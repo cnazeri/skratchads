@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PRIMARY SEO -->
+  <title>SkratchAds — The Scratch-Off Revolution for Mobile Advertising</title>
+  <meta name="description" content="SkratchAds replaces broken banner ads with a voluntary scratch-off mechanic. Publishers earn $8–20 eCPM. Users win real prizes. Advertisers get qualified leads with email capture. The first dual conversion path mobile ad format.">
+  <meta name="keywords" content="scratch off banner ad sdk, cost per scratch mobile advertising, scratch mechanic mobile ad format, voluntary scratch ad mobile sdk, dual conversion path mobile ad, gamified banner replacement admob, polite banner ad sdk for apps, banner blindness solution mobile 2026, post ATT mobile ad engagement format, in-app scratch ad win path lose path">
+  <link rel="canonical" href="https://www.skratchads.com/">
+
+  <!-- OPEN GRAPH -->
+  <meta property="og:title" content="SkratchAds — The Scratch-Off Revolution for Mobile Advertising">
+  <meta property="og:description" content="Turn banner blindness into engagement. Real prizes. Real leads. $8–20 eCPM. 70% revenue share for publishers.">
+  <meta property="og:url" content="https://www.skratchads.com">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://www.skratchads.com/assets/og-image.png">
+
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SkratchAds — Scratch-Off Mobile Advertising">
+  <meta name="twitter:description" content="Turn banner blindness into engagement. Real prizes. Real leads. 70% revenue share for publishers.">
+
+  <!-- STRUCTURED DATA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "SkratchAds",
+    "url": "https://www.skratchads.com",
+    "email": "hello@skratchads.com",
+    "description": "SkratchAds is the first voluntary scratch-off mobile ad format with a dual conversion path — real prizes on the win path, brand engagement on the lose path.",
+    "sameAs": [
+      "https://www.linkedin.com/company/skratchads",
+      "https://twitter.com/skratchads"
+    ]
+  }
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a2340; background: #fff; }
+
+    /* NAV */
+    nav { background: #1a2340; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    nav .logo { color: #fff; font-size: 22px; font-weight: 700; text-decoration: none; }
+    nav .logo span { color: #c9a227; }
+    nav ul { list-style: none; display: flex; gap: 30px; }
+    nav ul li a { color: #ccd4e8; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    nav ul li a:hover { color: #c9a227; }
+    nav .cta-nav { background: #c9a227; color: #1a2340 !important; padding: 8px 20px; border-radius: 6px; font-weight: 600; }
+
+    /* HERO */
+    .hero { background: linear-gradient(135deg, #1a2340 0%, #243160 100%); color: #fff; padding: 100px 40px; text-align: center; }
+    .hero h1 { font-size: 52px; font-weight: 800; line-height: 1.15; max-width: 800px; margin: 0 auto 24px; }
+    .hero h1 span { color: #c9a227; }
+    .hero p { font-size: 20px; color: #b0bcda; max-width: 620px; margin: 0 auto 40px; line-height: 1.7; }
+    .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: #c9a227; color: #1a2340; padding: 16px 36px; border-radius: 8px; font-size: 16px; font-weight: 700; text-decoration: none; transition: opacity 0.2s; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary { background: transparent; color: #fff; padding: 16px 36px; border-radius: 8px; font-size: 16px; font-weight: 600; text-decoration: none; border: 2px solid #4a5a8a; transition: border-color 0.2s; }
+    .btn-secondary:hover { border-color: #c9a227; }
+
+    /* STATS BAR */
+    .stats-bar { background: #c9a227; padding: 24px 40px; display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat strong { display: block; font-size: 28px; font-weight: 800; color: #1a2340; }
+    .stat span { font-size: 13px; color: #4a3a00; font-weight: 600; }
+
+    /* PROBLEM SECTION */
+    .section { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #c9a227; text-transform: uppercase; margin-bottom: 12px; }
+    .section h2 { font-size: 38px; font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
+    .section p { font-size: 17px; color: #4a5470; line-height: 1.8; max-width: 640px; }
+
+    .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+    .problem-card { background: #f4f6fb; border-left: 4px solid #c9a227; padding: 28px; border-radius: 8px; }
+    .problem-card .big-number { font-size: 40px; font-weight: 800; color: #1a2340; }
+    .problem-card .label { font-size: 13px; color: #7a84a0; margin-bottom: 8px; }
+    .problem-card p { font-size: 14px; color: #4a5470; line-height: 1.6; margin-top: 8px; }
+
+    /* HOW IT WORKS */
+    .how-section { background: #f4f6fb; padding: 80px 40px; }
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
+    .step-card { background: #1a2340; color: #fff; padding: 32px 24px; border-radius: 12px; text-align: center; }
+    .step-number { background: #c9a227; color: #1a2340; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; margin: 0 auto 20px; }
+    .step-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+    .step-card p { font-size: 14px; color: #8899c0; line-height: 1.7; }
+
+    /* WHY SECTION */
+    .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
+    .why-card { border: 1px solid #e4e8f4; padding: 28px; border-radius: 10px; }
+    .why-card h3 { font-size: 17px; font-weight: 700; color: #1a2340; margin-bottom: 10px; }
+    .why-card p { font-size: 14px; color: #4a5470; line-height: 1.7; }
+
+    /* COMPARISON TABLE */
+    .table-section { background: #1a2340; padding: 80px 40px; }
+    .table-inner { max-width: 1000px; margin: 0 auto; }
+    .table-inner .section-label { color: #c9a227; }
+    .table-inner h2 { color: #fff; font-size: 36px; margin-bottom: 40px; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: #243160; }
+    thead th { padding: 16px 20px; text-align: left; font-size: 13px; color: #8899c0; font-weight: 600; letter-spacing: 0.5px; }
+    tbody tr { border-bottom: 1px solid #2a3560; }
+    tbody tr:last-child { background: #c9a227; }
+    tbody tr:last-child td { color: #1a2340; font-weight: 700; }
+    tbody td { padding: 16px 20px; font-size: 14px; color: #ccd4e8; }
+    .check { color: #4ade80; }
+    .cross { color: #f87171; }
+    .warn { color: #facc15; }
+
+    /* CTA SECTION */
+    .cta-section { background: #c9a227; padding: 80px 40px; text-align: center; }
+    .cta-section h2 { font-size: 40px; font-weight: 800; color: #1a2340; margin-bottom: 16px; }
+    .cta-section p { font-size: 18px; color: #5a4000; margin-bottom: 36px; }
+    .cta-form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; max-width: 500px; margin: 0 auto; }
+    .cta-form input { flex: 1; padding: 14px 20px; border-radius: 8px; border: none; font-size: 15px; min-width: 200px; }
+    .cta-form button { background: #1a2340; color: #fff; padding: 14px 28px; border-radius: 8px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; }
+
+    /* FOOTER */
+    footer { background: #111827; padding: 40px; text-align: center; }
+    footer p { color: #6b7a9a; font-size: 13px; }
+    footer a { color: #c9a227; text-decoration: none; }
+    footer nav { background: transparent; padding: 0; position: static; justify-content: center; margin-bottom: 16px; }
+    footer nav ul { gap: 24px; }
+    footer nav ul li a { color: #8899c0; font-size: 13px; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 32px; }
+      .problem-grid, .steps-grid, .why-grid { grid-template-columns: 1fr; }
+      .stats-bar { gap: 30px; }
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <a href="/" class="logo">Skratch<span>Ads</span></a>
+    <ul>
+      <li><a href="/publishers.html">Publishers</a></li>
+      <li><a href="/advertisers.html">Advertisers</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="#get-access" class="cta-nav">Get Early Access</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>The <span>Scratch-Off Revolution</span><br>for Mobile Advertising</h1>
+    <p>Turn banner blindness into engagement — and real prizes into real leads. The first voluntary scratch-off ad format with a dual conversion path that works for publishers, advertisers, and users simultaneously.</p>
+    <div class="hero-buttons">
+      <a href="/publishers.html" class="btn-primary">I'm a Publisher</a>
+      <a href="/advertisers.html" class="btn-secondary">I'm an Advertiser</a>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat">
+      <strong>$8–20</strong>
+      <span>Target eCPM (US)</span>
+    </div>
+    <div class="stat">
+      <strong>~20%</strong>
+      <span>Scratch Completion Rate</span>
+    </div>
+    <div class="stat">
+      <strong>70%</strong>
+      <span>Publisher Revenue Share</span>
+    </div>
+    <div class="stat">
+      <strong>25–50×</strong>
+      <span>vs. Standard Banner Engagement</span>
+    </div>
+    <div class="stat">
+      <strong>$0</strong>
+      <span>Cost to Try (Free POC)</span>
+    </div>
+  </div>
+
+  <!-- PROBLEM SECTION -->
+  <div class="section">
+    <p class="section-label">The Problem</p>
+    <h2>Banner Advertising Is Broken</h2>
+    <p>Standard banners earn publishers pennies, drive users to install ad blockers, and waste advertiser budgets on impressions nobody sees. The entire system is broken — and everyone knows it.</p>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="label">Average In-App Banner CTR</div>
+        <div class="big-number">0.56%</div>
+        <p>Users have trained themselves to ignore banners entirely. Banner blindness is real and growing.</p>
+      </div>
+      <div class="problem-card">
+        <div class="label">US Tier 1 Banner eCPM</div>
+        <div class="big-number">$1.50</div>
+        <p>Publishers are trapped in a race-to-the-bottom CPM war with no way out of the standard banner format.</p>
+      </div>
+      <div class="problem-card">
+        <div class="label">US Banner Spend Wasted (2024)</div>
+        <div class="big-number">$51B</div>
+        <p>Over $51 billion in ad spend went to banners that generated no meaningful engagement or results.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section">
+    <div class="how-inner">
+      <p class="section-label">The Solution</p>
+      <h2 style="font-size:38px; font-weight:800; margin-bottom:12px;">How SkratchAds Works</h2>
+      <p style="font-size:17px; color:#4a5470; line-height:1.8;">A polite, edge-anchored scratch-off banner that users choose to engage with — no interruptions, no forced full-screen, no resentment.</p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3>Banner Loads</h3>
+          <p>A polite, edge-anchored banner appears in-app. An animated scratch cue invites engagement without interrupting the user session.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3>User Scratches</h3>
+          <p>A voluntary 3–5 second scratch gesture. Completely optional — no forced interaction, no session interruption, no resentment.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3>Win Path</h3>
+          <p>Prize overlay reveals → email capture → redeemable token → qualified advertiser lead. Real prizes, real data, real intent.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">04</div>
+          <h3>Lose Path</h3>
+          <p>Brand ad reveals to a primed, engaged user. Attention primed by scratch = 5–10× CTR uplift over a standard banner impression.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY NOW -->
+  <div class="section">
+    <p class="section-label">Why Now</p>
+    <h2>Perfect Market Conditions</h2>
+    <p>Six forces are converging to make SkratchAds the right format at exactly the right moment.</p>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <h3>Privacy Revolution</h3>
+        <p>ATT framework and cookie deprecation ended behavioral targeting. Engagement is now the primary value signal — and scratch-off delivers it voluntarily.</p>
+      </div>
+      <div class="why-card">
+        <h3>Mobile Dominance</h3>
+        <p>$402B global mobile ad spend in 2024, growing 11% YoY. In-app formats projected to reach $390B in 2025. The market is massive and growing.</p>
+      </div>
+      <div class="why-card">
+        <h3>Gamification Proven</h3>
+        <p>Rewarded video delivers 71% higher ROAS over forced formats. Discord launched mobile Video Quests. Gamified ads are the direction the industry is moving.</p>
+      </div>
+      <div class="why-card">
+        <h3>Scratch Psychology</h3>
+        <p>$100B+ spent on US lottery scratch-offs annually. Users voluntarily scratch for any chance at reward — the behavior is deeply ingrained.</p>
+      </div>
+      <div class="why-card">
+        <h3>MVP Ready</h3>
+        <p>Working product with live JS banner integration today. iOS and Android SDKs on the 2026 roadmap. Mediation adapters in 2027.</p>
+      </div>
+      <div class="why-card">
+        <h3>No Direct Competitor</h3>
+        <p>Zero products combine: polite banner format + real prizes + dual conversion path. SkratchAds owns this category entirely.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="table-section">
+    <div class="table-inner">
+      <p class="section-label">Competitive Landscape</p>
+      <h2>SkratchAds vs. Every Other Format</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Format</th>
+            <th>Non-Intrusive</th>
+            <th>Voluntary</th>
+            <th>Real Prizes</th>
+            <th>Dual Conversion</th>
+            <th>eCPM (US)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Standard Banner</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td>$0.50–$1.50</td>
+          </tr>
+          <tr>
+            <td>Interstitial</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td>$5–$8</td>
+          </tr>
+          <tr>
+            <td>Rewarded Video</td>
+            <td class="warn">⚠ Full-screen</td>
+            <td class="check">✓</td>
+            <td class="warn">Virtual only</td>
+            <td class="cross">✗</td>
+            <td>$15–$30</td>
+          </tr>
+          <tr>
+            <td>Playable Ads</td>
+            <td class="warn">⚠ Full-screen</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td>$5–$20</td>
+          </tr>
+          <tr>
+            <td><strong>SkratchAds</strong></td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓ Real</td>
+            <td class="check">✓</td>
+            <td><strong>$8–$20</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CTA SECTION -->
+  <div class="cta-section" id="get-access">
+    <h2>Get Early Access</h2>
+    <p>We're running free 30-day POCs for a limited number of app publishers.<br>No cost, no commitment — we fund the prize pool.</p>
+    <div class="cta-form">
+      <input type="email" placeholder="your@email.com">
+      <button type="submit">Apply Now</button>
+    </div>
+    <p style="margin-top:16px; font-size:13px; color:#5a4000;">Or email us directly at <a href="mailto:hello@skratchads.com" style="color:#1a2340; font-weight:700;">hello@skratchads.com</a></p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <nav>
+      <ul>
+        <li><a href="/publishers.html">Publishers</a></li>
+        <li><a href="/advertisers.html">Advertisers</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="mailto:hello@skratchads.com">Contact</a></li>
+      </ul>
+    </nav>
+    <p>© 2026 SkratchAds. All rights reserved. | <a href="mailto:hello@skratchads.com">hello@skratchads.com</a></p>
+  </footer>
+
+</body>
+</html>

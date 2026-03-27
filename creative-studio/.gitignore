@@ -1,0 +1,7 @@
+node_modules/
+.next/
+.next_old*/
+.next_stale_*/
+.env.local
+.env*.local
+out/

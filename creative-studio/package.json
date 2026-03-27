@@ -1,0 +1,37 @@
+{
+  "name": "creative-studio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "dev:clean": "bash scripts/dev-clean.sh",
+    "build": "next build",
+    "build:clean": "rm -rf .next && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "clean": "rm -rf .next"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@next/swc-linux-arm64-gnu": "^16.2.1",
+    "@supabase/auth-helpers-nextjs": "^0.15.0",
+    "@supabase/supabase-js": "^2.100.0",
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.27",
+    "fabric": "^6.9.1",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
+    "next": "^15.5.14",
+    "postcss": "^8.5.8",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^6.0.2"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--access-token",
+        "Authorization: Bearer sbp_d85baacf41559b22676079704504a6c09e55c022"
+      ]
+    }
+  }
+}

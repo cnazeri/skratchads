@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Blog — Mobile Advertising Insights | SkratchAds</title>
+  <meta name="description" content="The SkratchAds blog covers mobile advertising trends, banner ad alternatives, app monetization strategies, and insights on the scratch-off ad revolution. Written for app publishers and mobile advertisers.">
+  <meta name="keywords" content="mobile advertising blog, banner blindness solution mobile 2026, scratch off mobile ads, increase app eCPM, gamified mobile advertising, post ATT mobile ad engagement, mobile publisher monetization, banner ad alternative, cost per scratch advertising">
+  <link rel="canonical" href="https://www.skratchads.com/blog/">
+
+  <meta property="og:title" content="SkratchAds Blog — Mobile Advertising Insights">
+  <meta property="og:description" content="Insights on mobile advertising, app monetization, banner ad alternatives, and the scratch-off ad revolution.">
+  <meta property="og:url" content="https://www.skratchads.com/blog/">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a2340; background: #fff; }
+    nav { background: #1a2340; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    nav .logo { color: #fff; font-size: 22px; font-weight: 700; text-decoration: none; }
+    nav .logo span { color: #c9a227; }
+    nav ul { list-style: none; display: flex; gap: 30px; }
+    nav ul li a { color: #ccd4e8; text-decoration: none; font-size: 14px; }
+    nav ul li a:hover { color: #c9a227; }
+    nav .cta-nav { background: #c9a227; color: #1a2340 !important; padding: 8px 20px; border-radius: 6px; font-weight: 600; }
+
+    .hero { background: linear-gradient(135deg, #1a2340 0%, #243160 100%); color: #fff; padding: 60px 40px; text-align: center; }
+    .page-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #c9a227; text-transform: uppercase; margin-bottom: 12px; }
+    .hero h1 { font-size: 40px; font-weight: 800; margin-bottom: 12px; }
+    .hero p { font-size: 17px; color: #b0bcda; max-width: 500px; margin: 0 auto; }
+
+    .blog-container { max-width: 1100px; margin: 60px auto; padding: 0 40px; display: grid; grid-template-columns: 2fr 1fr; gap: 60px; }
+
+    /* POSTS */
+    .featured-post { border: 2px solid #c9a227; border-radius: 12px; overflow: hidden; margin-bottom: 40px; }
+    .featured-badge { background: #c9a227; color: #1a2340; font-size: 11px; font-weight: 700; padding: 6px 16px; letter-spacing: 1px; text-transform: uppercase; display: inline-block; }
+    .post-content { padding: 32px; }
+    .post-meta { font-size: 12px; color: #7a84a0; margin-bottom: 12px; }
+    .post-content h2 { font-size: 26px; font-weight: 800; margin-bottom: 12px; line-height: 1.3; }
+    .post-content h2 a { color: #1a2340; text-decoration: none; }
+    .post-content h2 a:hover { color: #c9a227; }
+    .post-content p { font-size: 15px; color: #4a5470; line-height: 1.7; margin-bottom: 20px; }
+    .read-more { color: #c9a227; font-weight: 700; text-decoration: none; font-size: 14px; }
+
+    .posts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .post-card { border: 1px solid #e4e8f4; border-radius: 10px; padding: 24px; }
+    .post-card .category { font-size: 11px; font-weight: 700; color: #c9a227; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+    .post-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+    .post-card h3 a { color: #1a2340; text-decoration: none; }
+    .post-card h3 a:hover { color: #c9a227; }
+    .post-card p { font-size: 13px; color: #4a5470; line-height: 1.6; margin-bottom: 16px; }
+    .post-card .post-meta { font-size: 11px; color: #9aa0b8; }
+
+    /* SIDEBAR */
+    .sidebar {}
+    .sidebar-widget { margin-bottom: 40px; }
+    .sidebar-widget h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #7a84a0; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e4e8f4; }
+    .sidebar-cta { background: #1a2340; padding: 28px; border-radius: 12px; text-align: center; }
+    .sidebar-cta h3 { color: #c9a227; border-bottom-color: #2a3560; }
+    .sidebar-cta p { font-size: 14px; color: #8899c0; line-height: 1.6; margin-bottom: 20px; }
+    .sidebar-cta a { background: #c9a227; color: #1a2340; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; display: block; }
+    .topics-list { list-style: none; }
+    .topics-list li { padding: 8px 0; border-bottom: 1px solid #f0f2f8; font-size: 14px; }
+    .topics-list li a { color: #4a5470; text-decoration: none; display: flex; justify-content: space-between; }
+    .topics-list li a:hover { color: #c9a227; }
+    .topics-list li a span { background: #f4f6fb; color: #7a84a0; padding: 1px 8px; border-radius: 10px; font-size: 12px; }
+
+    footer { background: #111827; padding: 32px 40px; text-align: center; margin-top: 60px; }
+    footer p { color: #6b7a9a; font-size: 13px; }
+    footer a { color: #c9a227; text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .blog-container { grid-template-columns: 1fr; }
+      .posts-grid { grid-template-columns: 1fr; }
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Skratch<span>Ads</span></a>
+    <ul>
+      <li><a href="/publishers.html">Publishers</a></li>
+      <li><a href="/advertisers.html">Advertisers</a></li>
+      <li><a href="/blog/" style="color:#c9a227;">Blog</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/publishers.html#apply" class="cta-nav">Get Early Access</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <p class="page-label">The SkratchAds Blog</p>
+    <h1>Mobile Advertising Insights</h1>
+    <p>Strategies, data, and ideas for app publishers and mobile advertisers navigating the post-banner era.</p>
+  </section>
+
+  <div class="blog-container">
+    <main>
+      <!-- FEATURED POST -->
+      <div class="featured-post">
+        <span class="featured-badge">Featured</span>
+        <div class="post-content">
+          <p class="post-meta">March 17, 2026 · Publisher Strategy · 8 min read</p>
+          <h2><a href="/blog/why-banner-ads-are-dead-2026.html">Why Banner Ads Are Dead in 2026 (And What to Do Instead)</a></h2>
+          <p>Standard banners earn $0.50–$1.50 eCPM, get a 0.56% click-through rate, and are ignored by 37% of US mobile users who have installed ad blockers. If you're still relying on banners as your primary mobile revenue stream, you're leaving serious money on the table — and your users are quietly resenting you for it. Here's the full picture and what forward-thinking publishers are doing instead.</p>
+          <a href="/blog/why-banner-ads-are-dead-2026.html" class="read-more">Read Article →</a>
+        </div>
+      </div>
+
+      <!-- POSTS GRID -->
+      <div class="posts-grid">
+        <div class="post-card">
+          <p class="category">Advertising Model</p>
+          <h3><a href="/blog/what-is-cost-per-scratch.html">What Is Cost-Per-Scratch? The Mobile Ad Model Explained</a></h3>
+          <p>CPS flips the standard CPM model on its head. Instead of paying for every thousand impressions — most of which nobody sees — advertisers pay only when a user actively scratches.</p>
+          <p class="post-meta">March 10, 2026 · 6 min read</p>
+        </div>
+        <div class="post-card">
+          <p class="category">Publisher Guide</p>
+          <h3><a href="/blog/increase-app-ecpm-without-interstitials.html">How to Increase App eCPM Without Using Interstitials</a></h3>
+          <p>Interstitials earn $5–8 eCPM but destroy retention. Here are the formats that deliver strong eCPM without the user experience tradeoffs.</p>
+          <p class="post-meta">March 5, 2026 · 5 min read</p>
+        </div>
+        <div class="post-card">
+          <p class="category">Psychology</p>
+          <h3><a href="/blog/scratch-off-psychology-mobile-ads.html">The Psychology of Scratch-Off: Why Users Engage Voluntarily</a></h3>
+          <p>$100B+ is spent on US lottery scratch-offs every year. The psychology behind voluntary scratching is powerful — and mobile advertising is just beginning to use it.</p>
+          <p class="post-meta">February 28, 2026 · 7 min read</p>
+        </div>
+        <div class="post-card">
+          <p class="category">Market Analysis</p>
+          <h3><a href="/blog/post-att-mobile-advertising.html">Mobile Advertising in the Post-ATT Era: What's Actually Working</a></h3>
+          <p>Apple's ATT framework changed everything. Behavioral targeting is dead. Engagement-based formats are rising. Here's what the data shows 2 years in.</p>
+          <p class="post-meta">February 20, 2026 · 9 min read</p>
+        </div>
+        <div class="post-card">
+          <p class="category">Comparison</p>
+          <h3><a href="/blog/rewarded-video-vs-scratch-ads.html">Rewarded Video vs. Scratch Ads: Which Is Better for Publishers?</a></h3>
+          <p>Rewarded video earns $15–30 eCPM but takes over the full screen. Scratch ads target $8–20 eCPM with zero session interruption. The tradeoffs explained.</p>
+          <p class="post-meta">February 12, 2026 · 6 min read</p>
+        </div>
+        <div class="post-card">
+          <p class="category">Publisher Guide</p>
+          <h3><a href="/blog/dual-conversion-path-mobile-advertising.html">What Is a Dual Conversion Path Ad? Win Path vs. Lose Path Explained</a></h3>
+          <p>Most mobile ad formats have one outcome. SkratchAds has two: a qualified lead on the win path and a primed brand click on the lose path. No impression is wasted.</p>
+          <p class="post-meta">February 5, 2026 · 5 min read</p>
+        </div>
+        <div class="post-card">
+          <p class="category">Banner Blindness</p>
+          <h3><a href="/blog/banner-blindness-2026.html">Banner Blindness in 2026: Why 37% of Mobile Users Ignore Your Ads</a></h3>
+          <p>Banner blindness isn't a theory — it's a documented behavioral pattern. Here's what the latest research says and what publishers can do about it.</p>
+          <p class="post-meta">January 28, 2026 · 7 min read</p>
+        </div>
+        <div class="post-card">
+          <p class="category">SDK Guide</p>
+          <h3><a href="/blog/scratch-off-banner-sdk-integration-guide.html">Integrating the SkratchAds Scratch-Off Banner SDK: A Publisher Guide</a></h3>
+          <p>From signup to live integration in 30 minutes. A step-by-step technical walkthrough for adding the SkratchAds JS banner to your mobile app or WebView.</p>
+          <p class="post-meta">January 20, 2026 · 10 min read</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-widget sidebar-cta">
+        <h3>Free 30-Day POC</h3>
+        <p>Replace your banners with SkratchAds. We fund the prize pool. Zero commitment.</p>
+        <a href="/publishers.html#apply">Apply Now →</a>
+      </div>
+
+      <div class="sidebar-widget">
+        <h3>Topics</h3>
+        <ul class="topics-list">
+          <li><a href="#">Publisher Strategy <span>12</span></a></li>
+          <li><a href="#">App Monetization <span>8</span></a></li>
+          <li><a href="#">Advertiser Guides <span>6</span></a></li>
+          <li><a href="#">Market Analysis <span>9</span></a></li>
+          <li><a href="#">SDK & Integration <span>4</span></a></li>
+          <li><a href="#">Case Studies <span>3</span></a></li>
+          <li><a href="#">Industry News <span>7</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-widget">
+        <h3>Key Stats</h3>
+        <div style="background:#f4f6fb; padding:20px; border-radius:10px;">
+          <div style="margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid #e4e8f4;">
+            <strong style="font-size:22px; color:#1a2340;">$51B</strong>
+            <p style="font-size:12px; color:#7a84a0; margin-top:2px;">US banner ad spend wasted in 2024</p>
+          </div>
+          <div style="margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid #e4e8f4;">
+            <strong style="font-size:22px; color:#1a2340;">0.56%</strong>
+            <p style="font-size:12px; color:#7a84a0; margin-top:2px;">Average in-app banner CTR</p>
+          </div>
+          <div style="margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid #e4e8f4;">
+            <strong style="font-size:22px; color:#1a2340;">37%</strong>
+            <p style="font-size:12px; color:#7a84a0; margin-top:2px;">US mobile users using ad blockers</p>
+          </div>
+          <div>
+            <strong style="font-size:22px; color:#c9a227;">$8–20</strong>
+            <p style="font-size:12px; color:#7a84a0; margin-top:2px;">SkratchAds target eCPM (US)</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <p>© 2026 SkratchAds | <a href="/">Home</a> · <a href="/publishers.html">Publishers</a> · <a href="/advertisers.html">Advertisers</a> · <a href="mailto:hello@skratchads.com">hello@skratchads.com</a></p>
+  </footer>
+
+</body>
+</html>

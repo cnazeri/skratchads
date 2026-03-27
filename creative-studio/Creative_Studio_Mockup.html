@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkratchAds Creative Studio - Interactive Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; color: #1b1b1b; }
+
+  /* Nav */
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid #e5e7eb; }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { display: flex; align-items: center; gap: 8px; }
+  .nav-brand h1 { font-size: 20px; font-weight: 700; color: #111; }
+  .nav-brand span { font-size: 14px; color: #6b7280; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { font-size: 14px; font-weight: 500; color: #374151; text-decoration: none; cursor: pointer; padding: 4px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 600; }
+
+  /* Main */
+  .main { max-width: 1100px; margin: 0 auto; padding: 48px 32px; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* Cards */
+  .card { background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+
+  /* Page Header */
+  .page-header { margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; }
+  .page-header h2 { font-size: 28px; font-weight: 700; }
+  .page-header p { color: #6b7280; margin-top: 4px; font-size: 14px; }
+
+  /* Buttons */
+  .btn { padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: #3b82f6; color: white; }
+  .btn-primary:hover { background: #2563eb; }
+  .btn-secondary { background: #e5e7eb; color: #374151; }
+  .btn-secondary:hover { background: #d1d5db; }
+  .btn-sm { padding: 6px 14px; font-size: 12px; }
+  .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; }
+  .btn-outline:hover { background: #f3f4f6; }
+
+  /* Badge */
+  .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: capitalize; }
+  .badge-draft { background: #f3f4f6; color: #374151; }
+  .badge-researching { background: #dbeafe; color: #1d4ed8; }
+  .badge-creating { background: #ede9fe; color: #6d28d9; }
+  .badge-complete { background: #dcfce7; color: #15803d; }
+  .badge-winner { background: #dcfce7; color: #15803d; }
+
+  /* ========== DASHBOARD ========== */
+  .campaign-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .campaign-card { padding: 24px; transition: box-shadow 0.2s; cursor: pointer; }
+  .campaign-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .campaign-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .campaign-card .brand { font-size: 13px; color: #6b7280; }
+  .campaign-card .meta { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+  .campaign-card .date { font-size: 12px; color: #9ca3af; }
+
+  /* ========== RESEARCH ========== */
+  .research-section { margin-bottom: 24px; }
+  .research-section h3 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+  .insight-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+  .insight-row:last-child { border-bottom: none; }
+  .insight-check { width: 18px; height: 18px; border-radius: 4px; border: 2px solid #d1d5db; cursor: pointer; flex-shrink: 0; transition: all 0.15s; }
+  .insight-check.checked { background: #3b82f6; border-color: #3b82f6; position: relative; }
+  .insight-check.checked::after { content: '✓'; color: white; font-size: 12px; position: absolute; top: -1px; left: 2px; }
+  .topic-chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; margin: 4px; transition: all 0.15s; }
+  .topic-chip.off { background: #f3f4f6; color: #6b7280; }
+  .topic-chip.on { background: #dbeafe; color: #1d4ed8; }
+  .prize-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+  .prize-bar { height: 6px; border-radius: 3px; background: #e5e7eb; flex: 1; }
+  .prize-bar-fill { height: 100%; border-radius: 3px; background: #3b82f6; }
+  .sentiment-bar { display: flex; height: 32px; border-radius: 6px; overflow: hidden; margin-top: 8px; }
+  .sentiment-pos { background: #22c55e; }
+  .sentiment-neu { background: #eab308; }
+  .sentiment-neg { background: #ef4444; }
+  .selected-summary { background: #f0f9ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 16px; margin-top: 24px; }
+  .selected-summary h4 { font-size: 14px; font-weight: 600; color: #1d4ed8; margin-bottom: 8px; }
+  .selected-tag { display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 3px 10px; border-radius: 12px; font-size: 12px; margin: 3px; }
+
+  /* ========== EDITOR ========== */
+  .editor-layout { display: grid; grid-template-columns: 200px 1fr 220px; gap: 20px; }
+  .format-list { list-style: none; }
+  .format-list li { padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; margin-bottom: 2px; transition: all 0.15s; }
+  .format-list li:hover { background: #f3f4f6; }
+  .format-list li.active { background: #dbeafe; color: #1d4ed8; font-weight: 600; }
+  .format-list li .dims { font-size: 11px; color: #9ca3af; font-weight: 400; }
+  .tab-bar { display: flex; gap: 4px; background: white; border-radius: 8px; padding: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); width: fit-content; margin-bottom: 16px; }
+  .tab-btn { padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; background: transparent; color: #6b7280; transition: all 0.15s; }
+  .tab-btn.active { background: #3b82f6; color: white; }
+  .canvas-area { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 32px; display: flex; align-items: center; justify-content: center; min-height: 400px; }
+  .canvas-mock { border: 2px solid #94a3b8; border-radius: 6px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; position: relative; overflow: hidden; }
+  .canvas-mock .scratch-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.05), rgba(255,255,255,0.05) 10px, transparent 10px, transparent 20px); }
+  .canvas-mock .logo-placeholder { width: 60px; height: 60px; border-radius: 8px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 10px; margin-bottom: 12px; border: 1px dashed rgba(255,255,255,0.4); }
+  .canvas-mock h4 { font-size: 20px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+  .canvas-mock .prize-text { font-size: 14px; opacity: 0.9; margin-bottom: 12px; }
+  .canvas-mock .cta-btn { background: white; color: #1d4ed8; padding: 8px 24px; border-radius: 6px; font-size: 13px; font-weight: 700; }
+  .canvas-tools { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 12px; margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .controls-panel { overflow-y: auto; max-height: 70vh; }
+  .control-group { margin-bottom: 16px; }
+  .control-group label { display: block; font-size: 11px; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .control-input { width: 100%; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; }
+  .control-color { display: flex; gap: 8px; }
+  .control-color input[type="color"] { width: 40px; height: 32px; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; }
+  .control-color input[type="text"] { flex: 1; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 12px; }
+  .upload-zone { border: 2px dashed #d1d5db; border-radius: 8px; padding: 16px; text-align: center; font-size: 12px; color: #6b7280; cursor: pointer; transition: all 0.15s; }
+  .upload-zone:hover { border-color: #3b82f6; color: #3b82f6; }
+  .range-slider { width: 100%; }
+
+  /* ========== VARIATIONS ========== */
+  .variation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .variation-card { overflow: hidden; }
+  .variation-card .preview { aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #6b7280; position: relative; }
+  .variation-card .preview-img { width: 100%; height: 100%; object-fit: cover; }
+  .variation-card .label { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .variation-card .var-name { font-weight: 600; font-size: 14px; }
+  .toggle { width: 44px; height: 24px; border-radius: 12px; background: #d1d5db; position: relative; cursor: pointer; transition: all 0.2s; }
+  .toggle.on { background: #3b82f6; }
+  .toggle::after { content: ''; width: 20px; height: 20px; border-radius: 50%; background: white; position: absolute; top: 2px; left: 2px; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+  .toggle.on::after { left: 22px; }
+
+  /* ========== EXPORT ========== */
+  .export-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .export-card { padding: 20px; }
+  .export-card .states-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px 0; }
+  .state-thumb { aspect-ratio: 1; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; }
+  .state-thumb.scratch { background: #fef3c7; color: #92400e; }
+  .state-thumb.win { background: #dcfce7; color: #15803d; }
+  .state-thumb.lose { background: #fee2e2; color: #991b1b; }
+  .state-thumb.brand { background: #dbeafe; color: #1d4ed8; }
+
+  /* ========== CREATIVES LIBRARY ========== */
+  .filter-bar { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; padding: 16px; }
+  .filter-bar select { padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; background: white; }
+  .filter-bar label { font-size: 13px; font-weight: 500; color: #374151; }
+
+  /* Footer */
+  .footer { border-top: 1px solid #e5e7eb; background: white; margin-top: 64px; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; padding: 24px 32px; text-align: center; font-size: 13px; color: #9ca3af; }
+
+  /* Animations */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .page.active { animation: fadeIn 0.3s ease; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <h1>SkratchAds&#8482;</h1>
+      <span>Creative Studio</span>
+    </div>
+    <div class="nav-links">
+      <a onclick="showPage('dashboard')" id="nav-dashboard" class="active">Dashboard</a>
+      <a onclick="showPage('creatives')" id="nav-creatives">Creatives</a>
+      <a onclick="showPage('research')" id="nav-research">Research</a>
+      <a onclick="showPage('editor')" id="nav-editor">Editor</a>
+      <a onclick="showPage('variations')" id="nav-variations">Variations</a>
+      <a onclick="showPage('export')" id="nav-export">Export</a>
+    </div>
+    <div class="avatar">CN</div>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- ==================== DASHBOARD ==================== -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-header">
+      <div>
+        <h2>Your Campaigns</h2>
+        <p>Manage all your SkratchAds creative campaigns</p>
+      </div>
+      <button class="btn btn-primary" onclick="showPage('research')">+ New Campaign</button>
+    </div>
+    <div class="campaign-grid">
+      <div class="campaign-card card" onclick="showPage('research')">
+        <h3>Summer Flash Sale</h3>
+        <div class="brand">FitGear Pro</div>
+        <div class="meta">
+          <span class="badge badge-complete">complete</span>
+          <span class="date">Mar 20, 2026</span>
+        </div>
+      </div>
+      <div class="campaign-card card" onclick="showPage('editor')">
+        <h3>App Launch Promo</h3>
+        <div class="brand">NovaTech</div>
+        <div class="meta">
+          <span class="badge badge-creating">creating</span>
+          <span class="date">Mar 22, 2026</span>
+        </div>
+      </div>
+      <div class="campaign-card card" onclick="showPage('research')">
+        <h3>Holiday Gift Guide</h3>
+        <div class="brand">LuxeHome</div>
+        <div class="meta">
+          <span class="badge badge-researching">researching</span>
+          <span class="date">Mar 23, 2026</span>
+        </div>
+      </div>
+      <div class="campaign-card card">
+        <h3>Back to School</h3>
+        <div class="brand">StudyBuddy</div>
+        <div class="meta">
+          <span class="badge badge-draft">draft</span>
+          <span class="date">Mar 23, 2026</span>
+        </div>
+      </div>
+      <div class="campaign-card card">
+        <h3>Spring Wellness</h3>
+        <div class="brand">ZenLife</div>
+        <div class="meta">
+          <span class="badge badge-complete">complete</span>
+          <span class="date">Mar 18, 2026</span>
+        </div>
+      </div>
+      <div class="campaign-card card">
+        <h3>Gaming Tournament</h3>
+        <div class="brand">PixelArena</div>
+        <div class="meta">
+          <span class="badge badge-draft">draft</span>
+          <span class="date">Mar 23, 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== RESEARCH ==================== -->
+  <div class="page" id="page-research">
+    <div class="page-header">
+      <div>
+        <h2>Summer Flash Sale</h2>
+        <p>FitGear Pro &middot; Audience Research Report</p>
+      </div>
+      <button class="btn btn-primary" onclick="showPage('editor')">Proceed to Editor &rarr;</button>
+    </div>
+
+    <div class="research-section card" style="padding: 24px; margin-bottom: 20px;">
+      <h3>Pain Points</h3>
+      <div class="insight-row"><div class="insight-check checked" onclick="this.classList.toggle('checked')"></div><span>Overpriced gym equipment with poor durability</span></div>
+      <div class="insight-row"><div class="insight-check checked" onclick="this.classList.toggle('checked')"></div><span>Fitness apps with hidden subscription fees</span></div>
+      <div class="insight-row"><div class="insight-check" onclick="this.classList.toggle('checked')"></div><span>Lack of beginner-friendly workout gear</span></div>
+      <div class="insight-row"><div class="insight-check checked" onclick="this.classList.toggle('checked')"></div><span>Shipping delays on popular fitness products</span></div>
+      <div class="insight-row"><div class="insight-check" onclick="this.classList.toggle('checked')"></div><span>Poor customer service from major brands</span></div>
+    </div>
+
+    <div class="research-section card" style="padding: 24px; margin-bottom: 20px;">
+      <h3>Trending Topics</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+        <span class="topic-chip on" onclick="this.classList.toggle('on'); this.classList.toggle('off')">Home Gym Setups</span>
+        <span class="topic-chip on" onclick="this.classList.toggle('on'); this.classList.toggle('off')">Resistance Bands</span>
+        <span class="topic-chip off" onclick="this.classList.toggle('on'); this.classList.toggle('off')">CrossFit Culture</span>
+        <span class="topic-chip on" onclick="this.classList.toggle('on'); this.classList.toggle('off')">Budget Fitness</span>
+        <span class="topic-chip off" onclick="this.classList.toggle('on'); this.classList.toggle('off')">Protein Supplements</span>
+        <span class="topic-chip on" onclick="this.classList.toggle('on'); this.classList.toggle('off')">Wearable Tech</span>
+        <span class="topic-chip off" onclick="this.classList.toggle('on'); this.classList.toggle('off')">Marathon Training</span>
+      </div>
+    </div>
+
+    <div class="research-section card" style="padding: 24px; margin-bottom: 20px;">
+      <h3>Prize Recommendations</h3>
+      <div class="prize-card">
+        <div class="insight-check checked" onclick="this.classList.toggle('checked')"></div>
+        <div style="flex:1">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;"><strong>20% Off First Order</strong><span style="color: #3b82f6; font-weight: 600; font-size: 13px;">92% Relevance</span></div>
+          <div class="prize-bar"><div class="prize-bar-fill" style="width: 92%;"></div></div>
+          <div style="font-size: 12px; color: #6b7280; margin-top: 6px;">Highest engagement in fitness subreddits for DTC brands</div>
+        </div>
+      </div>
+      <div class="prize-card">
+        <div class="insight-check checked" onclick="this.classList.toggle('checked')"></div>
+        <div style="flex:1">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;"><strong>Free Resistance Band Set</strong><span style="color: #3b82f6; font-weight: 600; font-size: 13px;">87% Relevance</span></div>
+          <div class="prize-bar"><div class="prize-bar-fill" style="width: 87%;"></div></div>
+          <div style="font-size: 12px; color: #6b7280; margin-top: 6px;">Physical prizes outperform discounts for engagement</div>
+        </div>
+      </div>
+      <div class="prize-card">
+        <div class="insight-check" onclick="this.classList.toggle('checked')"></div>
+        <div style="flex:1">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;"><strong>$50 Gift Card</strong><span style="color: #3b82f6; font-weight: 600; font-size: 13px;">74% Relevance</span></div>
+          <div class="prize-bar"><div class="prize-bar-fill" style="width: 74%;"></div></div>
+          <div style="font-size: 12px; color: #6b7280; margin-top: 6px;">Universal appeal but lower brand connection</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="research-section card" style="padding: 24px; margin-bottom: 20px;">
+      <h3>Sentiment Summary</h3>
+      <div class="sentiment-bar">
+        <div class="sentiment-pos" style="width: 58%;"></div>
+        <div class="sentiment-neu" style="width: 28%;"></div>
+        <div class="sentiment-neg" style="width: 14%;"></div>
+      </div>
+      <div style="display: flex; gap: 24px; margin-top: 12px; font-size: 13px;">
+        <span style="color: #15803d;">Positive: <strong>58%</strong></span>
+        <span style="color: #a16207;">Neutral: <strong>28%</strong></span>
+        <span style="color: #dc2626;">Negative: <strong>14%</strong></span>
+      </div>
+    </div>
+
+    <div class="selected-summary">
+      <h4>Selected Insights (6)</h4>
+      <span class="selected-tag">Overpriced gym equipment</span>
+      <span class="selected-tag">Hidden subscription fees</span>
+      <span class="selected-tag">Shipping delays</span>
+      <span class="selected-tag">Home Gym Setups</span>
+      <span class="selected-tag">Resistance Bands</span>
+      <span class="selected-tag">20% Off First Order</span>
+      <span class="selected-tag">Free Resistance Band Set</span>
+      <span class="selected-tag">Budget Fitness</span>
+      <span class="selected-tag">Wearable Tech</span>
+    </div>
+  </div>
+
+  <!-- ==================== EDITOR ==================== -->
+  <div class="page" id="page-editor">
+    <div class="page-header">
+      <div>
+        <h2>Banner Editor</h2>
+        <p>Summer Flash Sale &middot; FitGear Pro</p>
+      </div>
+    </div>
+    <div class="editor-layout">
+      <!-- Left: Formats -->
+      <div>
+        <div class="card" style="padding: 16px;">
+          <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: #374151; margin-bottom: 12px; letter-spacing: 0.5px;">Format</div>
+          <ul class="format-list">
+            <li class="active">Mobile Banner <div class="dims">320x50</div></li>
+            <li>Large Mobile <div class="dims">320x100</div></li>
+            <li>Med Rectangle <div class="dims">300x250</div></li>
+            <li>Interstitial <div class="dims">320x480</div></li>
+            <li>Smartphone <div class="dims">360x640</div></li>
+            <li>Leaderboard <div class="dims">728x90</div></li>
+            <li>Skyscraper <div class="dims">160x600</div></li>
+            <li>Half Page <div class="dims">300x600</div></li>
+            <li>Billboard <div class="dims">970x250</div></li>
+            <li>Lg Rectangle <div class="dims">336x280</div></li>
+            <li>Custom</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Center: Canvas -->
+      <div>
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="switchEditorTab(this, 'scratch')">Scratch-to-Win</button>
+          <button class="tab-btn" onclick="switchEditorTab(this, 'win')">Win</button>
+          <button class="tab-btn" onclick="switchEditorTab(this, 'lose')">Lose</button>
+          <button class="tab-btn" onclick="switchEditorTab(this, 'brand')">Brand Reveal</button>
+        </div>
+
+        <div class="canvas-area">
+          <div class="canvas-mock" id="canvas-mock" style="width: 360px; height: 280px;">
+            <div class="scratch-overlay"></div>
+            <div class="logo-placeholder">LOGO</div>
+            <h4 id="canvas-headline">Scratch to Win!</h4>
+            <div class="prize-text" id="canvas-prize">Win 20% Off Your Order</div>
+            <div class="cta-btn" id="canvas-cta">Scratch Now</div>
+          </div>
+        </div>
+
+        <div class="canvas-tools">
+          <button class="btn btn-primary btn-sm">+ Add Text</button>
+          <button class="btn btn-secondary btn-sm">+ Rectangle</button>
+          <button class="btn btn-secondary btn-sm">+ Circle</button>
+          <button class="btn btn-outline btn-sm">Move Up</button>
+          <button class="btn btn-outline btn-sm">Move Down</button>
+          <button class="btn btn-sm" style="background: #ef4444; color: white;">Delete</button>
+        </div>
+      </div>
+
+      <!-- Right: Controls -->
+      <div class="controls-panel">
+        <div class="card" style="padding: 16px;">
+          <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: #374151; margin-bottom: 16px; letter-spacing: 0.5px;">Customize</div>
+
+          <div class="control-group">
+            <label>Brand Color</label>
+            <div class="control-color">
+              <input type="color" value="#3b82f6" id="brand-color" onchange="updateCanvas()">
+              <input type="text" value="#3B82F6">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Background</label>
+            <div class="control-color">
+              <input type="color" value="#1e3a8a" id="bg-color" onchange="updateCanvasBg()">
+              <input type="text" value="#1E3A8A">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Headline</label>
+            <input class="control-input" type="text" value="Scratch to Win!" oninput="document.getElementById('canvas-headline').textContent = this.value">
+          </div>
+
+          <div class="control-group">
+            <label>CTA</label>
+            <input class="control-input" type="text" value="Scratch Now" oninput="document.getElementById('canvas-cta').textContent = this.value">
+          </div>
+
+          <div class="control-group">
+            <label>Prize Text</label>
+            <input class="control-input" type="text" value="Win 20% Off Your Order" oninput="document.getElementById('canvas-prize').textContent = this.value">
+          </div>
+
+          <div class="control-group">
+            <label>Font Family</label>
+            <select class="control-input" onchange="document.getElementById('canvas-mock').style.fontFamily = this.value">
+              <option>Arial</option><option>Helvetica</option><option>Georgia</option><option>Times New Roman</option><option>Verdana</option><option>Impact</option><option>Trebuchet MS</option><option>Palatino</option><option>Comic Sans MS</option><option>Courier New</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label>Font Size: <span id="fs-val">20px</span></label>
+            <input type="range" class="range-slider" min="12" max="72" value="20" oninput="document.getElementById('fs-val').textContent = this.value+'px'; document.getElementById('canvas-headline').style.fontSize = this.value+'px';">
+          </div>
+
+          <div class="control-group">
+            <label>Logo</label>
+            <div class="upload-zone">Upload Logo</div>
+          </div>
+
+          <div class="control-group">
+            <label>Background Image</label>
+            <div class="upload-zone">Upload Image</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; display: flex; justify-content: space-between;">
+      <button class="btn btn-secondary">Save Draft</button>
+      <button class="btn btn-primary" onclick="showPage('variations')">Save & Generate Variations &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ==================== VARIATIONS ==================== -->
+  <div class="page" id="page-variations">
+    <div class="page-header">
+      <div>
+        <h2>A/B Creative Variations</h2>
+        <p>Generated by Google Nano Banana &middot; Select your winners</p>
+      </div>
+      <button class="btn btn-primary" onclick="showPage('export')">Export Selected &rarr;</button>
+    </div>
+    <div class="variation-grid">
+      <div class="variation-card card">
+        <div class="preview" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6);"><div style="color: white; text-align: center; padding: 20px;"><div style="font-size: 10px; opacity: 0.7; margin-bottom: 8px;">FITGEAR PRO</div><div style="font-size: 18px; font-weight: 700;">Scratch & Win!</div><div style="font-size: 12px; margin-top: 6px; opacity: 0.9;">20% Off First Order</div><div style="margin-top: 12px; background: white; color: #1e3a8a; display: inline-block; padding: 6px 16px; border-radius: 4px; font-weight: 600; font-size: 12px;">Scratch Now</div></div></div>
+        <div class="label"><span class="var-name">Variation A</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+      <div class="variation-card card">
+        <div class="preview" style="background: linear-gradient(135deg, #065f46, #10b981);"><div style="color: white; text-align: center; padding: 20px;"><div style="font-size: 10px; opacity: 0.7; margin-bottom: 8px;">FITGEAR PRO</div><div style="font-size: 18px; font-weight: 700;">Your Prize Awaits</div><div style="font-size: 12px; margin-top: 6px; opacity: 0.9;">Free Resistance Bands</div><div style="margin-top: 12px; background: white; color: #065f46; display: inline-block; padding: 6px 16px; border-radius: 4px; font-weight: 600; font-size: 12px;">Reveal Prize</div></div></div>
+        <div class="label"><span class="var-name">Variation B</span><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+      <div class="variation-card card">
+        <div class="preview" style="background: linear-gradient(135deg, #7c2d12, #f97316);"><div style="color: white; text-align: center; padding: 20px;"><div style="font-size: 10px; opacity: 0.7; margin-bottom: 8px;">FITGEAR PRO</div><div style="font-size: 18px; font-weight: 700;">Flash Sale!</div><div style="font-size: 12px; margin-top: 6px; opacity: 0.9;">Scratch for Your Discount</div><div style="margin-top: 12px; background: white; color: #7c2d12; display: inline-block; padding: 6px 16px; border-radius: 4px; font-weight: 600; font-size: 12px;">Try Your Luck</div></div></div>
+        <div class="label"><span class="var-name">Variation C</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+      <div class="variation-card card">
+        <div class="preview" style="background: linear-gradient(135deg, #581c87, #a855f7);"><div style="color: white; text-align: center; padding: 20px;"><div style="font-size: 10px; opacity: 0.7; margin-bottom: 8px;">FITGEAR PRO</div><div style="font-size: 18px; font-weight: 700;">Win Big Today</div><div style="font-size: 12px; margin-top: 6px; opacity: 0.9;">Exclusive Member Discount</div><div style="margin-top: 12px; background: white; color: #581c87; display: inline-block; padding: 6px 16px; border-radius: 4px; font-weight: 600; font-size: 12px;">Scratch to Win</div></div></div>
+        <div class="label"><span class="var-name">Variation D</span><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+      <div class="variation-card card">
+        <div class="preview" style="background: linear-gradient(135deg, #1e1e1e, #404040);"><div style="color: white; text-align: center; padding: 20px;"><div style="font-size: 10px; opacity: 0.7; margin-bottom: 8px;">FITGEAR PRO</div><div style="font-size: 18px; font-weight: 700;">Unlock Your Deal</div><div style="font-size: 12px; margin-top: 6px; opacity: 0.9;">Mystery Savings Inside</div><div style="margin-top: 12px; background: #3b82f6; color: white; display: inline-block; padding: 6px 16px; border-radius: 4px; font-weight: 600; font-size: 12px;">Scratch Here</div></div></div>
+        <div class="label"><span class="var-name">Variation E</span><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+      <div class="variation-card card" style="border: 2px dashed #d1d5db; display: flex; align-items: center; justify-content: center; min-height: 200px; cursor: pointer;">
+        <div style="text-align: center; color: #9ca3af;"><div style="font-size: 24px; margin-bottom: 8px;">+</div><div style="font-size: 13px;">Regenerate</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== EXPORT ==================== -->
+  <div class="page" id="page-export">
+    <div class="page-header">
+      <div>
+        <h2>Export Creatives</h2>
+        <p>Download PNG + JSON config bundles</p>
+      </div>
+      <button class="btn btn-primary">Download All (ZIP)</button>
+    </div>
+    <div class="export-grid">
+      <div class="export-card card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700;">Variation A</div>
+            <div style="font-size: 13px; color: #6b7280;">Mobile Banner &middot; 320x50</div>
+          </div>
+          <span class="badge badge-winner">Winner</span>
+        </div>
+        <div class="states-row">
+          <div class="state-thumb scratch">Scratch</div>
+          <div class="state-thumb win">Win</div>
+          <div class="state-thumb lose">Lose</div>
+          <div class="state-thumb brand">Brand</div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-primary btn-sm" style="flex:1;">Download ZIP</button>
+          <button class="btn btn-outline btn-sm">PNG Only</button>
+          <button class="btn btn-outline btn-sm">JSON Only</button>
+        </div>
+      </div>
+      <div class="export-card card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700;">Variation C</div>
+            <div style="font-size: 13px; color: #6b7280;">Mobile Banner &middot; 320x50</div>
+          </div>
+          <span class="badge badge-winner">Winner</span>
+        </div>
+        <div class="states-row">
+          <div class="state-thumb scratch">Scratch</div>
+          <div class="state-thumb win">Win</div>
+          <div class="state-thumb lose">Lose</div>
+          <div class="state-thumb brand">Brand</div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-primary btn-sm" style="flex:1;">Download ZIP</button>
+          <button class="btn btn-outline btn-sm">PNG Only</button>
+          <button class="btn btn-outline btn-sm">JSON Only</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding: 20px; margin-top: 24px;">
+      <div style="font-weight: 600; margin-bottom: 8px;">config.json Preview</div>
+      <pre style="background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 8px; font-size: 12px; overflow-x: auto; line-height: 1.5;">{
+  "campaign": "Summer Flash Sale",
+  "brand": "FitGear Pro",
+  "format": { "name": "Mobile Banner", "width": 320, "height": 50 },
+  "creatives": [
+    {
+      "variation": "A",
+      "selected": true,
+      "states": {
+        "scratch": "variation_A_scratch.png",
+        "win": "variation_A_win.png",
+        "lose": "variation_A_lose.png",
+        "brand": "variation_A_brand.png"
+      }
+    }
+  ],
+  "exported_at": "2026-03-23T18:30:00Z"
+}</pre>
+    </div>
+  </div>
+
+  <!-- ==================== CREATIVES LIBRARY ==================== -->
+  <div class="page" id="page-creatives">
+    <div class="page-header">
+      <div>
+        <h2>Creative Library</h2>
+        <p>All creatives across campaigns. Browse, preview, and re-download.</p>
+      </div>
+      <span style="font-size: 14px; color: #6b7280;">8 creatives</span>
+    </div>
+
+    <div class="card filter-bar" style="margin-bottom: 20px;">
+      <label>Campaign:</label>
+      <select><option>All Campaigns</option><option>Summer Flash Sale</option><option>App Launch Promo</option><option>Spring Wellness</option></select>
+      <label>Format:</label>
+      <select><option>All Formats</option><option>Mobile Banner</option><option>Med Rectangle</option><option>Leaderboard</option></select>
+      <label>Status:</label>
+      <select><option>All</option><option>Selected Winners</option><option>Not Selected</option></select>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+        <label>Sort:</label>
+        <select><option>Newest First</option><option>Oldest First</option><option>By Campaign</option><option>By Format</option></select>
+      </div>
+    </div>
+
+    <div class="export-grid">
+      <div class="export-card card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div><div style="font-weight: 700;">Variation A</div><div style="font-size: 12px; color: #6b7280;">Summer Flash Sale / FitGear Pro</div></div>
+          <div style="text-align: right;"><div style="font-size: 13px; font-weight: 500;">Mobile Banner</div><div style="font-size: 11px; color: #9ca3af;">320x50</div></div>
+        </div>
+        <div class="states-row">
+          <div class="state-thumb scratch">Scratch</div>
+          <div class="state-thumb win">Win</div>
+          <div class="state-thumb lose">Lose</div>
+          <div class="state-thumb brand">Brand</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f3f4f6; padding-top: 12px;">
+          <span style="font-size: 12px; color: #9ca3af;">Mar 23, 2026</span>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <span class="badge badge-winner">Winner</span>
+            <button class="btn btn-primary btn-sm">Download</button>
+          </div>
+        </div>
+      </div>
+      <div class="export-card card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div><div style="font-weight: 700;">Variation C</div><div style="font-size: 12px; color: #6b7280;">Summer Flash Sale / FitGear Pro</div></div>
+          <div style="text-align: right;"><div style="font-size: 13px; font-weight: 500;">Mobile Banner</div><div style="font-size: 11px; color: #9ca3af;">320x50</div></div>
+        </div>
+        <div class="states-row">
+          <div class="state-thumb scratch">Scratch</div>
+          <div class="state-thumb win">Win</div>
+          <div class="state-thumb lose">Lose</div>
+          <div class="state-thumb brand">Brand</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f3f4f6; padding-top: 12px;">
+          <span style="font-size: 12px; color: #9ca3af;">Mar 23, 2026</span>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <span class="badge badge-winner">Winner</span>
+            <button class="btn btn-primary btn-sm">Download</button>
+          </div>
+        </div>
+      </div>
+      <div class="export-card card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div><div style="font-weight: 700;">Variation A</div><div style="font-size: 12px; color: #6b7280;">App Launch Promo / NovaTech</div></div>
+          <div style="text-align: right;"><div style="font-size: 13px; font-weight: 500;">Med Rectangle</div><div style="font-size: 11px; color: #9ca3af;">300x250</div></div>
+        </div>
+        <div class="states-row">
+          <div class="state-thumb scratch">Scratch</div>
+          <div class="state-thumb win">Win</div>
+          <div class="state-thumb lose">Lose</div>
+          <div class="state-thumb brand">Brand</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f3f4f6; padding-top: 12px;">
+          <span style="font-size: 12px; color: #9ca3af;">Mar 22, 2026</span>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <button class="btn btn-outline btn-sm">View Campaign</button>
+            <button class="btn btn-primary btn-sm">Download</button>
+          </div>
+        </div>
+      </div>
+      <div class="export-card card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div><div style="font-weight: 700;">Variation B</div><div style="font-size: 12px; color: #6b7280;">Spring Wellness / ZenLife</div></div>
+          <div style="text-align: right;"><div style="font-size: 13px; font-weight: 500;">Leaderboard</div><div style="font-size: 11px; color: #9ca3af;">728x90</div></div>
+        </div>
+        <div class="states-row">
+          <div class="state-thumb scratch">Scratch</div>
+          <div class="state-thumb win">Win</div>
+          <div class="state-thumb lose">Lose</div>
+          <div class="state-thumb brand">Brand</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f3f4f6; padding-top: 12px;">
+          <span style="font-size: 12px; color: #9ca3af;">Mar 18, 2026</span>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <span class="badge badge-winner">Winner</span>
+            <button class="btn btn-primary btn-sm">Download</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-inner">&copy; 2026 SkratchAds&#8482;</div>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function switchEditorTab(btn, state) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const mock = document.getElementById('canvas-mock');
+  const headline = document.getElementById('canvas-headline');
+  const prize = document.getElementById('canvas-prize');
+  const cta = document.getElementById('canvas-cta');
+
+  const configs = {
+    scratch: { bg: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)', h: 'Scratch to Win!', p: 'Win 20% Off Your Order', c: 'Scratch Now' },
+    win: { bg: 'linear-gradient(135deg, #059669 0%, #10b981 100%)', h: 'You Won!', p: '20% Off Your First Order', c: 'Claim Prize' },
+    lose: { bg: 'linear-gradient(135deg, #6b7280 0%, #9ca3af 100%)', h: 'Almost!', p: 'Visit us for exclusive deals', c: 'Shop Now' },
+    brand: { bg: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)', h: 'FitGear Pro', p: 'Premium Fitness Equipment', c: 'Learn More' },
+  };
+  const cfg = configs[state];
+  mock.style.background = cfg.bg;
+  headline.textContent = cfg.h;
+  prize.textContent = cfg.p;
+  cta.textContent = cfg.c;
+}
+
+function updateCanvas() {
+  const color = document.getElementById('brand-color').value;
+  document.getElementById('canvas-cta').style.color = color;
+}
+
+function updateCanvasBg() {
+  const color = document.getElementById('bg-color').value;
+  document.getElementById('canvas-mock').style.background = color;
+}
+</script>
+</body>
+</html>

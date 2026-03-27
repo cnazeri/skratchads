@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkratchAds - Sales One-Pager v3.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafbff;
+            color: #111827;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Color palette */
+        :root {
+            --primary: #6366f1;
+            --dark: #1e1b4b;
+            --accent-warm: #f59e0b;
+            --accent-green: #10b981;
+            --surface: #fafbff;
+            --ink: #111827;
+            --border: #e5e7eb;
+            --text-muted: #6b7280;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(250, 251, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-cta {
+            background: var(--primary);
+            color: white !important;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--dark);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 8rem;
+            padding-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .hero-text h1 .highlight {
+            color: var(--primary);
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .pill {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 0.75rem 1.25rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--ink);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .pill:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .pill-accent {
+            color: var(--accent-warm);
+            font-weight: 600;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cta-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .cta-primary:hover {
+            background: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .cta-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .cta-secondary:hover {
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .hero-phone {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 600px;
+        }
+
+        /* Phone Mockup */
+        .mock-phone {
+            position: relative;
+            width: 280px;
+            height: 560px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #6366f1 100%);
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
+            overflow: hidden;
+        }
+
+        .mock-phone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 25px;
+            background: #000;
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+
+        .mock-screen {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mock-screen-header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .mock-banner-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            background: #f9fafb;
+            gap: 1rem;
+        }
+
+        .mock-banner {
+            width: 100%;
+            aspect-ratio: 300/50;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #f59e0b 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-align: center;
+            padding: 0.5rem;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+            animation: bannerBounce 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes bannerBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .mock-banner::before {
+            content: '✓ Scratch to Win!';
+            position: absolute;
+        }
+
+        .mock-content {
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 0.65rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        /* Sections */
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .card-accent {
+            width: 50px;
+            height: 50px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card.accent-green .card-accent {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        .card.accent-warm .card-accent {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-warm);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--ink);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Problem Section */
+        .problem {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+        }
+
+        .card.problem-card {
+            border-left: 4px solid var(--primary);
+        }
+
+        .card.problem-card:nth-child(2) {
+            border-left-color: var(--accent-warm);
+        }
+
+        .card.problem-card:nth-child(3) {
+            border-left-color: var(--accent-green);
+        }
+
+        /* Metrics Row */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .metric-chip {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-chip:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Stats Banner */
+        .stats-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 3rem 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat {
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat:last-child {
+            border-right: none;
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: #fafbff;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .step-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+
+        .step-card h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .step-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Dual Conversion */
+        .dual-conversion {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .conversion-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .conversion-card.win-path {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.02);
+        }
+
+        .conversion-card.lose-path {
+            border-color: var(--accent-warm);
+            background: rgba(245, 158, 11, 0.02);
+        }
+
+        .conversion-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .conversion-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .conversion-card.win-path .conversion-icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        .conversion-card.lose-path .conversion-icon {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-warm);
+        }
+
+        .conversion-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--ink);
+        }
+
+        .conversion-list {
+            list-style: none;
+        }
+
+        .conversion-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .conversion-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .conversion-card.win-path .conversion-list li::before {
+            color: var(--accent-green);
+        }
+
+        .conversion-card.lose-path .conversion-list li::before {
+            color: var(--accent-warm);
+        }
+
+        /* Engagement Metrics */
+        .engagement-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.03) 0%, rgba(16, 185, 129, 0.03) 100%);
+        }
+
+        /* Creative Studio */
+        .studio-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .studio-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .studio-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .studio-card h3::before {
+            content: '⚡';
+            font-size: 1.5rem;
+        }
+
+        .studio-card ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .studio-card li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .studio-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Formats */
+        .formats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .format-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .format-badge {
+            display: inline-block;
+            background: var(--accent-green);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .format-badge.coming {
+            background: var(--accent-warm);
+        }
+
+        .format-badge.roadmap {
+            background: #8b5cf6;
+        }
+
+        .format-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--ink);
+        }
+
+        .format-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Publisher/Advertiser */
+        .users-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .user-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .user-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-badge {
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .user-card ul {
+            list-style: none;
+        }
+
+        .user-card li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            color: var(--text-muted);
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .user-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Campaign Examples */
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .example-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .example-card:hover {
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .example-visual {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #f59e0b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .example-content {
+            padding: 1.5rem;
+        }
+
+        .example-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--ink);
+        }
+
+        .example-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .cta-section h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button-white {
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-contact {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .cta-contact a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Footnote */
+        .footnote {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        .footnote strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats-banner {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .dual-conversion {
+                grid-template-columns: 1fr;
+            }
+
+            .studio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .users-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .stat:last-child {
+                border-bottom: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-container {
+                justify-content: center;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .cta-section {
+                margin: 2rem 0;
+                padding: 2rem 1rem;
+            }
+
+            .cta-section h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Scroll reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">SkratchAds</a>
+            <ul class="nav-links">
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#publishers">Publishers</a></li>
+                <li><a href="#advertisers">Advertisers</a></li>
+                <li><a href="#cta" class="nav-cta">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Mobile Ads That Feel Like <span class="highlight">Winning</span>, Not Losing</h1>
+                <p>SkratchAds is the world's first voluntary scratch-off ad format. Users choose to engage. Your revenue soars.</p>
+
+                <div class="hero-pills">
+                    <span class="pill">Cost-Per-Scratch</span>
+                    <span class="pill"><span class="pill-accent">$8-20</span> eCPM</span>
+                    <span class="pill"><span class="pill-accent">~20%</span> Scratch-Through</span>
+                    <span class="pill">Real Prizes</span>
+                    <span class="pill">Gamified Banner</span>
+                    <span class="pill">Privacy-First</span>
+                </div>
+
+                <div class="hero-cta">
+                    <a href="mailto:hello@skratchads.com" class="cta-button cta-primary">Get Started for Free</a>
+                </div>
+            </div>
+
+            <div class="hero-phone">
+                <div class="mock-phone">
+                    <div class="mock-screen">
+                        <div class="mock-screen-header">SkratchAds Demo</div>
+                        <div class="mock-banner-container">
+                            <div class="mock-banner"></div>
+                            <div class="mock-content">
+                                <p>Tap the banner above to scratch and win real prizes or see brand messages.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem">
+        <div class="section-header">
+            <div class="section-badge">The Problem</div>
+            <h2>Why Traditional Banner Ads Are Broken</h2>
+            <p>Publishers and advertisers deserve better. Users deserve something that doesn't feel invasive.</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card problem-card reveal">
+                <div class="card-accent">👁️</div>
+                <h3>Banner Blindness</h3>
+                <p>86% of users never look at standard banner ads. They're invisible. You're paying for inventory nobody sees.</p>
+            </div>
+
+            <div class="card problem-card reveal">
+                <div class="card-accent">📉</div>
+                <h3>Rock Bottom eCPMs</h3>
+                <p>$0.50–$2 eCPM is the norm. AdMob, Google Ad Manager... publishers leave 10x money on the table.</p>
+            </div>
+
+            <div class="card problem-card reveal">
+                <div class="card-accent">🚨</div>
+                <h3>Intrusive Interstitials</h3>
+                <p>Pop-ups destroy UX and tank app store ratings. Users hate them. You lose retention and credibility.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-header">
+            <div class="section-badge">The Solution</div>
+            <h2>How SkratchAds Works</h2>
+            <p>5 simple steps from impression to qualified lead.</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card reveal">
+                <div class="step-number">1</div>
+                <h3>Ad Appears</h3>
+                <p>Banner-sized gamified ad invites users to scratch for a prize.</p>
+            </div>
+
+            <div class="step-card reveal">
+                <div class="step-number">2</div>
+                <h3>User Scratches</h3>
+                <p>3–5 second voluntary gesture. No forced interaction. Pure choice.</p>
+            </div>
+
+            <div class="step-card reveal">
+                <div class="step-number">3</div>
+                <h3>Win Path</h3>
+                <p>Real prize revealed (gift cards, discounts). User is primed and interested.</p>
+            </div>
+
+            <div class="step-card reveal">
+                <div class="step-number">4</div>
+                <h3>Lose Path</h3>
+                <p>Near-miss effect shows primed brand message. Highest-attention ad moment.</p>
+            </div>
+
+            <div class="step-card reveal">
+                <div class="step-number">5</div>
+                <h3>Redeem</h3>
+                <p>Email entry to claim prize. Qualified, self-selected lead captured.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dual Conversion -->
+    <section>
+        <div class="section-header">
+            <div class="section-badge">Dual Conversion Paths</div>
+            <h2>Win or Lose, You Always Win</h2>
+        </div>
+
+        <div class="dual-conversion">
+            <div class="conversion-card win-path reveal">
+                <div class="conversion-header">
+                    <div class="conversion-icon">🏆</div>
+                    <h3>Win Path</h3>
+                </div>
+                <ul class="conversion-list">
+                    <li>Real email capture</li>
+                    <li>Self-selected warm audience</li>
+                    <li>Primed for purchase intent</li>
+                    <li>Friction-free redemption</li>
+                    <li>Brand recall guaranteed</li>
+                </ul>
+            </div>
+
+            <div class="conversion-card lose-path reveal">
+                <div class="conversion-header">
+                    <div class="conversion-icon">⚡</div>
+                    <h3>Lose Path</h3>
+                </div>
+                <ul class="conversion-list">
+                    <li>Near-miss effect drives intent</li>
+                    <li>5–10x CTR vs standard banner</li>
+                    <li>Zero banner blindness</li>
+                    <li>Highest-attention ad moment</li>
+                    <li>Brand impression locked in</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="metrics-row">
+            <div class="metric-chip reveal">
+                <div class="metric-value">~20%</div>
+                <div class="metric-label">Scratch-Through Rate</div>
+            </div>
+            <div class="metric-chip reveal">
+                <div class="metric-value">50%</div>
+                <div class="metric-label">Average Win Rate</div>
+            </div>
+            <div class="metric-chip reveal">
+                <div class="metric-value">35–45%</div>
+                <div class="metric-label">Redemption Rate</div>
+            </div>
+            <div class="metric-chip reveal">
+                <div class="metric-value">5–10x</div>
+                <div class="metric-label">Lose Path Click Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Banner -->
+    <section>
+        <div class="stats-banner reveal">
+            <div class="stat">
+                <div class="stat-value">10x</div>
+                <div class="stat-label">CTR Uplift</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">$8–20</div>
+                <div class="stat-label">Publisher eCPM</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">70%</div>
+                <div class="stat-label">Revenue Share</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">24hrs</div>
+                <div class="stat-label">Time to Live</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Engagement Metrics -->
+    <section class="engagement-section">
+        <div class="section-header">
+            <div class="section-badge">Performance Metrics</div>
+            <h2>Proven Engagement Metrics</h2>
+            <p>Real numbers from live campaigns and beta testing.</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card reveal">
+                <div class="card-accent accent-green">📊</div>
+                <h3>~20% Scratch-Through</h3>
+                <p>vs. 0.56% standard banner CTR. 36x better engagement from voluntary interaction.</p>
+            </div>
+
+            <div class="card reveal">
+                <div class="card-accent accent-warm">🚀</div>
+                <h3>10x CTR Uplift</h3>
+                <p>Compared to standard banners. Win and Lose paths both drive action.</p>
+            </div>
+
+            <div class="card reveal">
+                <div class="card-accent accent-green">💰</div>
+                <h3>$8–20 Publisher eCPM</h3>
+                <p>vs. $0.50–$1.50 AdMob. 10–40x uplift. Your revenue multiplies.</p>
+            </div>
+
+            <div class="card reveal">
+                <div class="card-accent accent-warm">⚡</div>
+                <h3>5–10x Lose Path CTR</h3>
+                <p>Near-miss effect + brand message = highest-attention ad moment.</p>
+            </div>
+
+            <div class="card reveal">
+                <div class="card-accent accent-green">✉️</div>
+                <h3>100% Opt-In Lead Quality</h3>
+                <p>Every email is self-selected. No spam, no bounce. Real conversion intent.</p>
+            </div>
+
+            <div class="card reveal">
+                <div class="card-accent accent-warm">⏰</div>
+                <h3>24hrs Time to Live</h3>
+                <p>Fast rotation keeps impressions fresh. Daily prize resets drive repeat engagement.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creative Studio -->
+    <section>
+        <div class="section-header">
+            <div class="section-badge">Advertiser Tools</div>
+            <h2>Built-In Creative Studio</h2>
+            <p>Design, build, and launch campaigns in minutes. No design team required.</p>
+        </div>
+
+        <div class="studio-grid">
+            <div class="studio-card reveal">
+                <h3>AI-Powered Design</h3>
+                <ul>
+                    <li>Perplexity Sonar integration</li>
+                    <li>Gemini 2.5 Flash image gen</li>
+                    <li>10+ IAB format templates</li>
+                    <li>Auto-save and version control</li>
+                    <li>A/B test variations built-in</li>
+                </ul>
+            </div>
+
+            <div class="studio-card reveal">
+                <h3>Full Campaign Builder</h3>
+                <ul>
+                    <li>All 5 interaction states</li>
+                    <li>Drag-and-drop prize setup</li>
+                    <li>PNG + JSON export</li>
+                    <li>Live preview on test devices</li>
+                    <li>Zero code required</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Available Formats -->
+    <section>
+        <div class="section-header">
+            <div class="section-badge">Product</div>
+            <h2>Available Formats</h2>
+            <p>Start today. Scale tomorrow.</p>
+        </div>
+
+        <div class="formats-grid">
+            <div class="format-card reveal">
+                <div class="format-badge">Live Now</div>
+                <h3>Gamified Banner</h3>
+                <p>300x50, 320x50, 728x90 IAB standard. Drop-in replacement for existing banners. JS tag integration.</p>
+            </div>
+
+            <div class="format-card reveal">
+                <div class="format-badge coming">Coming 2026</div>
+                <h3>Native SDK</h3>
+                <p>React Native + Swift. Full-screen premium experience. In-app integration for iOS/Android apps.</p>
+            </div>
+
+            <div class="format-card reveal">
+                <div class="format-badge roadmap">Roadmap</div>
+                <h3>Interstitial & RTB</h3>
+                <p>Full-screen format. Open Measurement (OM SDK). Programmatic ready.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publishers & Advertisers -->
+    <section id="publishers">
+        <div class="section-header">
+            <div class="section-badge">Platform</div>
+            <h2>For Publishers and Advertisers</h2>
+        </div>
+
+        <div class="users-grid">
+            <div class="user-card reveal">
+                <div class="user-badge">📱</div>
+                <h3>Publishers</h3>
+                <ul>
+                    <li>$8–20 eCPM (10–40x uplift)</li>
+                    <li>Simple JS tag integration</li>
+                    <li>70% revenue share</li>
+                    <li>Zero UX damage</li>
+                    <li>Privacy-compliant (no 3rd party data)</li>
+                    <li>24-hour support</li>
+                </ul>
+            </div>
+
+            <div class="user-card reveal" id="advertisers">
+                <div class="user-badge">🎯</div>
+                <h3>Advertisers</h3>
+                <ul>
+                    <li>Cost-Per-Scratch pricing model</li>
+                    <li>100% opt-in email leads</li>
+                    <li>Brand impression on Lose Path</li>
+                    <li>Real prize fulfillment included</li>
+                    <li>AI Creative Studio</li>
+                    <li>Full campaign analytics dashboard</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campaign Examples -->
+    <section>
+        <div class="section-header">
+            <div class="section-badge">Case Studies</div>
+            <h2>Campaign Examples</h2>
+            <p>Real examples from beta testing and live pilots.</p>
+        </div>
+
+        <div class="examples-grid">
+            <div class="example-card reveal">
+                <div class="example-visual">Beverage Brand Demo</div>
+                <div class="example-content">
+                    <h3>Beverage Brand Launch</h3>
+                    <p>$2K spend. 8,400 scratches. 2,100 email wins. 18% scratch-through. 7x ROI in week one.</p>
+                </div>
+            </div>
+
+            <div class="example-card reveal">
+                <div class="example-visual">Gaming Brand Demo</div>
+                <div class="example-content">
+                    <h3>Gaming Brand User Acquisition</h3>
+                    <p>$5K spend. 22K scratches. 6,600 redemptions. $0.76 cost-per-lead. 8x uplift vs. standard banner.</p>
+                </div>
+            </div>
+
+            <div class="example-card reveal">
+                <div class="example-visual">The Win Moment</div>
+                <div class="example-content">
+                    <h3>Real Win Moment Showcase</h3>
+                    <p>See the psychology in action. Users love the moment. Brand recall is instant and emotional.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section id="cta">
+        <div class="cta-section reveal">
+            <h2>Ready to 10x Your Ad Revenue?</h2>
+            <p>Join publishers and advertisers already using SkratchAds to break through the noise.</p>
+            <a href="mailto:hello@skratchads.com" class="cta-button-white">Get Started for Free</a>
+            <div class="cta-contact">
+                Questions? Email <a href="mailto:hello@skratchads.com">hello@skratchads.com</a> or visit <a href="http://www.skratchads.com">www.skratchads.com</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footnote -->
+    <section>
+        <div class="footnote reveal">
+            <strong>Near-Miss Effect:</strong> The psychological principle that drives engagement and intent. When users see they "almost won," the primed brand message has maximum impact. This is backed by neuroscience research in decision-making and loss aversion.
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>SkratchAds — Sales One-Pager v3.0 — March 2026</p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

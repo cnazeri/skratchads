@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkratchAds™ — The Ad People Actually Want to Play</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- MailerLite Universal -->
+  <script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2162503');
+  </script>
+  <!-- End MailerLite Universal -->
+
+  <style>
+    /* ─── RESET & BASE ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #FFF9F4;
+      color: #2D2340;
+      overflow-x: hidden;
+    }
+
+    /* ─── CSS VARIABLES ─── */
+    :root {
+      --coral:   #FF6B6B;
+      --teal:    #3ECFBF;
+      --yellow:  #FFD93D;
+      --purple:  #C084FC;
+      --mint:    #A8EDCD;
+      --peach:   #FFB347;
+      --sky:     #7DD3FC;
+      --cream:   #FFF9F4;
+      --ink:     #2D2340;
+      --shadow:  0 8px 40px rgba(45,35,64,0.10);
+      --shadow-lg: 0 20px 60px rgba(45,35,64,0.15);
+    }
+
+    /* ─── ANIMATED BACKGROUND BLOBS ─── */
+    .blob-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: blobDrift 18s ease-in-out infinite alternate;
+    }
+    .blob-1 { width: 600px; height: 600px; background: #FFD93D; top: -100px; left: -150px; animation-delay: 0s; }
+    .blob-2 { width: 500px; height: 500px; background: #FF6B6B; top: 30%; right: -100px; animation-delay: -4s; }
+    .blob-3 { width: 400px; height: 400px; background: #3ECFBF; bottom: 10%; left: 20%; animation-delay: -8s; }
+    .blob-4 { width: 350px; height: 350px; background: #C084FC; top: 60%; right: 25%; animation-delay: -12s; }
+
+    @keyframes blobDrift {
+      0%   { transform: translate(0,0) scale(1); }
+      50%  { transform: translate(40px,-30px) scale(1.05); }
+      100% { transform: translate(-20px,50px) scale(0.95); }
+    }
+
+    /* ─── WRAPPER ─── */
+    .page { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* ─── SECTION SPACING ─── */
+    section { margin-bottom: 80px; }
+
+    /* ─── ❶ HERO ─── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      align-items: center;
+      gap: 40px;
+      padding: 60px 0 40px;
+      min-height: 90vh;
+    }
+    .hero-text { }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: white;
+      border: 2px solid var(--coral);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 13px; font-weight: 800;
+      color: var(--coral);
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(255,107,107,0.2);
+      animation: badgePop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;
+    }
+    .hero-badge::before { content: "✦"; animation: spin 4s linear infinite; display: inline-block; margin-right: 4px; }
+
+    @keyframes badgePop {
+      from { opacity: 0; transform: scale(0.6); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .logo-img {
+      height: 52px;
+      margin-bottom: 24px;
+      animation: slideDown 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .logo-text-fallback {
+      font-family: 'Fredoka One', cursive;
+      font-size: 32px;
+      color: var(--coral);
+      margin-bottom: 24px;
+      display: none;
+    }
+
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(38px, 5vw, 60px);
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 20px;
+      animation: slideUp 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+    }
+    h1 .highlight {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    h1 .highlight-teal {
+      display: inline-block;
+      background: linear-gradient(135deg, #0EA5A0, var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 600;
+      color: #6B5F7A;
+      line-height: 1.6;
+      margin-bottom: 32px;
+      max-width: 460px;
+      animation: slideUp 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.35s both;
+    }
+
+    .hero-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+      animation: slideUp 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.45s both;
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 14px; font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+    .pill-coral  { background: #FFE8E8; color: var(--coral); }
+    .pill-teal   { background: #D8F5F1; color: #0D9E95; }
+    .pill-yellow { background: #FFF5C3; color: #B38600; }
+    .pill-purple { background: #F3E8FF; color: #9B33E0; }
+
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--coral) 0%, var(--peach) 100%);
+      color: white;
+      font-family: 'Fredoka One', cursive;
+      font-size: 20px;
+      padding: 16px 36px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 10px 30px rgba(255,107,107,0.4);
+      animation: slideUp 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.55s both,
+                 pulse 3s ease-in-out 2s infinite;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 40px rgba(255,107,107,0.5); }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 10px 30px rgba(255,107,107,0.4); }
+      50%       { box-shadow: 0 10px 50px rgba(255,107,107,0.65); }
+    }
+
+    /* HERO PHONE */
+    .hero-phone-wrap {
+      display: flex; justify-content: center; align-items: center;
+      animation: floatPhone 6s ease-in-out infinite,
+                 fadeIn 0.8s ease 0.4s both;
+    }
+    @keyframes floatPhone {
+      0%, 100% { transform: translateY(0px) rotate(-2deg); }
+      50%       { transform: translateY(-18px) rotate(2deg); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .hero-phone-wrap img {
+      width: 100%;
+      max-width: 300px;
+      filter: drop-shadow(0 30px 60px rgba(45,35,64,0.25));
+      border-radius: 30px;
+    }
+    .hero-phone-fallback {
+      width: 260px; height: 520px;
+      background: linear-gradient(135deg, #3ECFBF, #C084FC);
+      border-radius: 40px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 30px 60px rgba(45,35,64,0.25);
+    }
+    .hero-phone-fallback span {
+      font-family: 'Fredoka One', cursive;
+      font-size: 28px; color: white; text-align: center; padding: 20px;
+    }
+
+    /* ─── SECTION LABEL ─── */
+    .section-label {
+      display: inline-block;
+      font-family: 'Fredoka One', cursive;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: #D8F5F1;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
+    h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.15;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+    .section-sub {
+      font-size: 16px;
+      color: #6B5F7A;
+      font-weight: 600;
+      max-width: 560px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    /* ─── ❷ PROBLEM CARDS ─── */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .problem-card {
+      background: white;
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .problem-card:hover { transform: translateY(-6px) rotate(0.5deg); box-shadow: var(--shadow-lg); }
+    .problem-card::before {
+      content: '✕';
+      position: absolute;
+      top: 14px; right: 18px;
+      font-size: 22px;
+      color: #FFCACA;
+      font-weight: 900;
+    }
+    .problem-card:nth-child(1) { transform: rotate(-1deg); }
+    .problem-card:nth-child(2) { transform: rotate(0.5deg); margin-top: 12px; }
+    .problem-card:nth-child(3) { transform: rotate(-0.5deg); }
+    .problem-card:nth-child(1):hover,
+    .problem-card:nth-child(2):hover,
+    .problem-card:nth-child(3):hover { transform: translateY(-6px) rotate(0); }
+    .problem-emoji { font-size: 36px; margin-bottom: 12px; display: block; }
+    .problem-card h3 { font-family: 'Fredoka One', cursive; font-size: 20px; margin-bottom: 8px; color: var(--ink); }
+    .problem-card p  { font-size: 14px; color: #8879A0; font-weight: 600; line-height: 1.5; }
+
+    /* ─── ❸ HOW IT WORKS — FLOW ─── */
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      position: relative;
+    }
+    .flow-steps::before {
+      content: '';
+      position: absolute;
+      top: 50px; left: 60px; right: 60px; height: 3px;
+      background: linear-gradient(to right, var(--coral), var(--yellow), var(--teal));
+      border-radius: 999px;
+      z-index: 0;
+    }
+    .flow-step {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+    }
+    .flow-num {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fredoka One', cursive;
+      font-size: 20px; color: white;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+      position: relative;
+      z-index: 2;
+    }
+    .flow-step:nth-child(1) .flow-num { background: var(--coral); }
+    .flow-step:nth-child(2) .flow-num { background: var(--yellow); color: var(--ink); }
+    .flow-step:nth-child(3) .flow-num { background: var(--teal); }
+    .flow-step:nth-child(4) .flow-num { background: var(--purple); }
+    .flow-step:nth-child(5) .flow-num { background: var(--mint); color: var(--ink); }
+
+    /* ── CSS Phone Mockup (wireframe style) ── */
+    .mock-phone {
+      width: 100%;
+      max-width: 148px;
+      background: white;
+      border: 3px solid #C4BDD2;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(45,35,64,0.14);
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      min-height: 265px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .mock-phone:hover { transform: scale(1.04) translateY(-4px); box-shadow: 0 18px 40px rgba(45,35,64,0.2); }
+    .mock-notch {
+      width: 44px; height: 7px;
+      background: #C4BDD2; border-radius: 0 0 6px 6px;
+      margin: 0 auto; flex-shrink: 0;
+    }
+    .mock-bar {
+      background: #E2DCEd; border-radius: 6px;
+      margin: 6px 10px 0;
+    }
+    .mock-bar.tall  { flex: 1; min-height: 60px; }
+    .mock-bar.short { flex: 0 0 44px; margin-bottom: 8px; }
+    .mock-banner {
+      margin: 4px 10px;
+      border-radius: 10px;
+      height: 72px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .mock-home {
+      width: 36px; height: 4px;
+      background: #C4BDD2; border-radius: 999px;
+      margin: 6px auto 7px; flex-shrink: 0;
+    }
+
+    /* Step 1 — Ad Appears: clean banner */
+    .banner-appears {
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: white; text-align: center; gap: 3px;
+    }
+    .banner-appears .b-icon { font-size: 22px; }
+    .banner-appears .b-text {
+      font-family: 'Fredoka One', cursive;
+      font-size: 10px; line-height: 1.2;
+    }
+    .banner-appears .b-sub {
+      font-size: 8px; font-weight: 700; opacity: 0.85;
+    }
+
+    /* Step 2 — Scratch: CSS-drawn scratch-in-progress */
+    .banner-scratching {
+      background: var(--coral);
+      width: 100%; height: 100%;
+      position: relative; overflow: hidden;
+    }
+    /* Unscratched gray cloud blobs */
+    .sc { position: absolute; background: #D9D4E3; }
+    .sc-1 {
+      width: 62px; height: 46px;
+      border-radius: 42% 58% 52% 48% / 48% 44% 56% 52%;
+      top: -6px; left: -10px;
+    }
+    .sc-2 {
+      width: 44px; height: 38px;
+      border-radius: 58% 42% 44% 56% / 52% 48% 52% 48%;
+      top: 10px; left: 18px;
+    }
+    .sc-3 {
+      width: 36px; height: 30px;
+      border-radius: 50% 50% 58% 42% / 44% 56% 44% 56%;
+      top: 28px; left: 6px;
+    }
+    .sc-4 {
+      width: 48px; height: 40px;
+      border-radius: 46% 54% 48% 52% / 56% 44% 56% 44%;
+      bottom: -4px; right: -8px;
+    }
+    .sc-5 {
+      width: 32px; height: 28px;
+      border-radius: 54% 46% 42% 58% / 50% 50% 50% 50%;
+      bottom: 16px; right: 18px;
+    }
+    /* Scratch coin (finger/coin indicator) */
+    .scratch-coin {
+      position: absolute;
+      width: 16px; height: 16px;
+      background: white;
+      border: 2.5px solid #A09AAE;
+      border-radius: 50%;
+      bottom: 12px; right: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      z-index: 2;
+    }
+    /* Scratch motion lines */
+    .scratch-lines {
+      position: absolute;
+      bottom: 18px; right: 30px;
+      width: 18px; height: 10px;
+      z-index: 1;
+    }
+    .scratch-lines::before,
+    .scratch-lines::after {
+      content: '';
+      position: absolute;
+      background: rgba(255,255,255,0.55);
+      border-radius: 999px;
+      height: 2px;
+    }
+    .scratch-lines::before { width: 14px; top: 0; left: 0; transform: rotate(-15deg); }
+    .scratch-lines::after  { width: 10px; top: 5px; left: 4px; transform: rotate(-10deg); }
+
+    /* Step 3 — Win Path: celebration screen */
+    .mock-win-screen {
+      flex: 1;
+      background: linear-gradient(160deg, #3ECFBF 0%, #1DA89D 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: white; text-align: center; gap: 4px;
+      padding: 8px 6px;
+      position: relative; overflow: hidden;
+    }
+    .mock-win-screen::before {
+      content: '🎊 🎉 🎊';
+      position: absolute; top: 6px;
+      font-size: 10px; letter-spacing: 2px; opacity: 0.7;
+    }
+    .mock-win-screen .w-emoji { font-size: 26px; }
+    .mock-win-screen .w-text {
+      font-family: 'Fredoka One', cursive;
+      font-size: 12px; line-height: 1.2;
+    }
+    .mock-win-screen .w-sub {
+      font-size: 8px; font-weight: 700; opacity: 0.85;
+    }
+    .mock-win-screen .w-btn {
+      margin-top: 6px;
+      background: white; color: #1DA89D;
+      font-family: 'Fredoka One', cursive;
+      font-size: 8px; padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    /* Step 4 — Lose Path: brand message screen */
+    .mock-lose-screen {
+      flex: 1;
+      background: linear-gradient(160deg, #7C3AED 0%, #5B21B6 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: white; text-align: center; gap: 4px;
+      padding: 8px 6px;
+    }
+    .mock-lose-screen .l-emoji { font-size: 24px; }
+    .mock-lose-screen .l-text {
+      font-family: 'Fredoka One', cursive;
+      font-size: 10px; line-height: 1.3;
+    }
+    .mock-lose-screen .l-sub {
+      font-size: 8px; font-weight: 700; opacity: 0.75;
+      line-height: 1.3;
+    }
+    .mock-lose-screen .l-brand {
+      margin-top: 6px;
+      background: rgba(255,255,255,0.15);
+      font-size: 7px; font-weight: 800;
+      padding: 3px 8px; border-radius: 999px;
+    }
+    .flow-step h4 { font-family: 'Fredoka One', cursive; font-size: 16px; margin-bottom: 4px; }
+    .flow-step p  { font-size: 13px; color: #8879A0; font-weight: 600; line-height: 1.4; }
+
+    /* ─── ❹ WIN / LOSE SPLIT ─── */
+    .split-paths {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .path-card {
+      border-radius: 28px;
+      padding: 36px 32px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .path-card::after {
+      content: '';
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+    }
+    .path-win  { background: linear-gradient(135deg, #3ECFBF, #22B3A5); }
+    .path-lose { background: linear-gradient(135deg, #C084FC, #9B33E0); }
+    .path-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+    .path-card h3 { font-family: 'Fredoka One', cursive; font-size: 26px; margin-bottom: 10px; }
+    .path-card p  { font-size: 15px; line-height: 1.6; opacity: 0.9; font-weight: 600; }
+    .path-list { list-style: none; margin-top: 16px; }
+    .path-list li {
+      font-size: 14px; font-weight: 700;
+      padding: 6px 0;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .path-list li::before { content: '→'; }
+
+    /* ─── ❺ PUBLISHER / ADVERTISER CARDS ─── */
+    .audience-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    .audience-card {
+      background: white;
+      border-radius: 28px;
+      padding: 36px 32px;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .audience-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+    .audience-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+    .audience-card h3 { font-family: 'Fredoka One', cursive; font-size: 24px; margin-bottom: 6px; }
+    .audience-card .audience-sub { font-size: 14px; color: #8879A0; font-weight: 700; margin-bottom: 20px; }
+
+    .big-number {
+      font-family: 'Fredoka One', cursive;
+      font-size: 52px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .big-number.coral  { color: var(--coral); }
+    .big-number.teal   { color: var(--teal); }
+    .big-label { font-size: 13px; font-weight: 800; color: #8879A0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 24px; }
+
+    .benefit-list { list-style: none; }
+    .benefit-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 15px; font-weight: 700;
+      color: #4A3F5C;
+      padding: 9px 0;
+      border-bottom: 1px solid #F3EEF9;
+    }
+    .benefit-list li:last-child { border-bottom: none; }
+    .benefit-list li .icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .icon-coral  { background: #FFE8E8; }
+    .icon-teal   { background: #D8F5F1; }
+    .icon-yellow { background: #FFF5C3; }
+    .icon-purple { background: #F3E8FF; }
+
+    /* ─── ❻ STATS ROW ─── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .stat-bubble {
+      background: white;
+      border-radius: 24px;
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s;
+    }
+    .stat-bubble:hover { transform: translateY(-6px) scale(1.02); }
+    .stat-bubble .stat-num {
+      font-family: 'Fredoka One', cursive;
+      font-size: 36px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-bubble .stat-label { font-size: 13px; font-weight: 800; color: #8879A0; line-height: 1.3; }
+    .stat-bubble:nth-child(1) .stat-num { color: var(--coral); }
+    .stat-bubble:nth-child(2) .stat-num { color: var(--teal); }
+    .stat-bubble:nth-child(3) .stat-num { color: var(--purple); }
+    .stat-bubble:nth-child(4) .stat-num { color: var(--peach); }
+
+    /* ─── ❼ CAMPAIGN SHOWCASE ─── */
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .showcase-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .showcase-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+    /* CSS-illustrated showcase visuals — no images, never pixelated */
+    .showcase-visual {
+      width: 100%;
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .sv-coffee { background: linear-gradient(135deg, #3D1002 0%, #7B3412 50%, #C2692A 100%); }
+    .sv-gaming { background: linear-gradient(135deg, #1a0533 0%, #4C1D95 55%, #7C3AED 100%); }
+    .sv-win    { background: linear-gradient(135deg, #064E4A 0%, #0D9E95 55%, #3ECFBF 100%); }
+
+    /* Floating deco blobs inside each card */
+    .sv-deco {
+      position: absolute; border-radius: 50%; opacity: 0.18;
+      pointer-events: none;
+    }
+    .sv-d1 { width: 100px; height: 100px; top: -28px; right: -28px; background: white; }
+    .sv-d2 { width:  60px; height:  60px; bottom: -16px; left: 8px;  background: white; }
+    .sv-d3 { width:  40px; height:  40px; top: 20px; left: -12px;    background: white; }
+
+    /* Mini phone inside showcase */
+    .sv-phone {
+      width: 82px; height: 130px;
+      background: white;
+      border: 2.5px solid rgba(255,255,255,0.5);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      display: flex; flex-direction: column;
+      position: relative; z-index: 1;
+    }
+    .sv-notch {
+      width: 26px; height: 5px;
+      background: rgba(0,0,0,0.15);
+      border-radius: 0 0 4px 4px;
+      margin: 0 auto; flex-shrink: 0;
+    }
+    .sv-bar { background: #E2DCE8; border-radius: 4px; margin: 4px 6px 0; }
+    .sv-bar.t { flex: 1; min-height: 28px; }
+    .sv-bar.b { flex: 0 0 20px; margin-bottom: 6px; }
+    .sv-banner {
+      margin: 3px 6px;
+      border-radius: 6px;
+      height: 44px; flex-shrink: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: white; text-align: center; gap: 1px;
+      overflow: hidden;
+    }
+    .sv-banner-coffee { background: linear-gradient(135deg, #92400E, #D97706); }
+    .sv-banner-gaming { background: linear-gradient(135deg, #5B21B6, #8B5CF6); }
+    .sv-banner-win    { background: linear-gradient(135deg, #065F46, #10B981); }
+    .sv-banner-icon   { font-size: 16px; line-height: 1; }
+    .sv-banner-text   { font-family: 'Fredoka One', cursive; font-size: 7px; line-height: 1.2; }
+    .sv-home {
+      width: 22px; height: 3px;
+      background: rgba(0,0,0,0.12);
+      border-radius: 999px;
+      margin: 3px auto 4px; flex-shrink: 0;
+    }
+
+    /* Label floating next to phone */
+    .sv-label {
+      position: absolute; z-index: 2;
+      bottom: 20px; right: 20px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 10px;
+      padding: 6px 10px;
+      color: white; text-align: right;
+    }
+    .sv-label-main { font-family: 'Fredoka One', cursive; font-size: 11px; display: block; }
+    .sv-label-sub  { font-size: 8px; font-weight: 700; opacity: 0.75; display: block; margin-top: 1px; }
+    .showcase-info { padding: 18px 20px; }
+    .showcase-brand { font-family: 'Fredoka One', cursive; font-size: 18px; margin-bottom: 4px; }
+    .showcase-desc  { font-size: 13px; color: #8879A0; font-weight: 600; line-height: 1.4; }
+    .showcase-tag {
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    /* ─── MAILING LIST SIGNUP ─── */
+    .signup-section {
+      background: white;
+      border-radius: 32px;
+      padding: 52px 48px;
+      box-shadow: var(--shadow);
+      border: 3px solid #F0EBF8;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .signup-section::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFD93D, #FFB347);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .signup-section::after {
+      content: '';
+      position: absolute;
+      bottom: -50px; right: -50px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3ECFBF, #C084FC);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .signup-section h2 { margin-bottom: 10px; }
+    .signup-section .section-sub { margin: 0 auto 32px; text-align: center; }
+    /* MailerLite embedded form overrides */
+    .ml-embedded { position: relative; z-index: 1; }
+    .signup-btn-manual {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--teal), #0D9E95);
+      color: white;
+      font-family: 'Fredoka One', cursive;
+      font-size: 20px;
+      padding: 16px 40px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: none; cursor: pointer;
+      box-shadow: 0 10px 30px rgba(62,207,191,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .signup-btn-manual:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 40px rgba(62,207,191,0.5); }
+    .signup-note {
+      margin-top: 14px;
+      font-size: 13px; font-weight: 700; color: #8879A0;
+    }
+
+    /* ─── ❽ BOTTOM CTA ─── */
+    .cta-section {
+      background: linear-gradient(135deg, #2D2340 0%, #4A3F5C 100%);
+      border-radius: 36px;
+      padding: 64px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(255,107,107,0.15);
+    }
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 250px; height: 250px;
+      border-radius: 50%;
+      background: rgba(62,207,191,0.12);
+    }
+    .cta-section h2 { color: white; font-size: clamp(28px, 4vw, 46px); margin-bottom: 14px; position: relative; z-index: 1; }
+    .cta-section p  { color: rgba(255,255,255,0.7); font-size: 17px; font-weight: 600; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6; position: relative; z-index: 1; }
+    .cta-btn-white {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: white;
+      color: var(--coral);
+      font-family: 'Fredoka One', cursive;
+      font-size: 20px;
+      padding: 16px 40px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative; z-index: 1;
+    }
+    .cta-btn-white:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 16px 50px rgba(0,0,0,0.3); }
+    .cta-contact {
+      margin-top: 24px;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px; font-weight: 700;
+      position: relative; z-index: 1;
+    }
+    .cta-contact a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    .cta-contact a:hover { color: white; }
+
+    /* ─── NAV BAR ─── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 0;
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,249,244,0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(45,35,64,0.06);
+    }
+    .nav-logo-img { height: 36px; }
+    .nav-logo-text {
+      font-family: 'Fredoka One', cursive;
+      font-size: 26px;
+      color: var(--coral);
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none;
+    }
+    .nav-links { display: flex; gap: 6px; }
+    .nav-link {
+      font-size: 14px; font-weight: 800;
+      color: #6B5F7A;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-link:hover { background: #F0EBF8; color: var(--ink); }
+    .nav-cta {
+      background: var(--coral);
+      color: white !important;
+      box-shadow: 0 4px 16px rgba(255,107,107,0.3);
+    }
+    .nav-cta:hover { background: #E85555 !important; }
+
+    /* ─── DIVIDER ─── */
+    .divider { text-align: center; font-size: 28px; margin: 0 0 40px; opacity: 0.3; }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 780px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding: 40px 0 20px; min-height: auto; }
+      .hero-phone-wrap { order: -1; }
+      .hero-pills { justify-content: center; }
+      .hero-sub { margin: 0 auto 32px; }
+      .problem-grid { grid-template-columns: 1fr 1fr; }
+      .flow-steps { grid-template-columns: 1fr 1fr 1fr; }
+      .flow-steps::before { display: none; }
+      .split-paths, .audience-grid, .stats-row, .showcase-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 40px 28px; }
+    }
+    @media (max-width: 520px) {
+      .problem-grid { grid-template-columns: 1fr; }
+      .problem-card:nth-child(1),
+      .problem-card:nth-child(2),
+      .problem-card:nth-child(3) { transform: none; margin-top: 0; }
+      nav { flex-wrap: wrap; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANIMATED BACKGROUND BLOBS -->
+  <div class="blob-bg" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
+
+  <div class="page">
+
+    <!-- NAV -->
+    <nav>
+      <span class="nav-logo-text">SkratchAds&#8482;</span>
+      <div class="nav-links">
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#publishers" class="nav-link">Publishers</a>
+        <a href="#advertisers" class="nav-link">Advertisers</a>
+        <a href="#get-started" class="nav-link nav-cta">Free POC →</a>
+      </div>
+    </nav>
+
+    <!-- ❶ HERO -->
+    <section class="hero">
+      <div class="hero-text">
+        <div class="hero-badge">The Ad People Actually Want to Play</div>
+        <h1>Mobile Ads That Feel Like <span class="highlight">Winning</span> Not <span class="highlight-teal">Losing</span></h1>
+        <p class="hero-sub">SkratchAds&#8482; is the world's first voluntary scratch-off ad format. Users play. Publishers earn more. Advertisers get real leads.</p>
+        <div class="hero-pills">
+          <span class="pill pill-coral">🎰 Cost-Per-Scratch</span>
+          <span class="pill pill-teal">💰 $8–20 eCPM</span>
+          <span class="pill pill-yellow">👆 10× Higher CTR</span>
+          <span class="pill pill-purple">🎁 Real Prizes</span>
+        </div>
+        <a href="mailto:hello@skratchads.com?subject=Free%2030-Day%20POC" class="cta-btn">
+          Start Free 30-Day POC 🚀
+        </a>
+      </div>
+      <div class="hero-phone-wrap">
+        <img src="Skratch Test Files/iphone1.png"
+             alt="SkratchAds on iPhone"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+        <div class="hero-phone-fallback" style="display:none;">
+          <span>Scratch to Win ✨</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ❷ THE PROBLEM -->
+    <section id="problem" class="reveal">
+      <div class="section-label">😩 The Problem</div>
+      <h2>Banner Ads Are Broken</h2>
+      <p class="section-sub">Users ignore them. Publishers earn pennies. Advertisers waste budgets on impressions nobody sees.</p>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <span class="problem-emoji">😶</span>
+          <h3>Banner Blindness</h3>
+          <p>Over 86% of users never look at standard banner ads. They're trained to ignore them — it's unconscious.</p>
+        </div>
+        <div class="problem-card">
+          <span class="problem-emoji">💸</span>
+          <h3>Rock Bottom eCPMs</h3>
+          <p>Standard banners pay $0.50–$2 eCPM. Publishers are leaving 10× money on the table every single day.</p>
+        </div>
+        <div class="problem-card">
+          <span class="problem-emoji">😤</span>
+          <h3>Intrusive Interstitials</h3>
+          <p>Pop-ups and full-screens destroy user experience and tank app store ratings. Nobody wins.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ❸ HOW IT WORKS -->
+    <section id="how-it-works" class="reveal">
+      <div class="section-label">✨ The Solution</div>
+      <h2>Scratch. Win. Repeat.</h2>
+      <p class="section-sub">A banner-sized ad users actually choose to interact with. No interruptions. No forced views. Just pure scratch-off fun.</p>
+      <div class="flow-steps">
+
+        <!-- Step 1: Ad Appears — CSS mockup -->
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="mock-phone">
+            <div class="mock-notch"></div>
+            <div class="mock-bar tall"></div>
+            <div class="mock-banner">
+              <div class="banner-appears">
+                <span class="b-icon">🎰</span>
+                <span class="b-text">Scratch to Win!</span>
+                <span class="b-sub">👆 Tap &amp; scratch to reveal</span>
+              </div>
+            </div>
+            <div class="mock-bar short"></div>
+            <div class="mock-home"></div>
+          </div>
+          <h4>Ad Appears</h4>
+          <p>A branded banner drops in — banner-sized, non-intrusive.</p>
+        </div>
+
+        <!-- Step 2: User Scratches — CSS mockup -->
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="mock-phone">
+            <div class="mock-notch"></div>
+            <div class="mock-bar tall"></div>
+            <div class="mock-banner">
+              <div class="banner-scratching">
+                <div class="sc sc-1"></div>
+                <div class="sc sc-2"></div>
+                <div class="sc sc-3"></div>
+                <div class="sc sc-4"></div>
+                <div class="sc sc-5"></div>
+                <div class="scratch-lines"></div>
+                <div class="scratch-coin"></div>
+              </div>
+            </div>
+            <div class="mock-bar short"></div>
+            <div class="mock-home"></div>
+          </div>
+          <h4>User Scratches</h4>
+          <p>Totally voluntary. Users scratch because it's fun — not because they have to.</p>
+        </div>
+
+        <!-- Step 3: Win Path — CSS mockup -->
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="mock-phone">
+            <div class="mock-notch"></div>
+            <div class="mock-win-screen">
+              <span class="w-emoji">🎉</span>
+              <span class="w-text">You Won!</span>
+              <span class="w-sub">Claim your prize</span>
+              <span class="w-btn">Enter Email →</span>
+            </div>
+            <div class="mock-home"></div>
+          </div>
+          <h4>Win Path 🎉</h4>
+          <p>Winners get a real prize. Advertisers capture a qualified email lead.</p>
+        </div>
+
+        <!-- Step 4: Lose Path — CSS mockup -->
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="mock-phone">
+            <div class="mock-notch"></div>
+            <div class="mock-lose-screen">
+              <span class="l-emoji">😊</span>
+              <span class="l-text">Better luck next time!</span>
+              <span class="l-sub">Thanks for playing — stay tuned for more</span>
+              <span class="l-brand">✦ Brand Message Here</span>
+            </div>
+            <div class="mock-home"></div>
+          </div>
+          <h4>Lose Path 🌟</h4>
+          <p>Non-winners see a primed brand message. Still a warm impression — zero waste.</p>
+        </div>
+
+        <!-- Step 5: Redeem — CSS mockup -->
+        <div class="flow-step">
+          <div class="flow-num">5</div>
+          <div class="mock-phone">
+            <div class="mock-notch"></div>
+            <div class="mock-bar tall"></div>
+            <div class="mock-banner" style="background:linear-gradient(135deg,var(--yellow),var(--peach)); height:52px; flex-direction:column; gap:2px; color:#2D2340;">
+              <span style="font-size:16px;">🏆</span>
+              <span style="font-family:'Fredoka One',cursive; font-size:9px;">Tap to Redeem!</span>
+            </div>
+            <div class="mock-bar short"></div>
+            <div class="mock-home"></div>
+          </div>
+          <h4>Redeem 🏆</h4>
+          <p>Winners tap to claim — delivering an excited, qualified lead to the brand.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ❹ WIN / LOSE PATHS -->
+    <section class="reveal">
+      <div class="section-label">🎯 Dual Conversion</div>
+      <h2>Every Scratch Has Value</h2>
+      <p class="section-sub">Unlike any other ad format, SkratchAds&#8482; monetizes both outcomes — win or lose, the advertiser wins too.</p>
+      <div class="split-paths">
+        <div class="path-card path-win">
+          <span class="path-icon">🏆</span>
+          <h3>Win Path</h3>
+          <p>The user scratches and reveals a prize. To claim it, they give their email. The advertiser gets a qualified lead who is genuinely excited about the brand.</p>
+          <ul class="path-list">
+            <li>Real email capture</li>
+            <li>Self-selected warm audience</li>
+            <li>Primed for purchase intent</li>
+          </ul>
+        </div>
+        <div class="path-card path-lose">
+          <span class="path-icon">💜</span>
+          <h3>Lose Path</h3>
+          <p>The user scratched — so they're already engaged. The lose screen delivers a memorable, high-attention brand impression that sticks.</p>
+          <ul class="path-list">
+            <li>Post-interaction brand recall</li>
+            <li>Zero banner blindness</li>
+            <li>Highest-attention ad moment</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ❺ STATS -->
+    <section class="reveal">
+      <div class="stats-row">
+        <div class="stat-bubble">
+          <div class="stat-num">10×</div>
+          <div class="stat-label">Higher CTR vs standard banners</div>
+        </div>
+        <div class="stat-bubble">
+          <div class="stat-num">$8–20</div>
+          <div class="stat-label">eCPM earned by publishers</div>
+        </div>
+        <div class="stat-bubble">
+          <div class="stat-num">70%</div>
+          <div class="stat-label">Revenue share to publishers</div>
+        </div>
+        <div class="stat-bubble">
+          <div class="stat-num">30 days</div>
+          <div class="stat-label">Free POC — no commitment</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ❻ FOR PUBLISHERS + ADVERTISERS -->
+    <section id="publishers" class="reveal">
+      <div class="section-label">👥 Built For Both Sides</div>
+      <h2>Publishers Love It. Advertisers Need It.</h2>
+      <p class="section-sub">SkratchAds&#8482; is the only format where both parties genuinely benefit — and users actually enjoy it.</p>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <span class="audience-icon">📱</span>
+          <h3>For App Publishers</h3>
+          <p class="audience-sub">Mobile app developers &amp; game studios</p>
+          <div class="big-number coral">$8–20</div>
+          <div class="big-label">eCPM — up to 10× standard banners</div>
+          <ul class="benefit-list">
+            <li><span class="icon icon-coral">📦</span>Drop-in iOS &amp; Android SDK — live in under 2 hours</li>
+            <li><span class="icon icon-teal">🤝</span>70% revenue share — highest in ad tech</li>
+            <li><span class="icon icon-yellow">😊</span>Zero UX damage — banner-sized, fully voluntary</li>
+            <li><span class="icon icon-purple">🔒</span>Post-ATT friendly — no IDFA required</li>
+            <li><span class="icon icon-coral">🆓</span>Free 30-day POC — no contract, no risk</li>
+          </ul>
+        </div>
+        <div class="audience-card" id="advertisers">
+          <span class="audience-icon">🎯</span>
+          <h3>For Advertisers</h3>
+          <p class="audience-sub">Brands running mobile campaigns</p>
+          <div class="big-number teal">CPS</div>
+          <div class="big-label">Cost-Per-Scratch — pay only for engagement</div>
+          <ul class="benefit-list">
+            <li><span class="icon icon-teal">📧</span>Email capture on the win path — qualified leads only</li>
+            <li><span class="icon icon-coral">🧠</span>Brand impression on the lose path — zero waste</li>
+            <li><span class="icon icon-yellow">🎁</span>Prize-based mechanic drives massive CTR lift</li>
+            <li><span class="icon icon-purple">📊</span>Full dashboard — scratch rate, win rate, leads</li>
+            <li><span class="icon icon-coral">🚀</span>Launch a campaign in 24 hours</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ❼ CAMPAIGN SHOWCASE -->
+    <section class="reveal">
+      <div class="section-label">🌟 Live Campaigns</div>
+      <h2>Real Brands. Real Results.</h2>
+      <p class="section-sub">The scratch mechanic works across categories — consumer brands, gaming, food &amp; beverage, and more.</p>
+      <div class="showcase-grid">
+        <!-- Showcase Card 1: Coffee Brand -->
+        <div class="showcase-card">
+          <div class="showcase-visual sv-coffee">
+            <div class="sv-deco sv-d1"></div>
+            <div class="sv-deco sv-d2"></div>
+            <div class="sv-deco sv-d3"></div>
+            <div class="sv-phone">
+              <div class="sv-notch"></div>
+              <div class="sv-bar t"></div>
+              <div class="sv-banner sv-banner-coffee">
+                <span class="sv-banner-icon">☕</span>
+                <span class="sv-banner-text">Scratch to Win<br>a Free Drink!</span>
+              </div>
+              <div class="sv-bar b"></div>
+              <div class="sv-home"></div>
+            </div>
+            <div class="sv-label">
+              <span class="sv-label-main">Coffee Brand</span>
+              <span class="sv-label-sub">Beverage Campaign</span>
+            </div>
+          </div>
+          <div class="showcase-info">
+            <div class="showcase-brand">Coffee Brand ☕</div>
+            <p class="showcase-desc">Free drink scratch campaign — users scratched for a chance to win a branded beverage coupon.</p>
+            <span class="showcase-tag pill pill-teal">Win Path: Email Capture</span>
+          </div>
+        </div>
+
+        <!-- Showcase Card 2: Gaming Brand -->
+        <div class="showcase-card">
+          <div class="showcase-visual sv-gaming">
+            <div class="sv-deco sv-d1"></div>
+            <div class="sv-deco sv-d2"></div>
+            <div class="sv-deco sv-d3"></div>
+            <div class="sv-phone">
+              <div class="sv-notch"></div>
+              <div class="sv-bar t"></div>
+              <div class="sv-banner sv-banner-gaming">
+                <span class="sv-banner-icon">🎮</span>
+                <span class="sv-banner-text">Scratch to Win<br>a New Console!</span>
+              </div>
+              <div class="sv-bar b"></div>
+              <div class="sv-home"></div>
+            </div>
+            <div class="sv-label">
+              <span class="sv-label-main">Gaming Brand</span>
+              <span class="sv-label-sub">Launch Campaign</span>
+            </div>
+          </div>
+          <div class="showcase-info">
+            <div class="showcase-brand">Gaming Brand 🎮</div>
+            <p class="showcase-desc">Console scratch campaign — prize-driven engagement for a new game launch.</p>
+            <span class="showcase-tag pill pill-coral">High Scratch-Through Rate</span>
+          </div>
+        </div>
+
+        <!-- Showcase Card 3: Win Moment -->
+        <div class="showcase-card">
+          <div class="showcase-visual sv-win">
+            <div class="sv-deco sv-d1"></div>
+            <div class="sv-deco sv-d2"></div>
+            <div class="sv-deco sv-d3"></div>
+            <div class="sv-phone">
+              <div class="sv-notch"></div>
+              <div class="sv-banner sv-banner-win" style="height:100%; margin:0; border-radius:0; flex:1; font-size:10px;">
+                <span style="font-size:22px; margin-bottom:2px;">🎉</span>
+                <span class="sv-banner-text" style="font-size:9px; font-family:'Fredoka One',cursive;">You Won!</span>
+                <span style="font-size:6px; font-weight:700; opacity:0.8; margin-top:2px;">Enter email to claim</span>
+                <span style="font-size:6px; background:rgba(255,255,255,0.25); padding:2px 6px; border-radius:999px; margin-top:4px; font-weight:800;">Claim Prize →</span>
+              </div>
+              <div class="sv-home"></div>
+            </div>
+            <div class="sv-label">
+              <span class="sv-label-main">Win Path 🏆</span>
+              <span class="sv-label-sub">Lead Captured</span>
+            </div>
+          </div>
+          <div class="showcase-info">
+            <div class="showcase-brand">The Win Moment 🏆</div>
+            <p class="showcase-desc">When users win, the reveal is joyful, branded, and drives immediate action on the prize claim page.</p>
+            <span class="showcase-tag pill pill-purple">Qualified Lead Generated</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- MAILING LIST SIGNUP -->
+    <section class="reveal">
+      <div class="signup-section">
+        <div class="section-label">📬 Stay in the Loop</div>
+        <h2>Get SkratchAds™ Updates</h2>
+        <p class="section-sub">New campaign results, publisher tips, and ad tech insights — delivered straight to your inbox. No spam, ever.</p>
+
+        <!-- MailerLite Embedded Form -->
+        <!-- TO ACTIVATE: In your MailerLite dashboard → Forms → Embedded → copy your form ID and replace vW4Uvf below -->
+        <div class="ml-embedded" data-form="vW4Uvf"></div>
+
+        <!-- Fallback button (shows if MailerLite form hasn't loaded yet) -->
+        <noscript>
+          <a href="https://landing.mailerlite.com/webforms/landing/vW4Uvf"
+             class="signup-btn-manual" target="_blank">
+            📬 Join the Mailing List
+          </a>
+        </noscript>
+
+        <p class="signup-note">✦ No spam &nbsp;·&nbsp; Unsubscribe anytime &nbsp;·&nbsp; Publisher &amp; advertiser insights only</p>
+      </div>
+    </section>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ❽ BOTTOM CTA -->
+    <section id="get-started" class="reveal">
+      <div class="cta-section">
+        <h2>Ready to 10× Your Ad Revenue?</h2>
+        <p>Start a free 30-day proof of concept. No contracts. No commitments. Just real results from the ad format users actually want.</p>
+        <a href="mailto:hello@skratchads.com?subject=Free%2030-Day%20POC%20Request" class="cta-btn-white">
+          👋 Start Free 30-Day POC
+        </a>
+        <p class="cta-contact">
+          Questions? <a href="mailto:hello@skratchads.com">hello@skratchads.com</a>
+          &nbsp;·&nbsp;
+          <a href="https://www.skratchads.com">www.skratchads.com</a>
+        </p>
+      </div>
+    </section>
+
+  </div><!-- /page -->
+
+  <footer style="text-align:center; padding: 20px 0 32px; font-size: 12px; font-weight: 700; color: #B8B0C8; font-family: 'Nunito', sans-serif; letter-spacing: 0.5px;">
+    SkratchAds&#8482; &nbsp;·&nbsp; Sales One-Pager v1.0 &nbsp;·&nbsp; March 2026
+  </footer>
+
+  <script>
+    // Scroll-triggered reveal with stagger
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Stagger children
+    document.querySelectorAll('.problem-grid, .flow-steps, .stats-row, .showcase-grid').forEach(grid => {
+      Array.from(grid.children).forEach((child, i) => {
+        child.style.transitionDelay = (i * 0.08) + 's';
+      });
+    });
+  </script>
+</body>
+</html>

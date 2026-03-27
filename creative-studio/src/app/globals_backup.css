@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* Scratch-to-Win preview animations */
+@keyframes scratchPop {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  10% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  20% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes scratchGlow {
+  0%, 100% {
+    text-shadow: 0 2px 16px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.6), 0 0 80px rgba(0,0,0,0.3);
+  }
+  50% {
+    text-shadow: 0 2px 16px rgba(0,0,0,0.9), 0 0 40px rgba(255,215,0,0.6), 0 0 80px rgba(255,215,0,0.3);
+  }
+}
+
+@keyframes sparkleFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-4px) scale(0.9);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.1);
+  }
+}
+
+@keyframes sparkleFloat2 {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) scale(0.4) rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-12px) scale(1) rotate(45deg);
+  }
+  60% {
+    opacity: 0.6;
+    transform: translateY(-6px) scale(0.8) rotate(90deg);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-14px) scale(1.05) rotate(135deg);
+  }
+}
+
+@keyframes youWonPop {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  15% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}

@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkratchAds&#8482; - Sales One-Pager v3.1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 2rem;
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e293b, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #8b5cf6;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.08;
+            filter: blur(80px);
+            animation: float 25s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 300px;
+            height: 300px;
+            background: #8b5cf6;
+            top: -10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 250px;
+            height: 250px;
+            background: #1e293b;
+            top: 20%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .blob-3 {
+            width: 280px;
+            height: 280px;
+            background: #10b981;
+            bottom: 10%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .blob-4 {
+            width: 200px;
+            height: 200px;
+            background: #8b5cf6;
+            bottom: 30%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(20px, -50px) scale(1.05); }
+            50% { transform: translate(-30px, -100px) scale(0.95); }
+            75% { transform: translate(50px, -20px) scale(1.02); }
+        }
+
+        /* Sections */
+        section {
+            position: relative;
+            padding: 80px 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: #ede9fe;
+            color: #8b5cf6;
+            padding: 0.4rem 1rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Hero */
+        #hero {
+            padding-top: 120px;
+            padding-bottom: 80px;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.02), rgba(139, 92, 246, 0.02));
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: 1.125rem;
+            color: #4b5563;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(139, 92, 246, 0.4);
+        }
+
+        .hero-phone {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #8b5cf6;
+            box-shadow: 0 12px 24px rgba(139, 92, 246, 0.15);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+
+        .card p {
+            color: #6b7280;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        /* Problem Section */
+        #problem {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.03), rgba(30, 41, 59, 0.03));
+        }
+
+        /* How It Works */
+        #how-it-works {
+            background: white;
+        }
+
+        .steps-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            padding: 40px 0;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .step:nth-child(even) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .step:nth-child(even) .step-phone {
+            order: -1;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #ede9fe;
+            color: #8b5cf6;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .step h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+
+        .step p {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            max-width: 400px;
+        }
+
+        .step-phone {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Dual Conversion */
+        .conversion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 3rem;
+        }
+
+        .conversion-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .conversion-card.win {
+            border-left: 4px solid #10b981;
+        }
+
+        .conversion-card.lose {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border-left: 4px solid #a78bfa;
+            color: white;
+        }
+
+        .conversion-card.lose h3,
+        .conversion-card.lose p {
+            color: white;
+        }
+
+        .conversion-card.lose p {
+            color: #cbd5e1;
+        }
+
+        .conversion-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .conversion-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .conversion-card p {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-chip {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .metric-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #8b5cf6;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Stats Row */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: #8b5cf6;
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #8b5cf6;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Engagement Metrics */
+        #engagement {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.03), rgba(30, 41, 59, 0.03));
+        }
+
+        /* Available Formats */
+        .format-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .format-card:hover {
+            transform: translateY(-4px);
+            border-color: #8b5cf6;
+            box-shadow: 0 12px 24px rgba(139, 92, 246, 0.15);
+        }
+
+        .format-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.3rem 0.8rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .format-badge.live {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .format-badge.coming {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .format-badge.roadmap {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .format-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+
+        .format-card p {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* Publishers & Advertisers */
+        .duo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .duo-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 32px;
+        }
+
+        .duo-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+
+        .duo-card ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .duo-card li {
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #6b7280;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .duo-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        /* Campaign Examples */
+        .example-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .example-card:hover {
+            transform: translateY(-4px);
+            border-color: #8b5cf6;
+            box-shadow: 0 12px 24px rgba(139, 92, 246, 0.15);
+        }
+
+        .example-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .example-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+
+        .example-card p {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .example-metrics {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .example-metric {
+            background: #f3f4f6;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Bottom CTA */
+        #bottom-cta {
+            background: linear-gradient(135deg, #1e293b, #475569);
+            color: white;
+            text-align: center;
+            padding: 80px 2rem;
+        }
+
+        #bottom-cta h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        #bottom-cta p {
+            font-size: 1.125rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .bottom-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 1rem 2.5rem;
+            border: 2px solid white;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #1e293b;
+        }
+
+        /* Footnote */
+        .footnote {
+            background: #f9fafb;
+            border-left: 4px solid #8b5cf6;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin: 2rem 0;
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        footer {
+            background: #0f172a;
+            color: #9ca3af;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 1.5rem;
+            }
+
+            .hero-content,
+            .conversion-grid,
+            .duo-grid,
+            .step {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .step:nth-child(even) .step-phone {
+                order: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+
+            .hero-phone svg,
+            .step-phone svg {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealOnScroll 0.6s ease forwards;
+        }
+
+        @keyframes revealOnScroll {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <nav-container>
+            <div class="nav-logo">SkratchAds&#8482;</div>
+            <ul class="nav-links">
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#publishers">Publishers</a></li>
+                <li><a href="#advertisers">Advertisers</a></li>
+                <li><a href="#bottom-cta" class="nav-cta">Get Started</a></li>
+            </ul>
+        </nav-container>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Replace Banner Blindness with Engagement</h1>
+                    <p>SkratchAds&#8482; is a voluntary scratch-off mobile ad unit that drives 10x higher click-through rates, commands premium eCPMs of $8-20, and delivers 100% opt-in engagement. Publishers earn 70% of revenue. It just works.</p>
+                    <a href="#bottom-cta" class="hero-cta">See It In Action</a>
+                </div>
+                <div class="hero-phone">
+                    <svg width="280" height="560" viewBox="0 0 280 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Phone body -->
+                        <defs>
+                            <linearGradient id="phoneGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="bannerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Screen background -->
+                        <rect x="20" y="40" width="240" height="480" rx="24" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
+
+                        <!-- Status bar -->
+                        <rect x="20" y="40" width="240" height="30" rx="12" fill="white"/>
+                        <text x="140" y="58" text-anchor="middle" font-size="10" fill="#0f172a" font-weight="600">9:41</text>
+
+                        <!-- Content area above banner -->
+                        <rect x="30" y="80" width="220" height="80" rx="8" fill="#e0e7ff" opacity="0.4"/>
+                        <text x="140" y="110" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">App Content</text>
+                        <circle cx="80" cy="135" r="8" fill="#6366f1" opacity="0.3"/>
+                        <circle cx="120" cy="135" r="8" fill="#6366f1" opacity="0.3"/>
+                        <circle cx="160" cy="135" r="8" fill="#6366f1" opacity="0.3"/>
+
+                        <!-- Scratch banner -->
+                        <rect x="30" y="175" width="220" height="100" rx="8" fill="url(#bannerGrad)"/>
+
+                        <!-- Revealed content in banner -->
+                        <text x="140" y="210" text-anchor="middle" font-size="16" fill="white" font-weight="700">Scratch to Win</text>
+                        <text x="140" y="235" text-anchor="middle" font-size="28">🎰</text>
+
+                        <!-- Scratch residue blobs -->
+                        <ellipse cx="70" cy="190" rx="25" ry="20" fill="#9ca3af" opacity="0.6"/>
+                        <ellipse cx="160" cy="200" rx="20" ry="25" fill="#9ca3af" opacity="0.5"/>
+                        <ellipse cx="210" cy="220" rx="18" ry="18" fill="#9ca3af" opacity="0.55"/>
+
+                        <!-- Scratch motion lines -->
+                        <line x1="100" y1="260" x2="85" y2="255" stroke="#d4af37" stroke-width="2" opacity="0.7"/>
+                        <line x1="105" y1="265" x2="90" y2="262" stroke="#d4af37" stroke-width="2" opacity="0.7"/>
+                        <line x1="100" y1="275" x2="85" y2="280" stroke="#d4af37" stroke-width="2" opacity="0.7"/>
+
+                        <!-- Scratch coin indicator -->
+                        <circle cx="235" cy="265" r="12" fill="#d4af37" stroke="white" stroke-width="1.5"/>
+                        <text x="235" y="270" text-anchor="middle" font-size="14" fill="#1e293b" font-weight="700">C</text>
+
+                        <!-- Content area below banner -->
+                        <rect x="30" y="290" width="220" height="100" rx="8" fill="#f3f4f6"/>
+                        <rect x="40" y="305" width="200" height="12" rx="2" fill="#e5e7eb"/>
+                        <rect x="40" y="325" width="200" height="10" rx="2" fill="#e5e7eb"/>
+                        <rect x="40" y="340" width="180" height="10" rx="2" fill="#e5e7eb"/>
+                        <rect x="40" y="360" width="200" height="12" rx="2" fill="#e5e7eb"/>
+
+                        <!-- Tab bar -->
+                        <rect x="20" y="420" width="240" height="100" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+                        <circle cx="60" cy="450" r="5" fill="#cbd5e1"/>
+                        <circle cx="140" cy="450" r="5" fill="#8b5cf6"/>
+                        <circle cx="220" cy="450" r="5" fill="#cbd5e1"/>
+                        <line x1="30" y1="470" x2="250" y2="470" stroke="#e5e7eb" stroke-width="1"/>
+                        <text x="60" y="490" text-anchor="middle" font-size="9" fill="#9ca3af">Home</text>
+                        <text x="140" y="490" text-anchor="middle" font-size="9" fill="#8b5cf6" font-weight="600">Ad</text>
+                        <text x="220" y="490" text-anchor="middle" font-size="9" fill="#9ca3af">Profile</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="problem">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">The Problem</div>
+                <h2>Advertising's Broken Model</h2>
+                <p>Publishers rely on ads that nobody clicks. Advertisers get worse results every year. Everyone loses.</p>
+            </div>
+            <div class="card-grid">
+                <div class="card scroll-reveal">
+                    <div class="card-icon">👁️</div>
+                    <h3>Banner Blindness</h3>
+                    <p>70% of users never see traditional banner ads. They've become invisible. Users scroll past, ignore, and block them.</p>
+                </div>
+                <div class="card scroll-reveal">
+                    <div class="card-icon">📉</div>
+                    <h3>Rock Bottom eCPMs</h3>
+                    <p>Standard banner CPMs have collapsed to $0.50-$2.00. Publishers can't sustain business on those rates.</p>
+                </div>
+                <div class="card scroll-reveal">
+                    <div class="card-icon">💥</div>
+                    <h3>Intrusive Interstitials</h3>
+                    <p>Interstitials get clicks but destroy user experience. Full-screen takeovers breed resentment and app uninstalls.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">The Mechanics</div>
+                <h2>How SkratchAds&#8482; Works</h2>
+                <p>A voluntary, interactive scratch-off that converts because users choose to engage.</p>
+            </div>
+
+            <div class="steps-container">
+                <!-- Step 1 -->
+                <div class="step scroll-reveal">
+                    <div>
+                        <div class="step-number">1</div>
+                        <h3>Ad Appears</h3>
+                        <p>A golden scratch-off banner appears in feed or banner slot. The user sees "Scratch to Win" and a notification dot. Curiosity triggers engagement.</p>
+                    </div>
+                    <div class="step-phone">
+                        <svg width="220" height="320" viewBox="0 0 220 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="bannerGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Phone background -->
+                            <rect x="15" y="20" width="190" height="300" rx="18" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5"/>
+                            <!-- Status bar -->
+                            <rect x="15" y="20" width="190" height="24" rx="12" fill="white"/>
+                            <text x="110" y="35" text-anchor="middle" font-size="8" fill="#0f172a" font-weight="600">9:41</text>
+                            <!-- Content above -->
+                            <rect x="22" y="50" width="176" height="50" rx="6" fill="#e0e7ff" opacity="0.4"/>
+                            <!-- Scratch banner -->
+                            <rect x="22" y="110" width="176" height="70" rx="6" fill="url(#bannerGrad1)"/>
+                            <text x="110" y="135" text-anchor="middle" font-size="12" fill="white" font-weight="700">Scratch to Win</text>
+                            <text x="110" y="160" text-anchor="middle" font-size="22">🎰</text>
+                            <!-- Notification dot -->
+                            <circle cx="200" cy="30" r="6" fill="#ef4444"/>
+                            <!-- Content below -->
+                            <rect x="22" y="190" width="176" height="110" rx="6" fill="#f3f4f6"/>
+                            <rect x="30" y="205" width="160" height="10" rx="2" fill="#e5e7eb"/>
+                            <rect x="30" y="220" width="160" height="8" rx="2" fill="#e5e7eb"/>
+                            <rect x="30" y="235" width="140" height="8" rx="2" fill="#e5e7eb"/>
+                            <rect x="30" y="260" width="160" height="10" rx="2" fill="#e5e7eb"/>
+                            <rect x="30" y="275" width="160" height="8" rx="2" fill="#e5e7eb"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step scroll-reveal">
+                    <div class="step-phone">
+                        <svg width="220" height="320" viewBox="0 0 220 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="bannerGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Phone background -->
+                            <rect x="15" y="20" width="190" height="300" rx="18" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5"/>
+                            <!-- Status bar -->
+                            <rect x="15" y="20" width="190" height="24" rx="12" fill="white"/>
+                            <text x="110" y="35" text-anchor="middle" font-size="8" fill="#0f172a" font-weight="600">9:41</text>
+                            <!-- Content above -->
+                            <rect x="22" y="50" width="176" height="50" rx="6" fill="#e0e7ff" opacity="0.4"/>
+                            <!-- Scratch banner with revealed parts -->
+                            <rect x="22" y="110" width="176" height="70" rx="6" fill="url(#bannerGrad2)"/>
+                            <text x="110" y="135" text-anchor="middle" font-size="12" fill="white" font-weight="700">Scratch to Win</text>
+                            <text x="110" y="160" text-anchor="middle" font-size="22">🎰</text>
+                            <!-- Scratch residue -->
+                            <ellipse cx="50" cy="120" rx="20" ry="18" fill="#9ca3af" opacity="0.65"/>
+                            <ellipse cx="140" cy="128" rx="22" ry="20" fill="#9ca3af" opacity="0.6"/>
+                            <ellipse cx="170" cy="155" rx="18" ry="22" fill="#9ca3af" opacity="0.62"/>
+                            <!-- Scratch motion lines -->
+                            <line x1="80" y1="145" x2="65" y2="140" stroke="#d4af37" stroke-width="1.5" opacity="0.7" stroke-linecap="round"/>
+                            <line x1="85" y1="150" x2="70" y2="148" stroke="#d4af37" stroke-width="1.5" opacity="0.7" stroke-linecap="round"/>
+                            <line x1="80" y1="158" x2="65" y2="165" stroke="#d4af37" stroke-width="1.5" opacity="0.7" stroke-linecap="round"/>
+                            <!-- Coin indicator -->
+                            <circle cx="200" cy="165" r="10" fill="#d4af37" stroke="white" stroke-width="1"/>
+                            <text x="200" y="170" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="700">C</text>
+                            <!-- Content below -->
+                            <rect x="22" y="190" width="176" height="110" rx="6" fill="#f3f4f6"/>
+                            <rect x="30" y="205" width="160" height="10" rx="2" fill="#e5e7eb"/>
+                            <rect x="30" y="220" width="160" height="8" rx="2" fill="#e5e7eb"/>
+                            <rect x="30" y="235" width="140" height="8" rx="2" fill="#e5e7eb"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="step-number">2</div>
+                        <h3>User Scratches</h3>
+                        <p>The user drags their finger across the banner. Gray scratch residue blobs reveal content underneath. The tactile action triggers dopamine and keeps them engaged.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step scroll-reveal">
+                    <div>
+                        <div class="step-number">3</div>
+                        <h3>Win Path</h3>
+                        <p>If they win, a celebration screen erupts: golden sunburst, trophy emoji, "YOU WON!" text, confetti dots, and a "Claim Now" button. Emotional peak drives conversion.</p>
+                    </div>
+                    <div class="step-phone">
+                        <svg width="220" height="320" viewBox="0 0 220 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="winGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Phone background -->
+                            <rect x="15" y="20" width="190" height="300" rx="18" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5"/>
+                            <!-- Status bar -->
+                            <rect x="15" y="20" width="190" height="24" rx="12" fill="white"/>
+                            <text x="110" y="35" text-anchor="middle" font-size="8" fill="#0f172a" font-weight="600">9:41</text>
+                            <!-- Win screen background -->
+                            <rect x="22" y="50" width="176" height="240" rx="8" fill="url(#winGrad)"/>
+                            <!-- Sunburst rays -->
+                            <line x1="110" y1="80" x2="110" y2="100" stroke="#fcd34d" stroke-width="2" opacity="0.8"/>
+                            <line x1="140" y1="100" x2="155" y2="115" stroke="#fcd34d" stroke-width="2" opacity="0.8"/>
+                            <line x1="140" y1="140" x2="160" y2="140" stroke="#fcd34d" stroke-width="2" opacity="0.8"/>
+                            <line x1="80" y1="100" x2="65" y2="115" stroke="#fcd34d" stroke-width="2" opacity="0.8"/>
+                            <line x1="80" y1="140" x2="60" y2="140" stroke="#fcd34d" stroke-width="2" opacity="0.8"/>
+                            <!-- Trophy -->
+                            <text x="110" y="130" text-anchor="middle" font-size="28">🏆</text>
+                            <!-- YOU WON text -->
+                            <text x="110" y="165" text-anchor="middle" font-size="16" fill="white" font-weight="700">YOU WON!</text>
+                            <!-- Confetti dots -->
+                            <circle cx="50" cy="120" r="3" fill="#fcd34d" opacity="0.7"/>
+                            <circle cx="170" cy="135" r="3" fill="#fcd34d" opacity="0.7"/>
+                            <circle cx="45" cy="180" r="3" fill="#fcd34d" opacity="0.7"/>
+                            <circle cx="175" cy="165" r="3" fill="#fcd34d" opacity="0.7"/>
+                            <circle cx="60" cy="220" r="3" fill="#fcd34d" opacity="0.7"/>
+                            <circle cx="160" cy="210" r="3" fill="#fcd34d" opacity="0.7"/>
+                            <!-- Claim button -->
+                            <rect x="60" y="240" width="100" height="30" rx="6" fill="white"/>
+                            <text x="110" y="260" text-anchor="middle" font-size="11" fill="#d97706" font-weight="700">Claim Now</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step scroll-reveal">
+                    <div class="step-phone">
+                        <svg width="220" height="320" viewBox="0 0 220 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="loseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#334155;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Phone background -->
+                            <rect x="15" y="20" width="190" height="300" rx="18" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5"/>
+                            <!-- Status bar -->
+                            <rect x="15" y="20" width="190" height="24" rx="12" fill="white"/>
+                            <text x="110" y="35" text-anchor="middle" font-size="8" fill="#0f172a" font-weight="600">9:41</text>
+                            <!-- Lose screen background -->
+                            <rect x="22" y="50" width="176" height="240" rx="8" fill="url(#loseGrad)"/>
+                            <!-- Star field -->
+                            <circle cx="50" cy="80" r="1.5" fill="#8b5cf6" opacity="0.6"/>
+                            <circle cx="100" cy="70" r="1.5" fill="#8b5cf6" opacity="0.5"/>
+                            <circle cx="170" cy="85" r="1.5" fill="#8b5cf6" opacity="0.6"/>
+                            <circle cx="60" cy="140" r="1.5" fill="#8b5cf6" opacity="0.5"/>
+                            <circle cx="160" cy="150" r="1.5" fill="#8b5cf6" opacity="0.6"/>
+                            <circle cx="80" cy="220" r="1.5" fill="#8b5cf6" opacity="0.5"/>
+                            <!-- Better Luck text -->
+                            <text x="110" y="140" text-anchor="middle" font-size="14" fill="#cbd5e1" font-weight="700">Better Luck</text>
+                            <text x="110" y="160" text-anchor="middle" font-size="14" fill="#cbd5e1" font-weight="700">Next Time!</text>
+                            <!-- Faded LOSE watermark -->
+                            <text x="110" y="190" text-anchor="middle" font-size="24" fill="#475569" font-weight="700" opacity="0.3">LOSE</text>
+                            <!-- Brand message pill -->
+                            <rect x="50" y="215" width="120" height="28" rx="14" fill="rgba(255, 255, 255, 0.1)" stroke="#8b5cf6" stroke-width="1"/>
+                            <text x="110" y="232" text-anchor="middle" font-size="10" fill="#a78bfa" font-weight="600">Brand Message Here</text>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="step-number">4</div>
+                        <h3>Lose Path</h3>
+                        <p>No win? A premium dark screen with star field shows "Better Luck Next Time" and a faded LOSE watermark. The brand message appears in a subtle pill. Still engaging, never intrusive.</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="step scroll-reveal">
+                    <div>
+                        <div class="step-number">5</div>
+                        <h3>Redeem</h3>
+                        <p>Winners land on the redemption screen. Trophy, "Prize Unlocked", warm golden background, email input, "Redeem Now" button. Email capture. Campaign complete.</p>
+                    </div>
+                    <div class="step-phone">
+                        <svg width="220" height="320" viewBox="0 0 220 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="redeemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#fcd34d;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Phone background -->
+                            <rect x="15" y="20" width="190" height="300" rx="18" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5"/>
+                            <!-- Status bar -->
+                            <rect x="15" y="20" width="190" height="24" rx="12" fill="white"/>
+                            <text x="110" y="35" text-anchor="middle" font-size="8" fill="#0f172a" font-weight="600">9:41</text>
+                            <!-- Redeem screen background -->
+                            <rect x="22" y="50" width="176" height="240" rx="8" fill="url(#redeemGrad)"/>
+                            <!-- Trophy -->
+                            <text x="110" y="100" text-anchor="middle" font-size="32">🏆</text>
+                            <!-- Prize Unlocked text -->
+                            <text x="110" y="135" text-anchor="middle" font-size="14" fill="#78350f" font-weight="700">Prize Unlocked!</text>
+                            <!-- Email input -->
+                            <rect x="40" y="155" width="140" height="32" rx="6" fill="white" stroke="#d97706" stroke-width="1"/>
+                            <text x="50" y="178" font-size="10" fill="#9ca3af">your@email.com</text>
+                            <!-- Redeem button -->
+                            <rect x="60" y="215" width="100" height="30" rx="6" fill="#d97706"/>
+                            <text x="110" y="235" text-anchor="middle" font-size="11" fill="white" font-weight="700">Redeem Now</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dual Conversion -->
+    <section id="dual-conversion">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Two Paths</div>
+                <h2>100% Engagement for Both Outcomes</h2>
+                <p>Winners convert via email. Losers see brand messages. No dead ends.</p>
+            </div>
+
+            <div class="conversion-grid">
+                <div class="conversion-card win">
+                    <div class="conversion-emoji">🎉</div>
+                    <h3>Win Path</h3>
+                    <p>Golden celebration screen with "YOU WON!" Drives winners to email capture and prize redemption. High-value user action with proof of engagement.</p>
+                </div>
+                <div class="conversion-card lose">
+                    <div class="conversion-emoji">⭐</div>
+                    <h3>Lose Path</h3>
+                    <p>Premium dark screen (slate gradient, star field) displays brand message. 70-80% of users see this. Engage lose traffic with advertiser content.</p>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-chip">
+                    <div class="metric-number">~20%</div>
+                    <div class="metric-label">Scratch-Through Rate</div>
+                </div>
+                <div class="metric-chip">
+                    <div class="metric-number">10x</div>
+                    <div class="metric-label">Click Uplift vs Banner</div>
+                </div>
+                <div class="metric-chip">
+                    <div class="metric-number">$8-20</div>
+                    <div class="metric-label">eCPM Range</div>
+                </div>
+                <div class="metric-chip">
+                    <div class="metric-number">100%</div>
+                    <div class="metric-label">Opt-In Engagement</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Row -->
+    <section id="stats">
+        <div class="container">
+            <div class="stat-card">
+                <div class="stat-value">10x</div>
+                <div class="stat-label">Higher CTR vs Banner Ads</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">$8-20</div>
+                <div class="stat-label">eCPM Premium</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">70%</div>
+                <div class="stat-label">Publisher Revenue Share</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">24hrs</div>
+                <div class="stat-label">Campaign Lifetime</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Engagement Metrics -->
+    <section id="engagement">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">The Results</div>
+                <h2>Proven Engagement Metrics</h2>
+                <p>Real numbers from real campaigns. This is what voluntary engagement looks like.</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card scroll-reveal">
+                    <div class="card-icon">🎯</div>
+                    <h3>~20% Scratch-Through Rate</h3>
+                    <p>About 1 in 5 users scratch the banner. Compare this to 0.2-0.5% for standard ads. Curiosity is a powerful motivator.</p>
+                </div>
+                <div class="card scroll-reveal">
+                    <div class="card-icon">📈</div>
+                    <h3>10x CTR Uplift</h3>
+                    <p>Click-through rates jump to 2-5% on win path alone. Compared to 0.1-0.3% for banners, this is transformational.</p>
+                </div>
+                <div class="card scroll-reveal">
+                    <div class="card-icon">💰</div>
+                    <h3>$8-20 eCPM</h3>
+                    <p>Premium pricing model. Advertisers pay for real engagement. Publishers earn 2-10x more per impression.</p>
+                </div>
+                <div class="card scroll-reveal">
+                    <div class="card-icon">🌟</div>
+                    <h3>5-10x Lose Path Value</h3>
+                    <p>Lose path brand messages are seen by 70-80% of scratchers. High viewability. Lose traffic becomes valuable ad inventory.</p>
+                </div>
+                <div class="card scroll-reveal">
+                    <div class="card-icon">✅</div>
+                    <h3>100% Opt-In Engagement</h3>
+                    <p>Users choose to scratch. Not forced. Not auto-play. Every interaction is genuine and measurable.</p>
+                </div>
+                <div class="card scroll-reveal">
+                    <div class="card-icon">⏱️</div>
+                    <h3>24-Hour Campaign Lifetime</h3>
+                    <p>Built-in campaign end date. Drives urgency. Creates natural refresh and new campaigns daily.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Available Formats -->
+    <section id="formats">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Product Roadmap</div>
+                <h2>Available Formats</h2>
+                <p>We ship what works. Gamified banner available now. More coming soon.</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="format-card scroll-reveal">
+                    <div class="format-badge live">Live Now</div>
+                    <h3>Gamified Banner</h3>
+                    <p>The flagship unit. Scratch-off banner that fits in standard IAB slots (728x90, 320x50, 300x250). Integrates via native SDK and API. Proven to drive 10x CTR at $8-20 eCPM.</p>
+                </div>
+                <div class="format-card scroll-reveal">
+                    <div class="format-badge coming">Coming 2026</div>
+                    <h3>Native SDK</h3>
+                    <p>Deep app integration. Custom theming. Advanced win/lose logic and attribution. Publishers get one-line integration. Developers build the future here.</p>
+                </div>
+                <div class="format-card scroll-reveal">
+                    <div class="format-badge roadmap">Roadmap</div>
+                    <h3>Interstitial & RTB</h3>
+                    <p>Programmatic scratch-off interstitials. RTB-ready units. Broader inventory access. Planned for late 2026 and beyond.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publishers & Advertisers -->
+    <section id="publishers-advertisers">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Two-Sided Marketplace</div>
+                <h2>Publishers & Advertisers</h2>
+            </div>
+
+            <div class="duo-grid">
+                <div class="duo-card scroll-reveal" id="publishers">
+                    <h3>For Publishers</h3>
+                    <ul>
+                        <li>Replace broken banner inventory with $8-20 eCPM units</li>
+                        <li>Earn 70% revenue share on every scratch and win</li>
+                        <li>One-line SDK integration or simple API</li>
+                        <li>Real-time performance dashboard and reporting</li>
+                        <li>Full creative control and brand safety</li>
+                        <li>Boost ARPU with high-margin ad tier</li>
+                    </ul>
+                </div>
+                <div class="duo-card scroll-reveal" id="advertisers">
+                    <h3>For Advertisers</h3>
+                    <ul>
+                        <li>10x higher CTR than standard banners</li>
+                        <li>Cost-per-scratch pricing model from day one</li>
+                        <li>Gamified engagement drives brand recall</li>
+                        <li>Verified email capture on winners</li>
+                        <li>Lose path brand message to 70-80% of audience</li>
+                        <li>24-hour campaign limit drives urgency</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campaign Examples -->
+    <section id="examples">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">In Practice</div>
+                <h2>Campaign Examples</h2>
+                <p>Real use cases across verticals.</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="example-card scroll-reveal">
+                    <div class="example-icon">🥤</div>
+                    <h3>Beverage Brand Campaign</h3>
+                    <p>Energy drink launches limited flavor. Scratch-off drives 2.1% CTR. Win: free sample claim (email capture). Lose: new product video brand message. 15K scratches, 300+ emails, $18 eCPM.</p>
+                    <div class="example-metrics">
+                        <span class="example-metric">2.1% CTR</span>
+                        <span class="example-metric">300+ Emails</span>
+                        <span class="example-metric">$18 eCPM</span>
+                    </div>
+                </div>
+                <div class="example-card scroll-reveal">
+                    <div class="example-icon">🎮</div>
+                    <h3>Gaming Studio Campaign</h3>
+                    <p>Mobile game publisher drives app installs. Scratch-off win unlocks exclusive in-game item claim. Lose shows trailer. 4.8% scratch-through, 950 installs from 20K impressions, $15 eCPM.</p>
+                    <div class="example-metrics">
+                        <span class="example-metric">4.8% STR</span>
+                        <span class="example-metric">950 Installs</span>
+                        <span class="example-metric">$15 eCPM</span>
+                    </div>
+                </div>
+                <div class="example-card scroll-reveal">
+                    <div class="example-icon">🎯</div>
+                    <h3>Win Moment Activation</h3>
+                    <p>CPG brand uses win path to celebrate customer purchase. Scratch-off in app feed captures post-purchase email. Lose: brand story content. High engagement, 20% scratch rate, $20 eCPM.</p>
+                    <div class="example-metrics">
+                        <span class="example-metric">20% STR</span>
+                        <span class="example-metric">85% Conversion</span>
+                        <span class="example-metric">$20 eCPM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section id="bottom-cta">
+        <div class="container">
+            <h2>Ready to Engage Your Audience?</h2>
+            <p>SkratchAds&#8482; works. Publishers earn more. Advertisers get real engagement. Let's build the future of mobile advertising together.</p>
+            <div class="bottom-buttons">
+                <button class="btn-primary">Launch a Campaign</button>
+                <button class="btn-secondary">Download Media Kit</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footnote -->
+    <section id="footnote">
+        <div class="container">
+            <div class="footnote">
+                <strong>Near-Miss Effect:</strong> SkratchAds&#8482; leverages the near-miss psychological principle. Users who almost win feel compelled to try again, returning for repeat engagement. This drives daily active users, session length, and lifetime value. The 24-hour campaign reset ensures fresh opportunities and habit formation.
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>SkratchAds&#8482; - Sales One-Pager v3.1 - March 2026</p>
+    </footer>
+
+    <script>
+        // Sticky navbar effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = '0s';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Button click handlers
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Contact us at hello@skratchads.com to get started!');
+            });
+        });
+    </script>
+</body>
+</html>

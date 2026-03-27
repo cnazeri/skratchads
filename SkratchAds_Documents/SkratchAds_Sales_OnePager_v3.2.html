@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkratchAds&#8482; - Mobile Ads That Feel Like Winning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---- Hero ---- */
+    .hero { position: relative; overflow: hidden; background: linear-gradient(135deg, #1e293b 0%, #4338ca 50%, #8b5cf6 100%); color: #fff; }
+    .hero-blur { position: absolute; inset: 0; opacity: 0.15; pointer-events: none; }
+    .hero-blur span { position: absolute; border-radius: 9999px; filter: blur(80px); }
+    .hero-blur .b1 { top: 80px; left: 80px; width: 288px; height: 288px; background: #c4b5fd; }
+    .hero-blur .b2 { bottom: 40px; right: 40px; width: 384px; height: 384px; background: #a5b4fc; }
+    .hero-blur .b3 { top: 50%; left: 50%; width: 256px; height: 256px; background: #fde68a; }
+    .hero-inner { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; padding: 96px 24px; max-width: 1200px; margin: 0 auto; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 9999px; padding: 6px 16px; font-size: 13px; font-weight: 700; color: #ddd6fe; margin-bottom: 32px; }
+    .hero h1 { font-size: 48px; font-weight: 800; line-height: 1.15; margin-bottom: 32px; }
+    .hero h1 .gold { color: #fcd34d; }
+    .hero h1 .green { color: #6ee7b7; }
+    .hero-desc { font-size: 17px; color: #ede9fe; line-height: 1.7; margin-bottom: 40px; max-width: 520px; }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+    .hero-pills span { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 9999px; padding: 6px 14px; font-size: 13px; font-weight: 600; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #4338ca; font-weight: 700; padding: 14px 32px; border-radius: 12px; font-size: 15px; transition: background 0.2s; box-shadow: 0 4px 24px rgba(0,0,0,0.15); }
+    .btn-primary:hover { background: #ede9fe; }
+    .btn-primary svg { width: 16px; height: 16px; }
+
+    /* Phone mockup - iPhone 15 proportions (393x852 ~1:2.16) */
+    .phone-wrap { display: flex; justify-content: center; align-items: center; }
+    .phone { width: 320px; height: 692px; background: #fff; border-radius: 48px; border: 6px solid #334155; box-shadow: 0 25px 60px rgba(0,0,0,0.25); overflow: hidden; display: flex; flex-direction: column; }
+    .phone-notch-area { position: relative; background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+    .phone-notch { width: 128px; height: 32px; background: #000; border-radius: 0 0 16px 16px; margin: 0 auto; }
+    .phone-header { background: linear-gradient(135deg, #8b5cf6, #a78bfa); padding: 24px 32px 48px; text-align: center; }
+    .phone-header p { color: #fff; font-weight: 700; font-size: 24px; font-style: italic; letter-spacing: 0.5px; }
+    .phone-body { background: #fff; padding: 40px 28px 40px; flex: 1; }
+    .phone-btn { background: linear-gradient(90deg, #a78bfa, #f59e0b, #f97316); border-radius: 9999px; padding: 16px 32px; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); margin-bottom: 32px; }
+    .phone-btn svg { width: 24px; height: 24px; color: #fff; }
+    .phone-btn span { color: #fff; font-weight: 700; font-size: 18px; }
+    .phone-body-text { color: #64748b; font-size: 16px; line-height: 1.65; }
+    .phone-home-bar { background: #fff; padding: 8px 0 16px; }
+    .phone-home-indicator { width: 128px; height: 6px; background: #d1d5db; border-radius: 9999px; margin: 0 auto; }
+
+    /* ---- Section spacing ---- */
+    .section { padding: 80px 0; }
+    .section-white { background: #fff; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
+
+    /* Section headers */
+    .sec-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 12px; border-radius: 9999px; margin-bottom: 16px; }
+    .sec-badge.red { color: #ef4444; background: #fef2f2; }
+    .sec-badge.violet { color: #8b5cf6; background: #f5f3ff; }
+    .sec-badge.green { color: #059669; background: #ecfdf5; }
+    .sec-badge.amber { color: #d97706; background: #fffbeb; }
+    .sec-title { font-size: 30px; font-weight: 800; color: #0f172a; margin-bottom: 16px; }
+    .sec-desc { color: #64748b; max-width: 640px; line-height: 1.7; }
+    .sec-header { margin-bottom: 48px; }
+
+    /* ---- Cards ---- */
+    .card { background: #fff; border-radius: 16px; border: 1px solid #f1f5f9; padding: 32px; transition: box-shadow 0.2s; }
+    .card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+    .card-icon { font-size: 28px; margin-bottom: 16px; }
+    .card h3 { font-size: 17px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
+    .card p { font-size: 14px; color: #64748b; line-height: 1.65; }
+
+    /* Grid helpers */
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px; }
+
+    /* ---- Steps ---- */
+    .step { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .step-num { width: 48px; height: 48px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: #fff; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+    .step h4 { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+    .step p { font-size: 12px; color: #64748b; line-height: 1.6; }
+
+    /* ---- Dual conversion ---- */
+    .dual-card { border-radius: 16px; padding: 40px; color: #fff; }
+    .dual-card.win { background: linear-gradient(135deg, #059669, #10b981); }
+    .dual-card.lose { background: linear-gradient(135deg, #334155, #1e293b); }
+    .dual-card .icon { font-size: 36px; margin-bottom: 20px; }
+    .dual-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
+    .dual-card > p { line-height: 1.7; margin-bottom: 24px; }
+    .dual-card.win > p { color: #d1fae5; }
+    .dual-card.lose > p { color: #cbd5e1; }
+    .dual-list { list-style: none; }
+    .dual-list li { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding-top: 12px; }
+    .dual-card.win .dual-list li { color: #ecfdf5; border-top: 1px solid rgba(52,211,153,0.3); }
+    .dual-card.lose .dual-list li { color: #e2e8f0; border-top: 1px solid rgba(71,85,105,0.5); }
+    .dual-list li + li { margin-top: 12px; }
+    .dual-list .arrow { opacity: 0.7; }
+
+    /* Metrics row */
+    .metric-mini { background: #fff; border-radius: 12px; border: 1px solid #f1f5f9; padding: 24px; }
+    .metric-mini .label { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+    .metric-mini .label.green { color: #059669; }
+    .metric-mini .label.amber { color: #d97706; }
+    .metric-mini .label.violet { color: #8b5cf6; }
+    .metric-mini .label.slate { color: #475569; }
+    .metric-mini p { font-size: 12px; color: #64748b; line-height: 1.6; }
+
+    /* Stats row */
+    .stat { text-align: center; padding: 24px 0; }
+    .stat .num { font-size: 36px; font-weight: 800; margin-bottom: 8px; }
+    .stat .num.violet { color: #8b5cf6; }
+    .stat .num.green { color: #10b981; }
+    .stat .num.amber { color: #f59e0b; }
+    .stat .num.slate { color: #64748b; }
+    .stat p { font-size: 14px; color: #64748b; font-weight: 500; }
+
+    /* Engagement cards */
+    .eng-card { background: #fff; border-radius: 16px; border: 1px solid #f1f5f9; padding: 32px; transition: box-shadow 0.2s; }
+    .eng-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+    .eng-big { font-size: 28px; font-weight: 800; color: #8b5cf6; margin-bottom: 8px; }
+    .eng-name { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
+    .eng-desc { font-size: 12px; color: #64748b; line-height: 1.6; margin-bottom: 16px; }
+    .eng-vs { display: inline-block; background: #f1f5f9; border-radius: 9999px; padding: 4px 12px; font-size: 12px; font-weight: 600; color: #64748b; }
+
+    /* Format cards */
+    .fmt-card { background: #f8fafc; border-radius: 16px; border: 1px solid #f1f5f9; padding: 32px; transition: box-shadow 0.2s; }
+    .fmt-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+    .fmt-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 12px; border-radius: 9999px; margin-bottom: 20px; }
+    .fmt-badge.live { color: #059669; background: #ecfdf5; }
+    .fmt-badge.coming { color: #d97706; background: #fffbeb; }
+    .fmt-badge.road { color: #64748b; background: #f1f5f9; }
+    .fmt-card .icon { font-size: 28px; margin-bottom: 16px; }
+    .fmt-card h3 { font-size: 17px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
+    .fmt-card > p { font-size: 14px; color: #64748b; line-height: 1.65; margin-bottom: 20px; }
+    .fmt-list { list-style: none; }
+    .fmt-list li { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #334155; }
+    .fmt-list li + li { margin-top: 10px; }
+    .fmt-list .arrow { font-size: 13px; }
+    .fmt-list .arrow.green { color: #10b981; }
+    .fmt-list .arrow.amber { color: #f59e0b; }
+    .fmt-list .arrow.gray { color: #94a3b8; }
+
+    /* Side-by-side cards */
+    .side-card { background: #fff; border-radius: 16px; border: 1px solid #f1f5f9; padding: 40px; }
+    .side-card .icon { font-size: 28px; margin-bottom: 16px; }
+    .side-card h3 { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+    .side-card .sub { font-size: 14px; color: #64748b; margin-bottom: 20px; }
+    .side-card .big-num { font-size: 36px; font-weight: 800; margin-bottom: 4px; }
+    .side-card .big-num.violet { color: #8b5cf6; }
+    .side-card .big-num.green { color: #10b981; }
+    .side-card .big-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #94a3b8; margin-bottom: 24px; }
+    .side-list { list-style: none; }
+    .side-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; font-weight: 500; color: #334155; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9; }
+    .side-list li:last-child { padding-bottom: 0; border-bottom: none; }
+    .side-list li + li { padding-top: 16px; }
+    .side-list .li-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+
+    /* Campaign cards */
+    .camp-card { background: #f8fafc; border-radius: 16px; border: 1px solid #f1f5f9; overflow: hidden; transition: box-shadow 0.2s; }
+    .camp-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+    .camp-img { height: 176px; display: flex; align-items: center; justify-content: center; }
+    .camp-img span { font-size: 48px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); }
+    .camp-body { padding: 24px; }
+    .camp-body h3 { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+    .camp-body p { font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 16px; }
+    .camp-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 9999px; }
+
+    /* CTA */
+    .cta-wrap { background: linear-gradient(135deg, #334155, #1e293b); border-radius: 16px; padding: 56px; text-align: center; position: relative; overflow: hidden; }
+    .cta-wrap .blob1 { position: absolute; top: -80px; right: -80px; width: 288px; height: 288px; background: rgba(139,92,246,0.15); border-radius: 9999px; }
+    .cta-wrap .blob2 { position: absolute; bottom: -60px; left: -60px; width: 224px; height: 224px; background: rgba(16,185,129,0.1); border-radius: 9999px; }
+    .cta-inner { position: relative; z-index: 2; }
+    .cta-inner h2 { font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 20px; }
+    .cta-inner > p { color: #94a3b8; max-width: 520px; margin: 0 auto 40px; line-height: 1.7; }
+    .cta-inner .btn-white { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #1e293b; font-weight: 700; padding: 14px 32px; border-radius: 12px; font-size: 15px; transition: background 0.2s; box-shadow: 0 4px 24px rgba(0,0,0,0.15); }
+    .cta-inner .btn-white:hover { background: #ede9fe; }
+    .cta-inner .btn-white svg { width: 16px; height: 16px; }
+    .cta-links { margin-top: 32px; font-size: 14px; color: #64748b; }
+    .cta-links a { color: #cbd5e1; transition: color 0.2s; }
+    .cta-links a:hover { color: #fff; }
+
+    /* Footnote */
+    .footnote { max-width: 1200px; margin: 0 auto; padding: 0 24px 48px; }
+    .footnote p { font-size: 12px; color: #94a3b8; line-height: 1.6; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+    .footnote strong { color: #64748b; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .phone-wrap { display: none; }
+      .hero h1 { font-size: 36px; }
+    }
+    @media (max-width: 768px) {
+      .grid-3, .grid-5 { grid-template-columns: 1fr 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: 1fr 1fr; }
+      .sec-title { font-size: 24px; }
+      .hero h1 { font-size: 30px; }
+      .hero-inner { padding: 64px 24px; }
+    }
+    @media (max-width: 480px) {
+      .grid-3, .grid-5, .grid-4 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-blur">
+    <span class="b1"></span>
+    <span class="b2"></span>
+    <span class="b3"></span>
+  </div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">The Ad People Actually Want to Play</div>
+      <h1>Mobile Ads That Feel Like <span class="gold">Winning</span>, Not <span class="green">Losing</span></h1>
+      <p class="hero-desc">SkratchAds&#8482; is the world's first voluntary scratch-off ad format. Users scratch for a chance to win real prizes. Publishers earn 10x more. Advertisers get qualified, opt-in leads. Privacy-compliant by design, zero user tracking required.</p>
+      <div class="hero-pills">
+        <span>Cost-Per-Scratch</span>
+        <span>$8-20 eCPM</span>
+        <span>~20% Scratch-Through Rate</span>
+        <span>Real Prizes</span>
+        <span>Privacy-First</span>
+      </div>
+      <a href="mailto:hello@skratchads.com?subject=Get%20Started%20with%20SkratchAds" class="btn-primary">
+        Get Started for Free
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+      </a>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch-area">
+          <div class="phone-notch"></div>
+        </div>
+        <div class="phone-header">
+          <p>SkratchAds&#8482; Demo</p>
+        </div>
+        <div class="phone-body">
+          <div class="phone-btn">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
+            <span>Scratch to Win!</span>
+          </div>
+          <p class="phone-body-text">Tap the banner above to scratch and win real prizes or see brand messages.</p>
+        </div>
+        <div class="phone-home-bar">
+          <div class="phone-home-indicator"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- The Problem -->
+<section class="section">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-badge red">The Problem</span>
+      <h2 class="sec-title">Banner Ads Are Broken</h2>
+      <p class="sec-desc">Users ignore them. Publishers earn pennies. Advertisers waste budgets on impressions nobody sees.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon">&#x1F636;</div>
+        <h3>Banner Blindness</h3>
+        <p>Over 86% of users never look at standard banner ads. They're trained to ignore them. It's unconscious.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F4B8;</div>
+        <h3>Rock Bottom eCPMs</h3>
+        <p>Standard banners pay $0.50-$2 eCPM. Publishers are leaving 10x money on the table every single day.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F624;</div>
+        <h3>Intrusive Interstitials</h3>
+        <p>Pop-ups and full-screens destroy user experience and tank app store ratings. Nobody wins.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="section section-white">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-badge violet">The Solution</span>
+      <h2 class="sec-title">Scratch. Win. Repeat.</h2>
+      <p class="sec-desc">The world's first gamified banner, banner-sized, non-intrusive, and built around a mechanic users actually want to play. Every scratch holds the possibility of a real prize.</p>
+    </div>
+    <div class="grid-5">
+      <div class="step">
+        <div class="step-num" style="background:#8b5cf6;">1</div>
+        <h4>Ad Appears</h4>
+        <p>A polite, banner-sized gamified ad invites the user to scratch for a chance to win.</p>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#f59e0b;">2</div>
+        <h4>User Scratches</h4>
+        <p>A 3-5 second voluntary gesture. Users choose to scratch because a real prize is possible.</p>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#10b981;">3</div>
+        <h4>Win Path</h4>
+        <p>A real prize is revealed: gift cards, discounts, exclusive offers. The advertiser earns a warm lead.</p>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#334155;">4</div>
+        <h4>Lose Path</h4>
+        <p>Non-winners see a primed brand message. Near-miss effect delivers 5-10x CTR uplift.</p>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#8b5cf6;">5</div>
+        <h4>Redeem</h4>
+        <p>The user enters their email to claim their prize. A fully opted-in, qualified lead.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Dual Conversion -->
+<section class="section">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-badge green">Dual Conversion</span>
+      <h2 class="sec-title">Every Scratch Has Value</h2>
+      <p class="sec-desc">Users scratch for a real shot at winning, and that genuine motivation makes every outcome valuable for advertisers.</p>
+    </div>
+    <div class="grid-2">
+      <div class="dual-card win">
+        <div class="icon">&#x1F3C6;</div>
+        <h3>Win Path</h3>
+        <p>The user scratches and reveals a real prize. To claim it, they share their email. The advertiser receives a 100% opt-in lead who is genuinely excited.</p>
+        <ul class="dual-list">
+          <li><span class="arrow">&rarr;</span> Real email capture</li>
+          <li><span class="arrow">&rarr;</span> Self-selected warm audience</li>
+          <li><span class="arrow">&rarr;</span> Primed for purchase intent</li>
+        </ul>
+      </div>
+      <div class="dual-card lose">
+        <div class="icon">&#x2B50;</div>
+        <h3>Lose Path</h3>
+        <p>The user already scratched, so they're engaged. The near-miss effect triggers focused attention and 5-10x higher click intent on the brand reveal.</p>
+        <ul class="dual-list">
+          <li><span class="arrow">&rarr;</span> Near-miss effect drives primed click intent</li>
+          <li><span class="arrow">&rarr;</span> Zero banner blindness</li>
+          <li><span class="arrow">&rarr;</span> Highest-attention ad moment</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid-4" style="margin-top:32px;">
+      <div class="metric-mini">
+        <p class="label green">Scratch-Through Rate</p>
+        <p>% of users who scratch, a SkratchAds&#8482;-exclusive engagement signal</p>
+      </div>
+      <div class="metric-mini">
+        <p class="label amber">Win Rate</p>
+        <p>Configurable prize odds, fully controlled by the advertiser</p>
+      </div>
+      <div class="metric-mini">
+        <p class="label violet">Redemption Rate</p>
+        <p>Winners who submit email to claim, your true qualified lead metric</p>
+      </div>
+      <div class="metric-mini">
+        <p class="label slate">Lose Path Click Rate</p>
+        <p>Near-miss CTR on the brand reveal, unique and unmeasurable elsewhere</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="section section-white">
+  <div class="container">
+    <div class="grid-4">
+      <div class="stat">
+        <div class="num violet">10x</div>
+        <p>Higher CTR vs standard banners</p>
+      </div>
+      <div class="stat">
+        <div class="num green">$8-20</div>
+        <p>eCPM earned by publishers</p>
+      </div>
+      <div class="stat">
+        <div class="num amber">70%</div>
+        <p>Revenue share to publishers</p>
+      </div>
+      <div class="stat">
+        <div class="num slate">24 hrs</div>
+        <p>Campaign live, from signup to launch</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Engagement Metrics -->
+<section class="section">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-badge violet">Engagement Metrics</span>
+      <h2 class="sec-title">Numbers Standard Banners Can't Touch</h2>
+      <p class="sec-desc">Every metric SkratchAds&#8482; generates is a direct result of voluntary, active engagement. No passive impressions, no inflated counts. Privacy-compliant by design.</p>
+    </div>
+    <div class="grid-3">
+      <div class="eng-card">
+        <div class="eng-big">~20%</div>
+        <div class="eng-name">Scratch-Through Rate</div>
+        <p class="eng-desc">1 in 5 users who see the banner choose to scratch, completely voluntarily.</p>
+        <span class="eng-vs">vs. 0.56% standard banner CTR</span>
+      </div>
+      <div class="eng-card">
+        <div class="eng-big">10x</div>
+        <div class="eng-name">CTR Uplift</div>
+        <p class="eng-desc">Post-scratch click-through rate is 10x higher than a cold banner impression.</p>
+        <span class="eng-vs">vs. industry average 0.56%</span>
+      </div>
+      <div class="eng-card">
+        <div class="eng-big">$8-20</div>
+        <div class="eng-name">Publisher eCPM</div>
+        <p class="eng-desc">Target eCPM for US Tier 1 traffic, up to 13x what standard banners earn.</p>
+        <span class="eng-vs">vs. $0.50-$1.50 AdMob banner</span>
+      </div>
+      <div class="eng-card">
+        <div class="eng-big">5-10x</div>
+        <div class="eng-name">Lose Path CTR Uplift</div>
+        <p class="eng-desc">The near-miss effect keeps attention primed. Even non-winners click at higher rates.</p>
+        <span class="eng-vs">Zero wasted impressions</span>
+      </div>
+      <div class="eng-card">
+        <div class="eng-big">100%</div>
+        <div class="eng-name">Opt-In Lead Quality</div>
+        <p class="eng-desc">Every email captured on the win path is fully consent-based.</p>
+        <span class="eng-vs">vs. scraped or passive data</span>
+      </div>
+      <div class="eng-card">
+        <div class="eng-big">24 hrs</div>
+        <div class="eng-name">Time to Live</div>
+        <p class="eng-desc">From signup to your first live campaign. Integration is a single JS tag.</p>
+        <span class="eng-vs">vs. weeks for standard ad tech</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Available Formats -->
+<section class="section section-white">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-badge amber">Available Formats</span>
+      <h2 class="sec-title">One Mechanic. Multiple Placements.</h2>
+      <p class="sec-desc">The SkratchAds&#8482; scratch mechanic is built to fit any placement, from banner to full-screen to native. Start with what's live today, scale into what's coming.</p>
+    </div>
+    <div class="grid-3">
+      <div class="fmt-card">
+        <span class="fmt-badge live">Live Now</span>
+        <div class="icon">&#x1F4F2;</div>
+        <h3>Gamified Banner</h3>
+        <p>A banner-sized scratch ad. Non-intrusive, edge-anchored, fully voluntary. Drop-in replacement for AdMob banners.</p>
+        <ul class="fmt-list">
+          <li><span class="arrow green">&rarr;</span> Standard banner placement (320x50, 300x250)</li>
+          <li><span class="arrow green">&rarr;</span> JS tag integration, live in under 2 hours</li>
+          <li><span class="arrow green">&rarr;</span> iOS &amp; Android WebView compatible</li>
+        </ul>
+      </div>
+      <div class="fmt-card">
+        <span class="fmt-badge coming">Coming 2026</span>
+        <div class="icon">&#x1F4F1;</div>
+        <h3>Native SDK</h3>
+        <p>Full native iOS and Android SDKs for seamless integration into Swift and Kotlin apps. No WebView required.</p>
+        <ul class="fmt-list">
+          <li><span class="arrow amber">&rarr;</span> Swift (iOS) + Kotlin (Android) native SDKs</li>
+          <li><span class="arrow amber">&rarr;</span> AdMob mediation adapter</li>
+          <li><span class="arrow amber">&rarr;</span> ironSource &amp; MAX adapters (2027)</li>
+        </ul>
+      </div>
+      <div class="fmt-card">
+        <span class="fmt-badge road">Roadmap</span>
+        <div class="icon">&#x1F5A5;</div>
+        <h3>Interstitial &amp; RTB</h3>
+        <p>Full-screen scratch interstitial, plus programmatic access via real-time bidding for advertisers who want scale.</p>
+        <ul class="fmt-list">
+          <li><span class="arrow gray">&rarr;</span> Full-screen scratch interstitial format</li>
+          <li><span class="arrow gray">&rarr;</span> RTB auction access for advertisers (2027)</li>
+          <li><span class="arrow gray">&rarr;</span> Expanded geo targeting (US, UK, CA, AU)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- For Publishers & Advertisers -->
+<section class="section">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-badge violet">Built For Both Sides</span>
+      <h2 class="sec-title">Publishers Love It. Advertisers Need It.</h2>
+      <p class="sec-desc">The only format where both parties genuinely benefit, and users actually enjoy it.</p>
+    </div>
+    <div class="grid-2">
+      <div class="side-card">
+        <div class="icon">&#x1F4F1;</div>
+        <h3>For App Publishers</h3>
+        <p class="sub">Mobile app developers &amp; game studios</p>
+        <div class="big-num violet">$8-20</div>
+        <div class="big-label">eCPM, up to 10x standard banners</div>
+        <ul class="side-list">
+          <li>
+            <span class="li-icon" style="background:#f5f3ff;">&#x1F4E6;</span>
+            Drop-in JavaScript tag, live in under 2 hours
+          </li>
+          <li>
+            <span class="li-icon" style="background:#ecfdf5;">&#x1F91D;</span>
+            70% revenue share, highest in ad tech
+          </li>
+          <li>
+            <span class="li-icon" style="background:#fffbeb;">&#x1F60A;</span>
+            Zero UX damage, users engage willingly
+          </li>
+          <li>
+            <span class="li-icon" style="background:#f1f5f9;">&#x1F512;</span>
+            Privacy-compliant by design, zero tracking required
+          </li>
+        </ul>
+      </div>
+      <div class="side-card">
+        <div class="icon">&#x1F3AF;</div>
+        <h3>For Advertisers</h3>
+        <p class="sub">Brands running mobile campaigns</p>
+        <div class="big-num green">CPS</div>
+        <div class="big-label">Cost-Per-Scratch, pay only for engagement</div>
+        <ul class="side-list">
+          <li>
+            <span class="li-icon" style="background:#ecfdf5;">&#x1F4E7;</span>
+            100% opt-in email capture on the win path
+          </li>
+          <li>
+            <span class="li-icon" style="background:#f5f3ff;">&#x1F9E0;</span>
+            Brand impression on Lose Path, 5-10x CTR uplift
+          </li>
+          <li>
+            <span class="li-icon" style="background:#fffbeb;">&#x1F381;</span>
+            Real prizes: gift cards, discounts, exclusive offers
+          </li>
+          <li>
+            <span class="li-icon" style="background:#f1f5f9;">&#x1F680;</span>
+            Launch a campaign in 24 hours
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Campaign Examples -->
+<section class="section section-white">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-badge amber">Campaign Examples</span>
+      <h2 class="sec-title">A Format Built for Any Brand</h2>
+      <p class="sec-desc">The scratch mechanic fits any category. Here's what campaigns look like across verticals.</p>
+    </div>
+    <div class="grid-3">
+      <div class="camp-card">
+        <div class="camp-img" style="background:linear-gradient(135deg,#78350f,#b45309,#f59e0b);">
+          <span>&#x2615;</span>
+        </div>
+        <div class="camp-body">
+          <h3>Beverage Brand</h3>
+          <p>Scratch to win a free drink, a natural fit for any F&amp;B brand driving trial and capturing warm leads.</p>
+          <span class="camp-tag" style="color:#059669;background:#ecfdf5;">Win Path</span>
+        </div>
+      </div>
+      <div class="camp-card">
+        <div class="camp-img" style="background:linear-gradient(135deg,#4c1d95,#7c3aed,#a78bfa);">
+          <span>&#x1F3AE;</span>
+        </div>
+        <div class="camp-body">
+          <h3>Gaming Brand</h3>
+          <p>Scratch to win exclusive in-game rewards or merch, ideal for game launches and player re-engagement.</p>
+          <span class="camp-tag" style="color:#7c3aed;background:#f5f3ff;">Prize Campaign</span>
+        </div>
+      </div>
+      <div class="camp-card">
+        <div class="camp-img" style="background:linear-gradient(135deg,#064e3b,#059669,#34d399);">
+          <span>&#x1F389;</span>
+        </div>
+        <div class="camp-body">
+          <h3>The Win Moment</h3>
+          <p>The reveal is joyful, fully branded, and drives immediate action. A high-emotion touchpoint.</p>
+          <span class="camp-tag" style="color:#475569;background:#f1f5f9;">Lead Capture</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bottom CTA -->
+<section class="section">
+  <div class="container">
+    <div class="cta-wrap">
+      <div class="blob1"></div>
+      <div class="blob2"></div>
+      <div class="cta-inner">
+        <h2>Ready to 10x Your Ad Revenue?</h2>
+        <p>Join the publishers and brands already running SkratchAds&#8482;. Early access pricing: $1-3 CPS. No contracts. No commitments. Just real results.</p>
+        <a href="mailto:hello@skratchads.com?subject=Get%20Started%20with%20SkratchAds" class="btn-white">
+          Get Started for Free
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+        <div class="cta-links">
+          Questions? <a href="mailto:hello@skratchads.com">hello@skratchads.com</a> &middot; <a href="https://www.skratchads.com" target="_blank" rel="noopener noreferrer">www.skratchads.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Near-Miss Footnote -->
+<div class="footnote">
+  <p><strong>Near-Miss Effect:</strong> A psychological phenomenon in which an outcome that falls just short of a win produces heightened arousal and sustained attention comparable to a win itself. Because the user invested effort in the scratch, their focus and emotional engagement remain fully primed, making the subsequent brand impression significantly more impactful than a passive banner view.</p>
+</div>
+
+</body>
+</html>
