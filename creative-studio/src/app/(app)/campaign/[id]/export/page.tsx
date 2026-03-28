@@ -7,6 +7,7 @@ import JSZip from "jszip";
 import { supabase } from "@/lib/supabase";
 import type { Campaign } from "@/types";
 import CopyableId from "@/components/CopyableId";
+import { trackExportDownloaded } from "@/lib/analytics";
 
 type BannerState = "scratch" | "win" | "lose" | "redeem" | "brand";
 
@@ -292,6 +293,7 @@ export default function ExportPage() {
       link.click();
       document.body.removeChild(link);
       if (blobUrl.startsWith("blob:")) URL.revokeObjectURL(blobUrl);
+      trackExportDownloaded(campaignId, { type: "single_png" });
       setExportProgress((prev) => ({
         ...prev,
         [creative.id]: { ...prev[creative.id], [state.state_type]: "done" },
@@ -381,6 +383,7 @@ export default function ExportPage() {
       URL.revokeObjectURL(url);
 
       await supabase.from("campaigns").update({ status: "complete" }).eq("id", campaignId);
+      trackExportDownloaded(campaignId, { type: "zip", creative_count: creativesToExport.length });
       setSuccessMessage(true);
       setTimeout(() => setSuccessMessage(false), 5000);
     } catch (err) {

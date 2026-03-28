@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { trackCampaignCreated } from "@/lib/analytics";
 
 const INDUSTRIES = [
   "Food & Beverage",
@@ -197,6 +198,8 @@ export default function NewCampaignPage() {
         .single();
 
       if (error) throw error;
+
+      trackCampaignCreated(data.id, { industry: industries.join(", "), skip_research: skipResearch });
 
       if (skipResearch) {
         router.push(`/campaign/${data.id}/editor`);

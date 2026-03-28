@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import type { Campaign } from "@/types";
+import { trackResearchStarted, trackResearchCompleted } from "@/lib/analytics";
 
 interface TopicSentiment {
   topic: string;
@@ -205,6 +206,8 @@ export default function ResearchPage() {
 
       // giveaway is now stored inside campaign_brief, no separate column needed
 
+      const researchStart = Date.now();
+      trackResearchStarted(campaignId);
       const response = await fetch("/api/research", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -226,6 +229,7 @@ export default function ResearchPage() {
         .from("campaigns")
         .update({ research_data: JSON.stringify(data), status: "researching" })
         .eq("id", campaignId);
+      trackResearchCompleted(campaignId, Date.now() - researchStart);
     } catch (err) {
       console.error("Research failed:", err);
       setError("Failed to run research. Please try again.");

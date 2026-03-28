@@ -11,6 +11,7 @@ import { generateBannerVariations } from "@/lib/nanoBanana";
 import type { GeneratedBanner } from "@/lib/nanoBanana";
 import { buildAllStatePrompts } from "@/lib/promptEngine";
 import type { PromptContext } from "@/lib/promptEngine";
+import { trackGenerationStarted, trackGenerationCompleted, trackGenerationFailed, trackDraftSaved, trackBannerStateSwitch } from "@/lib/analytics";
 
 type CanvasState = Record<BannerState, string | null>;
 
@@ -1277,7 +1278,9 @@ export default function EditorPage() {
     setShowAiPanel(true);
     setAiSuggestions([]);
 
+    const genStart = Date.now();
     try {
+      trackGenerationStarted(campaign.id, { state: currentTab, format: `${canvasWidth}x${canvasHeight}`, count: 3 });
       const ctx = buildPromptContext();
       const results = await generateBannerVariations({
         bannerState: currentTab,
@@ -1288,8 +1291,10 @@ export default function EditorPage() {
       });
 
       setAiSuggestions(results);
+      trackGenerationCompleted(campaign.id, { state: currentTab, format: `${canvasWidth}x${canvasHeight}`, count: 3, success_count: results.length, duration_ms: Date.now() - genStart });
     } catch (err) {
       console.error("AI generation failed:", err);
+      trackGenerationFailed(campaign.id, { state: currentTab, error: err instanceof Error ? err.message : "unknown" });
       showToast(err instanceof Error ? err.message : "Failed to generate AI suggestions. Check your API key configuration.", "error");
     } finally {
       setIsGeneratingAi(false);
@@ -1966,6 +1971,7 @@ export default function EditorPage() {
       if (!silent) {
         showToast("Draft saved successfully.", "success");
       }
+      if (campaign) trackDraftSaved(campaign.id);
       return true;
     } catch (err) {
       console.error("Failed to save draft:", err);
