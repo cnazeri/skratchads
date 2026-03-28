@@ -1275,8 +1275,16 @@ export default function EditorPage() {
     }
   };
 
-  // Add an AI-generated image to the canvas as background
+  // Add an AI-generated image to the canvas as background.
+  // Resets the current canvas state so the AI image overrides any unsaved work.
   const applyAiImageToCanvas = async (imageUrl: string) => {
+    // Clear existing canvas state for the current tab so the new image takes over
+    canvasStatesRef.current = { ...canvasStatesRef.current, [currentTab]: null };
+    setCanvasStates((prev) => ({ ...prev, [currentTab]: null }));
+    // Re-init the canvas fresh, then apply the new background
+    setCanvasRefreshKey((k) => k + 1);
+    // Small delay to let the canvas re-init before applying the image
+    await new Promise((r) => setTimeout(r, 100));
     await applyBackgroundToCanvas(imageUrl);
   };
 
@@ -1633,10 +1641,13 @@ export default function EditorPage() {
       return creativeId;
     };
 
-    // Save current tab state first
-    saveCurrentState();
-
-    // Clear preview cache for fresh generation
+    // Reset all canvas states and previews so the new generation starts fresh.
+    // This overrides any unsaved work across all 5 states.
+    const emptyStates: CanvasState = { scratch: null, win: null, lose: null, redeem: null, brand: null };
+    canvasStatesRef.current = emptyStates;
+    setCanvasStates(emptyStates);
+    setSavedBannerStates({ scratch: false, win: false, lose: false, redeem: false, brand: false });
+    setPreviewSnapshots({ scratch: null, win: null, lose: null, redeem: null, brand: null });
     previewCacheRef.current = { scratch: null, win: null, lose: null, redeem: null, brand: null };
 
     // Determine which formats to generate
