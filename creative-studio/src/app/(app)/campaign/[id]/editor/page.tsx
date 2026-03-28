@@ -122,6 +122,11 @@ export default function EditorPage() {
   const [selectedFormats, setSelectedFormats] = useState<string[]>(["Mobile Banner"]);
   const [generatingAllStates, setGeneratingAllStates] = useState(false);
   const [generatingStatesProgress, setGeneratingStatesProgress] = useState("");
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "info" } | null>(null);
+  const showToast = (message: string, type: "success" | "error" | "info" = "info") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 5000);
+  };
   const [researchPromptContext, setResearchPromptContext] = useState<{
     brandName?: string;
     industry?: string;
@@ -1285,7 +1290,7 @@ export default function EditorPage() {
       setAiSuggestions(results);
     } catch (err) {
       console.error("AI generation failed:", err);
-      alert("Failed to generate AI suggestions. Check your API key configuration.");
+      showToast(err instanceof Error ? err.message : "Failed to generate AI suggestions. Check your API key configuration.", "error");
     } finally {
       setIsGeneratingAi(false);
     }
@@ -1703,7 +1708,7 @@ export default function EditorPage() {
 
     } catch (err) {
       console.error("Generate all states failed:", err);
-      alert("Some states failed to generate. You can edit them manually.");
+      showToast("Some states failed to generate. You can edit them manually.", "error");
     } finally {
       setGeneratingAllStates(false);
       setGeneratingStatesProgress("");
@@ -1784,7 +1789,7 @@ export default function EditorPage() {
       setShowCampaignSettings(false);
     } catch (err) {
       console.error("Failed to save campaign settings:", err);
-      alert("Failed to save campaign settings");
+      showToast("Failed to save campaign settings.", "error");
     } finally {
       setIsSavingCampaign(false);
     }
@@ -1959,13 +1964,13 @@ export default function EditorPage() {
       setSavedBannerStates(newSaved);
 
       if (!silent) {
-        alert("Draft saved successfully");
+        showToast("Draft saved successfully.", "success");
       }
       return true;
     } catch (err) {
       console.error("Failed to save draft:", err);
       if (!silent) {
-        alert("Failed to save draft");
+        showToast("Failed to save draft.", "error");
       }
       return false;
     }
@@ -2084,7 +2089,7 @@ export default function EditorPage() {
       router.push(`/campaign/${campaignId}/variations`);
     } catch (err) {
       console.error("Failed to save and continue:", err);
-      alert("Failed to save");
+      showToast("Failed to save.", "error");
     } finally {
       setIsSaving(false);
     }
@@ -2105,6 +2110,21 @@ export default function EditorPage() {
 
   return (
     <div className="min-h-[calc(100vh-180px)] bg-slate-100">
+      {/* Toast notification */}
+      {toast && (
+        <div className={`fixed top-4 right-4 z-[200] max-w-sm px-4 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top-2 ${
+          toast.type === "error" ? "bg-red-50 text-red-700 border border-red-200" :
+          toast.type === "success" ? "bg-emerald-50 text-emerald-700 border border-emerald-200" :
+          "bg-blue-50 text-blue-700 border border-blue-200"
+        }`}>
+          {toast.type === "error" && <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>}
+          {toast.type === "success" && <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>}
+          <span>{toast.message}</span>
+          <button onClick={() => setToast(null)} className="ml-auto shrink-0 opacity-60 hover:opacity-100">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+      )}
       <div className="max-w-[1100px] mx-auto px-8 py-12">
         <div className="mb-8">
           <Link
@@ -2829,9 +2849,22 @@ export default function EditorPage() {
                 style={!generatingAllStates ? { background: "linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #8b5cf6 100%)" } : {}}
               >
                 {generatingAllStates ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                    Generating {generatingStatesProgress || "..."}
+                  <span className="flex flex-col items-center gap-1">
+                    <span className="flex items-center gap-2">
+                      <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                      Generating {generatingStatesProgress || "..."}
+                    </span>
+                    {generatingStatesProgress && (
+                      <span className="w-full bg-white/20 rounded-full h-1.5 overflow-hidden">
+                        <span
+                          className="bg-white h-full rounded-full transition-all duration-500"
+                          style={{ width: `${(() => {
+                            const match = generatingStatesProgress.match(/\((\d+)\/(\d+)\)/);
+                            return match ? (parseInt(match[1]) / parseInt(match[2])) * 100 : 10;
+                          })()}%` }}
+                        />
+                      </span>
+                    )}
                   </span>
                 ) : (
                   `Auto-Generate All States${selectedFormats.length > 1 ? ` (${selectedFormats.length} sizes)` : ""}`
@@ -2869,48 +2902,58 @@ export default function EditorPage() {
                 {isGeneratingAi ? (
                   <div className="flex flex-col items-center justify-center py-12">
                     <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-500 mb-4" />
-                    <span className="text-sm text-gray-600">Generating creatives with AI...</span>
+                    <span className="text-sm text-gray-600">Generating 3 variations for {BANNER_STATE_LABELS[currentTab]}...</span>
                     <span className="text-xs text-gray-400 mt-1">This may take 15-30 seconds</span>
+                    <div className="w-48 bg-gray-100 rounded-full h-1.5 mt-3 overflow-hidden">
+                      <div className="bg-purple-500 h-full rounded-full animate-pulse" style={{ width: "60%" }} />
+                    </div>
                   </div>
                 ) : aiSuggestions.length === 0 ? (
                   <p className="text-sm text-gray-500 text-center py-6">No suggestions generated yet. Click "AI Creative Suggestions" above to generate.</p>
                 ) : (
-                  <div className="space-y-4">
-                    {aiSuggestions.map((suggestion) => (
-                      <div key={suggestion.id} className="relative group rounded-lg border-2 border-gray-200 overflow-hidden hover:border-purple-500 transition-colors">
-                        <div
-                          className="w-full bg-gray-900 overflow-hidden"
-                          style={{ aspectRatio: `${canvasWidth}/${canvasHeight}` }}
-                        >
-                          <img
-                            src={suggestion.imageUrl}
-                            alt={`AI suggestion ${suggestion.variationLabel}`}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        {/* Hover overlay */}
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <button
+                  <div className={`grid gap-3 ${aiSuggestions.length >= 3 ? "grid-cols-3" : aiSuggestions.length === 2 ? "grid-cols-2" : "grid-cols-1"}`}>
+                    {aiSuggestions.map((suggestion) => {
+                      const variationHints: Record<string, string> = {
+                        A: "Control",
+                        B: "Copy Variant",
+                        C: "Visual Variant",
+                      };
+                      return (
+                        <div key={suggestion.id} className="relative group rounded-lg border-2 border-gray-200 overflow-hidden hover:border-purple-500 hover:shadow-md transition-all">
+                          <div
+                            className="w-full bg-gray-900 overflow-hidden cursor-pointer"
+                            style={{ aspectRatio: `${canvasWidth}/${canvasHeight}`, maxHeight: "200px" }}
                             onClick={() => applyAiImageToCanvas(suggestion.imageUrl)}
-                            className="px-5 py-2.5 bg-white text-gray-900 rounded-lg text-sm font-bold hover:bg-gray-100 transition-colors shadow-lg"
                           >
-                            Use as Background
-                          </button>
+                            <img
+                              src={suggestion.imageUrl}
+                              alt={`AI suggestion ${suggestion.variationLabel}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="px-3 py-2 bg-gray-50 border-t border-gray-200">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="text-sm font-semibold text-gray-700">
+                                  {suggestion.variationLabel}
+                                </span>
+                                {variationHints[suggestion.variationLabel] && (
+                                  <span className="text-xs text-gray-400 ml-1.5">
+                                    {variationHints[suggestion.variationLabel]}
+                                  </span>
+                                )}
+                              </div>
+                              <button
+                                onClick={() => applyAiImageToCanvas(suggestion.imageUrl)}
+                                className="text-xs font-semibold text-white bg-purple-500 hover:bg-purple-600 px-3 py-1 rounded-md transition-colors"
+                              >
+                                Apply
+                              </button>
+                            </div>
+                          </div>
                         </div>
-                        {/* Label bar */}
-                        <div className="px-3 py-2 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-                          <span className="text-sm font-semibold text-gray-700">
-                            Variation {suggestion.variationLabel}
-                          </span>
-                          <button
-                            onClick={() => applyAiImageToCanvas(suggestion.imageUrl)}
-                            className="text-xs font-semibold text-purple-600 hover:text-purple-800 transition-colors"
-                          >
-                            Apply
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
 
