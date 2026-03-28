@@ -78,6 +78,7 @@ export default function AnalyticsPage() {
   const [categories, setCategories] = useState<CategoryCount[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<"24h" | "7d" | "30d" | "all">("7d");
+  const [campaignNames, setCampaignNames] = useState<Record<string, string>>({});
 
   useEffect(() => {
     loadAnalytics();
@@ -112,6 +113,20 @@ export default function AnalyticsPage() {
 
       const allEvents = (data || []) as AnalyticsEvent[];
       setEvents(allEvents);
+
+      // Fetch campaign names for events that have campaign_id
+      const campaignIds = [...new Set(allEvents.map(e => e.campaign_id).filter(Boolean))] as string[];
+      if (campaignIds.length > 0) {
+        const { data: campaigns } = await supabase
+          .from("campaigns")
+          .select("id, name")
+          .in("id", campaignIds);
+        if (campaigns) {
+          const nameMap: Record<string, string> = {};
+          for (const c of campaigns) nameMap[c.id] = c.name;
+          setCampaignNames(nameMap);
+        }
+      }
 
       // Compute stats
       const genCompleted = allEvents.filter(e => e.event_name === "generation_completed");
@@ -309,27 +324,41 @@ export default function AnalyticsPage() {
               <h2 className="text-base font-bold text-gray-900 mb-4">Recent Activity</h2>
               <div className="space-y-1">
                 {events.slice(0, 30).map((event) => (
-                  <div key={event.id} className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div className={`w-2 h-2 rounded-full shrink-0 ${CATEGORY_COLORS[event.event_category] || "bg-gray-400"}`} />
-                    <span className="text-sm text-gray-700 flex-1">
-                      {EVENT_LABELS[event.event_name] || event.event_name}
-                    </span>
-                    {"state" in (event.properties || {}) && (
-                      <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                        {String(event.properties.state)}
-                      </span>
-                    )}
-                    {"format" in (event.properties || {}) && (
-                      <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                        {String(event.properties.format)}
-                      </span>
-                    )}
-                    {"duration_ms" in (event.properties || {}) && (
-                      <span className="text-xs text-gray-400">
-                        {formatDuration(Number(event.properties.duration_ms))}
-                      </span>
-                    )}
-                    <span className="text-xs text-gray-300 shrink-0 w-16 text-right">
+                  <div key={event.id} className="flex items-start gap-3 py-2.5 px-3 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className={`w-2 h-2 rounded-full shrink-0 mt-1.5 ${CATEGORY_COLORS[event.event_category] || "bg-gray-400"}`} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-sm font-medium text-gray-700">
+                          {EVENT_LABELS[event.event_name] || event.event_name}
+                        </span>
+                        {"state" in (event.properties || {}) && (
+                          <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                            {String(event.properties.state)}
+                          </span>
+                        )}
+                        {"format" in (event.properties || {}) && (
+                          <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                            {String(event.properties.format)}
+                          </span>
+                        )}
+                        {"duration_ms" in (event.properties || {}) && (
+                          <span className="text-xs text-gray-400">
+                            {formatDuration(Number(event.properties.duration_ms))}
+                          </span>
+                        )}
+                      </div>
+                      {event.campaign_id && (
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                          <span className="text-xs text-indigo-500 font-medium truncate">
+                            {campaignNames[event.campaign_id] || "Campaign"}
+                          </span>
+                          <span className="text-[10px] text-gray-300 font-mono">
+                            {event.campaign_id.slice(0, 8).toUpperCase()}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-xs text-gray-300 shrink-0 w-16 text-right mt-0.5">
                       {timeAgo(event.created_at)}
                     </span>
                   </div>
