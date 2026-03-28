@@ -499,52 +499,93 @@ export default function ResearchPage() {
               <h2 className="text-xl font-semibold text-gray-900 mb-1">
                 Brand & Giveaway Sentiment
               </h2>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-gray-500 mb-3">
                 How people feel about the brand and similar prizes/giveaways online
               </p>
-              <ul className="space-y-3">
+
+              {/* Summary bar */}
+              {normalizedSentiment.length > 0 && (() => {
+                const positive = normalizedSentiment.filter(s => s.polarity > 0.2).length;
+                const negative = normalizedSentiment.filter(s => s.polarity < -0.2).length;
+                const neutral = normalizedSentiment.length - positive - negative;
+                const avgPolarity = normalizedSentiment.reduce((sum, s) => sum + s.polarity, 0) / normalizedSentiment.length;
+                const platforms = [...new Set(normalizedSentiment.map(s => s.platform).filter(p => p !== "unknown"))];
+                return (
+                  <div className="flex items-center gap-4 mb-4 px-4 py-3 bg-slate-50 rounded-xl border border-slate-100">
+                    <div className="flex items-center gap-1.5">
+                      <div className={`w-3 h-3 rounded-full ${avgPolarity > 0.2 ? "bg-emerald-400" : avgPolarity < -0.2 ? "bg-red-400" : "bg-amber-400"}`} />
+                      <span className="text-sm font-semibold text-gray-700">
+                        {avgPolarity > 0.2 ? "Mostly Positive" : avgPolarity < -0.2 ? "Mostly Negative" : "Mixed Sentiment"}
+                      </span>
+                    </div>
+                    <div className="flex gap-3 text-xs text-gray-500">
+                      {positive > 0 && <span className="text-emerald-600">{positive} positive</span>}
+                      {neutral > 0 && <span>{neutral} neutral</span>}
+                      {negative > 0 && <span className="text-red-500">{negative} negative</span>}
+                    </div>
+                    {platforms.length > 0 && (
+                      <span className="ml-auto text-xs text-gray-400">
+                        via {platforms.slice(0, 3).join(", ")}
+                      </span>
+                    )}
+                  </div>
+                );
+              })()}
+
+              <div className="space-y-2.5">
                 {normalizedSentiment.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
+                  <div
+                    key={idx}
+                    onClick={() => toggleSentimentItem(idx)}
+                    className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
+                      selectedInsights.brandSentiment.includes(idx)
+                        ? "border-indigo-200 bg-indigo-50/40"
+                        : "border-gray-100 hover:border-gray-200 hover:bg-gray-50/50"
+                    }`}
+                  >
+                    {/* Polarity indicator bar */}
+                    <div className={`w-1 self-stretch rounded-full shrink-0 ${
+                      item.polarity > 0.3 ? "bg-emerald-400" :
+                      item.polarity < -0.3 ? "bg-red-400" :
+                      "bg-amber-300"
+                    }`} />
                     <input
                       type="checkbox"
                       checked={selectedInsights.brandSentiment.includes(idx)}
                       onChange={() => toggleSentimentItem(idx)}
-                      className="mt-1 w-5 h-5 text-blue-500 rounded cursor-pointer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="mt-0.5 w-4 h-4 text-indigo-500 rounded cursor-pointer shrink-0"
                     />
-                    <div className="flex-1">
-                      <span className="text-gray-700">{item.observation}</span>
-                      {item.platform !== "unknown" && (
-                        <div className="flex flex-wrap gap-2 mt-1">
-                          {item.platform !== "unknown" && (
-                            <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-blue-50 text-blue-600">
-                              {item.platform}
-                            </span>
-                          )}
-                          {item.recency !== "unknown" && (
-                            <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-500">
-                              {item.recency}
-                            </span>
-                          )}
-                          {item.confidence !== "low" && (
-                            <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full ${
-                              item.confidence === "high" ? "bg-green-50 text-green-600" : "bg-yellow-50 text-yellow-600"
-                            }`}>
-                              {item.confidence} confidence
-                            </span>
-                          )}
-                          <span className={`inline-block px-2 py-0.5 text-xs font-semibold rounded-full ${
-                            item.polarity > 0.3 ? "bg-green-50 text-green-700" :
-                            item.polarity < -0.3 ? "bg-red-50 text-red-600" :
-                            "bg-gray-50 text-gray-500"
-                          }`}>
-                            {item.polarity > 0 ? "+" : ""}{item.polarity.toFixed(1)}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-700 leading-relaxed">{item.observation}</p>
+                      <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                        <span className={`inline-block px-2 py-0.5 text-xs font-semibold rounded-full ${
+                          item.polarity > 0.3 ? "bg-emerald-50 text-emerald-700" :
+                          item.polarity < -0.3 ? "bg-red-50 text-red-600" :
+                          "bg-gray-50 text-gray-500"
+                        }`}>
+                          {item.polarity > 0 ? "+" : ""}{item.polarity.toFixed(1)}
+                        </span>
+                        {item.platform !== "unknown" && (
+                          <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-blue-50 text-blue-600">
+                            {item.platform}
                           </span>
-                        </div>
-                      )}
+                        )}
+                        {item.confidence === "high" && (
+                          <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-green-50 text-green-600">
+                            high confidence
+                          </span>
+                        )}
+                        {item.recency !== "unknown" && (
+                          <span className="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-500">
+                            {item.recency}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
 
             {/* Competitor Analysis */}
@@ -801,8 +842,9 @@ export default function ResearchPage() {
                   {research.inspirationImages.map((img, idx) => {
                     const searchQuery = img.description || "ad creative inspiration";
                     const searchUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(searchQuery)}`;
-                    // Use a direct image URL if it looks like one, otherwise skip
-                    const isDirectImage = img.url && /\.(jpg|jpeg|png|gif|webp|svg|avif)(\?|$)/i.test(img.url);
+                    // Try to render any http(s) URL as an image. The onError
+                    // handler hides it and reveals the fallback if it fails.
+                    const hasUrl = img.url && /^https?:\/\//i.test(img.url);
                     const gradients = [
                       "from-indigo-100 to-blue-50",
                       "from-purple-100 to-pink-50",
@@ -816,13 +858,13 @@ export default function ResearchPage() {
                     return (
                       <a
                         key={idx}
-                        href={searchUrl}
+                        href={hasUrl ? img.url : searchUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group border border-gray-200 rounded-lg overflow-hidden hover:border-indigo-300 hover:shadow-md transition-all"
                       >
                         <div className={`aspect-video bg-gradient-to-br ${gradient} relative overflow-hidden`}>
-                          {isDirectImage ? (
+                          {hasUrl ? (
                             <>
                               {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img
@@ -835,10 +877,11 @@ export default function ResearchPage() {
                                   (e.target as HTMLImageElement).style.display = "none";
                                 }}
                               />
-                              {/* Fallback behind the image */}
+                              {/* Fallback behind the image (shows if img fails to load) */}
                               <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 z-0 p-3">
-                                <svg className="w-8 h-8 mb-1 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                                <svg className="w-8 h-8 mb-1 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                                 <span className="text-xs font-medium text-center line-clamp-2">{img.description}</span>
+                                <span className="text-[10px] text-gray-400 mt-1">Click to view</span>
                               </div>
                             </>
                           ) : (

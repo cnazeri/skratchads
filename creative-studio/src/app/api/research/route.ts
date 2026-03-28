@@ -252,7 +252,7 @@ Focus on:
 5. Competitor analysis: Identify 2-3 direct competitors, compare sentiment, giveaway strategies, and audience overlap
 6. Giveaway trust: Assess audience skepticism toward prize promotions and recommend trust-building approaches
 7. Provide real quotes and specific examples with engagement metrics where possible
-8. Inspiration images: Find real image URLs that could inspire banner design (at least 4-6)
+8. Inspiration images: Find at least 4-6 DIRECT image URLs (ending in .jpg, .png, .webp, or from CDNs like images.unsplash.com, images.pexels.com) that could inspire banner design. Prefer stock photo CDN URLs over web page links
 9. Relevant websites: List 5-8 useful websites for the campaign`;
 
     // Build a context-rich user prompt using the campaign brief if available
@@ -288,7 +288,7 @@ Provide a comprehensive report covering:
 6. Competitor benchmarking: Identify 2-3 direct competitors of "${brandName}" in the ${industry} space. Compare how their audience perceives them vs. "${brandName}". What giveaway or promotional strategies have competitors used recently? Include competitor names, sentiment scores (-1 to +1), audience overlap, and differentiators.
 7. Giveaway trust assessment: Detect any giveaway fatigue or skepticism in this audience. Are there discussions about brands using prizes as clickbait, data harvesting, or bait-and-switch tactics? Provide a trust score (0-100), list skepticism signals, list trust builders, and recommend how to frame the giveaway for maximum trust.
 8. Key sources with URLs
-9. Inspiration images: Find at least 4-6 real image URLs that could inspire the banner creative
+9. Inspiration images: Find at least 4-6 DIRECT image URLs (from stock photo CDNs like images.unsplash.com, images.pexels.com, or URLs ending in .jpg/.png/.webp) that could inspire the banner creative. Do NOT return web page URLs - return direct image file URLs only
 10. Relevant websites: List 5-8 websites useful for the campaign
 
 Return only valid JSON in the exact format specified.`;
