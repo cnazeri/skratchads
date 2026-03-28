@@ -431,6 +431,7 @@ export default function VariationsPage() {
                             src={(state.preview_url || state.image_url)!}
                             alt={`${BANNER_STATE_LABELS[currentTab]} - ${creative.variation_label}`}
                             className="w-full h-full object-cover"
+                            loading="lazy"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-gray-500 text-sm">
@@ -527,6 +528,7 @@ export default function VariationsPage() {
                                   src={previewSrc}
                                   alt={BANNER_STATE_LABELS[stateType]}
                                   className="w-full h-full object-cover"
+                                  loading="lazy"
                                 />
                               ) : (
                                 <span className="text-xs text-gray-300">

@@ -241,6 +241,7 @@ export default function CreativesLibraryPage() {
               value={filterCampaign}
               onChange={(e) => setFilterCampaign(e.target.value)}
               className="text-sm border border-gray-200 rounded-xl px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300"
+              aria-label="Filter by campaign"
             >
               <option value="all">All Campaigns</option>
               {campaigns.map((c) => (
@@ -255,6 +256,7 @@ export default function CreativesLibraryPage() {
               value={filterFormat}
               onChange={(e) => setFilterFormat(e.target.value)}
               className="text-sm border border-gray-200 rounded-xl px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300"
+              aria-label="Filter by format"
             >
               <option value="all">All Formats</option>
               {uniqueFormats.map((f) => (
@@ -269,6 +271,7 @@ export default function CreativesLibraryPage() {
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
               className="text-sm border border-gray-200 rounded-xl px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300"
+              aria-label="Filter by status"
             >
               <option value="all">All</option>
               <option value="selected">Selected Winners</option>
@@ -282,6 +285,7 @@ export default function CreativesLibraryPage() {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortField)}
               className="text-sm border border-gray-200 rounded-xl px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300"
+              aria-label="Sort creatives"
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
@@ -401,6 +405,7 @@ export default function CreativesLibraryPage() {
                                     src={previewUrl}
                                     alt={STATE_LABELS[stateType]}
                                     className="object-contain w-full h-full relative z-10"
+                                    loading="lazy"
                                     onError={(e) => {
                                       (e.target as HTMLImageElement).style.display = "none";
                                     }}

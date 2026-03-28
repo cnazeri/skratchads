@@ -4,6 +4,9 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
+const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_AVATAR_SIZE = 5 * 1024 * 1024; // 5MB
+
 export default function SettingsPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -57,6 +60,18 @@ export default function SettingsPage() {
   const handleAvatarSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
+      setAvatarMessage("Invalid file type. Please upload a JPEG, PNG, or WebP image.");
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > MAX_AVATAR_SIZE) {
+      setAvatarMessage("File is too large. Maximum size is 5MB.");
+      e.target.value = "";
+      return;
+    }
 
     setAvatarFile(file);
     setAvatarMessage("");
@@ -225,7 +240,7 @@ export default function SettingsPage() {
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
             className="hidden"
             onChange={handleAvatarSelect}
           />

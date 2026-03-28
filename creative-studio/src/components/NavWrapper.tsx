@@ -134,7 +134,7 @@ export function NavWrapper({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-xl">
+      <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-xl" aria-label="Main navigation">
         <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <a href="/dashboard" className="flex items-center gap-2 group">
@@ -169,6 +169,8 @@ export function NavWrapper({ children }: { children: React.ReactNode }) {
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-50"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {mobileOpen
@@ -183,6 +185,8 @@ export function NavWrapper({ children }: { children: React.ReactNode }) {
               <button
                 onClick={() => setShowMenu(!showMenu)}
                 className="w-9 h-9 rounded-full bg-slate-500 text-white font-semibold text-sm flex items-center justify-center hover:bg-slate-600 transition-colors ring-2 ring-white overflow-hidden"
+                aria-label="User menu"
+                aria-expanded={showMenu}
               >
                 {user?.avatar_url ? (
                   <img src={user.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
@@ -191,7 +195,7 @@ export function NavWrapper({ children }: { children: React.ReactNode }) {
                 )}
               </button>
               {showMenu && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-1 overflow-hidden">
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-1 overflow-hidden" role="menu">
                   <div className="px-4 py-3 border-b border-gray-50">
                     <p className="text-sm font-semibold text-gray-900 truncate">{user?.full_name || "User"}</p>
                     <p className="text-xs text-gray-400 truncate">{user?.email}</p>

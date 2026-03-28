@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Canvas, Textbox, FabricImage, FabricObject, Shadow } from "fabric";
@@ -79,6 +79,8 @@ export default function EditorPage() {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<Canvas | null>(null);
+  const canvasContainerRef = useRef<HTMLDivElement | null>(null);
+  const [maxDisplayWidth, setMaxDisplayWidth] = useState(400);
 
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   // Multi-variation support: track which creative we're editing
@@ -188,7 +190,35 @@ export default function EditorPage() {
 
   const canvasWidth = getCanvasWidth();
   const canvasHeight = getCanvasHeight();
-  const scale = Math.min(600 / canvasWidth, 400 / canvasHeight);
+
+  // Synchronous initial measurement so the very first render uses the real
+  // container width instead of the 600px fallback.  useLayoutEffect fires
+  // before the browser paints, guaranteeing `scale` is correct before the
+  // canvas-init useEffect runs.
+  const measureContainer = useCallback(() => {
+    const el = canvasContainerRef.current;
+    if (!el) return;
+    const cs = getComputedStyle(el);
+    const padL = parseFloat(cs.paddingLeft) || 0;
+    const padR = parseFloat(cs.paddingRight) || 0;
+    const available = el.clientWidth - padL - padR;
+    if (available > 0) setMaxDisplayWidth(available);
+  }, []);
+
+  useLayoutEffect(() => {
+    measureContainer();
+  }, [measureContainer]);
+
+  // Keep tracking size changes after mount (window resize, sidebar toggle, etc.)
+  useEffect(() => {
+    const el = canvasContainerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => measureContainer());
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [measureContainer]);
+
+  const scale = Math.min(maxDisplayWidth / canvasWidth, 400 / canvasHeight);
 
   // Fetch campaign and load existing creative if available
   useEffect(() => {
@@ -311,6 +341,11 @@ export default function EditorPage() {
             setCanvasStates(loadedStates);
             canvasStatesRef.current = loadedStates;
             setSavedBannerStates(loadedSaved);
+            // Force canvas re-init now that DB states are loaded.
+            // The canvas init useEffect excludes canvasStates from its deps
+            // (to avoid destroy/recreate on every edit), so we bump the
+            // refresh key to make it pick up the newly loaded JSON.
+            setCanvasRefreshKey((k) => k + 1);
           }
         }
       } catch (err) {
@@ -361,19 +396,20 @@ export default function EditorPage() {
 
         fabricCanvas.loadFromJSON(JSON.parse(savedState)).then(() => {
           // Re-tag bg image with _isBg after load (custom props may not survive
-          // Fabric.js v6 deserialization). Also ensure bg is locked and at back.
+          // Fabric.js v6 deserialization). Also re-apply cover-fit via
+          // centerBgOnCanvas to guarantee correct alignment regardless of what
+          // origin/position values were serialized.
           const objects = fabricCanvas.getObjects();
-          const bgObj = objects.find(
+          let bgObj = objects.find(
             (obj: FabricObject) =>
               obj instanceof FabricImage &&
               ((obj as any)._isBg === true || (!obj.selectable && !obj.evented))
           );
-          if (bgObj) {
-            (bgObj as any)._isBg = true;
-            fabricCanvas.sendObjectToBack(bgObj);
-          } else if (objects.length > 0 && objects[0] instanceof FabricImage) {
-            // Fallback: assume bottom-most image is bg
-            (objects[0] as any)._isBg = true;
+          if (!bgObj && objects.length > 0 && objects[0] instanceof FabricImage) {
+            bgObj = objects[0];
+          }
+          if (bgObj && bgObj instanceof FabricImage) {
+            centerBgOnCanvas(bgObj, fabricCanvas);
           }
           fabricCanvas.renderAll();
           // Re-enable events and take initial snapshot
@@ -477,6 +513,17 @@ export default function EditorPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvasWidth, canvasHeight, currentTab, canvasRefreshKey]);
 
+  // Keep Fabric's CSS dimensions in sync when the container is measured or
+  // resized.  This runs AFTER the canvas init effect and updates only the CSS
+  // (display) size without destroying/recreating the Fabric canvas.
+  useEffect(() => {
+    if (!fabricCanvasRef.current) return;
+    fabricCanvasRef.current.setDimensions(
+      { width: canvasWidth * scale, height: canvasHeight * scale },
+      { cssOnly: true },
+    );
+  }, [canvasWidth, canvasHeight, scale]);
+
   // Update canvas background color
   useEffect(() => {
     if (fabricCanvasRef.current) {
@@ -575,6 +622,14 @@ export default function EditorPage() {
             backgroundColor: settings.backgroundColor,
           });
           offFabric.loadFromJSON(JSON.parse(json)).then(() => {
+            // Re-center any background image after deserialization
+            // (Fabric v6 can lose originX/originY during loadFromJSON)
+            const objs = offFabric.getObjects();
+            for (const obj of objs) {
+              if ((obj as any)._isBg && obj instanceof FabricImage) {
+                centerBgOnCanvas(obj, offFabric);
+              }
+            }
             offFabric.renderAll();
             const dataUrl = offFabric.toDataURL({ format: "png", multiplier: snapshotMultiplier });
             setPreviewSnapshots((prev) => ({ ...prev, [tab]: dataUrl }));
@@ -921,9 +976,40 @@ export default function EditorPage() {
     setBgEditMode(false);
   };
 
+  // Shared helper: centre a background image on the Fabric canvas using cover-fit.
+  // Reads the ACTUAL canvas pixel dimensions from the Fabric Canvas object
+  // (not React state) and sets left/top so the image is centred.
+  const centerBgOnCanvas = (img: InstanceType<typeof FabricImage>, fc: InstanceType<typeof Canvas>) => {
+    const cw = fc.getWidth();
+    const ch = fc.getHeight();
+    const imgW = img.width || 1;
+    const imgH = img.height || 1;
+    const coverScale = Math.max(cw / imgW, ch / imgH);
+
+    // Always use center origin + canvas midpoint.  This is the simplest
+    // formula: put the image centre exactly on the canvas centre.
+    img.set({
+      scaleX: coverScale,
+      scaleY: coverScale,
+      originX: "center",
+      originY: "center",
+      left: cw / 2,
+      top: ch / 2,
+      selectable: false,
+      evented: false,
+    });
+    (img as any)._isBg = true;
+
+    // Ensure image is on the canvas, then push to back
+    if (!img.canvas) fc.add(img);
+    img.setCoords();
+    fc.sendObjectToBack(img);
+  };
+
   // Shared helper: add an image URL as canvas background (cover-fit, centered, behind everything)
   const applyBackgroundToCanvas = async (imageUrl: string) => {
-    if (!fabricCanvasRef.current) return;
+    const fc = fabricCanvasRef.current;
+    if (!fc) return;
 
     // Ensure suppress flag is cleared so the canvas isn't stuck from a prior operation
     suppressCanvasEventsRef.current = false;
@@ -931,9 +1017,17 @@ export default function EditorPage() {
     try {
       removeExistingBackground();
 
-      // Only use crossOrigin for external URLs. Data URLs are same-origin and
-      // setting crossOrigin on them can cause load failures in some browsers.
+      // Pre-load the image in a plain HTMLImageElement so we get guaranteed
+      // naturalWidth/naturalHeight before touching Fabric at all.
       const isDataUrl = imageUrl.startsWith("data:");
+      await new Promise<void>((resolve, reject) => {
+        const tmp = new Image();
+        if (!isDataUrl) tmp.crossOrigin = "anonymous";
+        tmp.onload = () => resolve();
+        tmp.onerror = () => reject(new Error("Image pre-load failed"));
+        tmp.src = imageUrl;
+      });
+
       const img = await FabricImage.fromURL(
         imageUrl,
         isDataUrl ? {} : { crossOrigin: "anonymous" }
@@ -942,23 +1036,9 @@ export default function EditorPage() {
         console.error("FabricImage.fromURL returned empty image");
         return;
       }
-      const imgW = img.width;
-      const imgH = img.height;
-      const coverScale = Math.max(canvasWidth / imgW, canvasHeight / imgH);
 
-      img.set({
-        scaleX: coverScale,
-        scaleY: coverScale,
-        left: (canvasWidth - imgW * coverScale) / 2,
-        top: (canvasHeight - imgH * coverScale) / 2,
-        selectable: false,
-        evented: false,
-      });
-      (img as any)._isBg = true;
-
-      fabricCanvasRef.current.add(img);
-      fabricCanvasRef.current.sendObjectToBack(img);
-      fabricCanvasRef.current.renderAll();
+      centerBgOnCanvas(img, fc);
+      fc.renderAll();
       setSettings((prev) => ({ ...prev, bgImageUrl: imageUrl }));
       setBgOpacity(100);
     } catch (err) {
@@ -1021,22 +1101,22 @@ export default function EditorPage() {
           return;
         }
         const objects = fc.getObjects();
-        const bgObj = objects.find(
+        let bgObj = objects.find(
           (obj: FabricObject) =>
             obj instanceof FabricImage &&
             ((obj as any)._isBg === true || (!obj.selectable && !obj.evented))
         );
-        if (bgObj) {
-          (bgObj as any)._isBg = true;
-          fc.sendObjectToBack(bgObj);
-        } else if (objects.length > 0 && objects[0] instanceof FabricImage) {
-          (objects[0] as any)._isBg = true;
+        if (!bgObj && objects.length > 0 && objects[0] instanceof FabricImage) {
+          bgObj = objects[0];
+        }
+        if (bgObj && bgObj instanceof FabricImage) {
+          centerBgOnCanvas(bgObj, fc);
         }
         fc.renderAll();
         // Re-enable events after load completes, then take one snapshot
         suppressCanvasEventsRef.current = false;
         try {
-          const mult = Math.max(2, Math.ceil(600 / (settings.format?.width || 320)));
+          const mult = Math.max(2, Math.ceil(600 / (fc.width || 320)));
           const dataUrl = fc.toDataURL({ format: "png", multiplier: mult });
           setPreviewSnapshots((prev) => ({ ...prev, [currentTab]: dataUrl }));
         } catch { /* CORS / tainted canvas */ }
@@ -1354,9 +1434,13 @@ export default function EditorPage() {
               fmtBgUrls[sp.state] = banners[0].imageUrl;
 
               let img: InstanceType<typeof FabricImage> | null = null;
+              const isBannerDataUrl = banners[0].imageUrl.startsWith("data:");
               for (let attempt = 0; attempt < 3; attempt++) {
                 try {
-                  img = await FabricImage.fromURL(banners[0].imageUrl, { crossOrigin: "anonymous" });
+                  img = await FabricImage.fromURL(
+                    banners[0].imageUrl,
+                    isBannerDataUrl ? {} : { crossOrigin: "anonymous" }
+                  );
                   if (img && img.width && img.height) break;
                 } catch (loadErr) {
                   console.warn(`Image load attempt ${attempt + 1} failed for ${sp.state}:`, loadErr);
@@ -1376,20 +1460,6 @@ export default function EditorPage() {
                 completed++;
                 continue;
               }
-              const imgW = img.width || 1;
-              const imgH = img.height || 1;
-              const coverScale = Math.max(fmtW / imgW, fmtH / imgH);
-
-              img.set({
-                scaleX: coverScale,
-                scaleY: coverScale,
-                left: (fmtW - imgW * coverScale) / 2,
-                top: (fmtH - imgH * coverScale) / 2,
-                selectable: false,
-                evented: false,
-              });
-              (img as any)._isBg = true;
-
               const offscreen = document.createElement("canvas");
               offscreen.width = fmtW;
               offscreen.height = fmtH;
@@ -1399,7 +1469,9 @@ export default function EditorPage() {
                 backgroundColor: settings.backgroundColor,
               });
 
-              offFabric.add(img);
+              // Use shared centerBgOnCanvas to cover-fit and center the image.
+              // It adds the image to the canvas internally if needed.
+              centerBgOnCanvas(img, offFabric);
 
               const stateFont = stateCustomizations[sp.state]?.fontFamily || settings.fontFamily || "Arial";
               if (sp.state === "brand" || sp.state === "lose") {
@@ -1407,7 +1479,11 @@ export default function EditorPage() {
 
                 if (settings.logoUrl) {
                   try {
-                    const logoImg = await FabricImage.fromURL(settings.logoUrl, { crossOrigin: "anonymous" });
+                    const isLogoDataUrl = settings.logoUrl.startsWith("data:");
+                    const logoImg = await FabricImage.fromURL(
+                      settings.logoUrl,
+                      isLogoDataUrl ? {} : { crossOrigin: "anonymous" }
+                    );
                     const logoW = logoImg.width || 1;
                     const logoH = logoImg.height || 1;
                     const maxLogoW = fmtW * (isLose ? 0.25 : 0.35);
@@ -1839,7 +1915,7 @@ export default function EditorPage() {
         await fc.loadFromJSON(parsed);
         fc.renderAll();
         // Give images time to fully paint
-        await new Promise((r) => setTimeout(r, 300));
+        await new Promise((r) => setTimeout(r, 50));
         fc.renderAll();
 
         results[state] = fc.toDataURL({ format: "png", multiplier: mult });
@@ -2146,8 +2222,11 @@ export default function EditorPage() {
                 key={c.id}
                 onClick={async () => {
                   if (c.id === activeCreativeId) return;
-                  // Save current work before switching
-                  await saveDraftCore(true);
+                  // Save current canvas state to memory before switching
+                  saveCurrentState();
+                  // Fire-and-forget: persist to DB in the background so the UI
+                  // switches instantly instead of blocking on network + preview rendering.
+                  saveDraftCore(true).catch((err) => console.error("Background save failed:", err));
                   // Load the selected creative
                   setActiveCreativeId(c.id);
                   const { data: bannerStates } = await supabase
@@ -2198,8 +2277,9 @@ export default function EditorPage() {
             ))}
             <button
               onClick={async () => {
-                // Save current work first
-                await saveDraftCore(true);
+                // Save current canvas state to memory, persist to DB in background
+                saveCurrentState();
+                saveDraftCore(true).catch((err) => console.error("Background save failed:", err));
                 // Reset canvas for new variation
                 const emptyStates: CanvasState = { scratch: null, win: null, lose: null, redeem: null, brand: null };
                 setCanvasStates(emptyStates);
@@ -2361,7 +2441,7 @@ export default function EditorPage() {
             </div>
 
             {/* Canvas Container */}
-            <div className="bg-white rounded-b-lg shadow p-8 flex items-center justify-center min-h-96">
+            <div ref={canvasContainerRef} className="bg-white rounded-b-lg shadow p-8 flex items-center justify-center min-h-96">
               <div
                 style={{
                   width: `${canvasWidth * scale}px`,
@@ -3379,20 +3459,12 @@ export default function EditorPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => {
-                        if (!fabricCanvasRef.current) return;
+                        const fc = fabricCanvasRef.current;
+                        if (!fc) return;
                         const bg = findBgImage();
                         if (!bg) return;
-                        const imgW = bg.width || 1;
-                        const imgH = bg.height || 1;
-                        const coverScale = Math.max(canvasWidth / imgW, canvasHeight / imgH);
-                        bg.set({
-                          scaleX: coverScale,
-                          scaleY: coverScale,
-                          left: (canvasWidth - imgW * coverScale) / 2,
-                          top: (canvasHeight - imgH * coverScale) / 2,
-                        });
-                        bg.setCoords();
-                        fabricCanvasRef.current.renderAll();
+                        centerBgOnCanvas(bg, fc);
+                        fc.renderAll();
                       }}
                       className="flex-1 text-xs font-medium px-2 py-1.5 bg-gray-100 hover:bg-gray-200 rounded transition-colors"
                     >

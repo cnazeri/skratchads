@@ -900,7 +900,7 @@ export default function ResearchPage() {
                             <div className="flex items-center gap-2 mb-1">
                               {faviconUrl && (
                                 // eslint-disable-next-line @next/next/no-img-element
-                                <img src={faviconUrl} alt="" className="w-4 h-4 rounded-sm flex-shrink-0" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                                <img src={faviconUrl} alt="" className="w-4 h-4 rounded-sm flex-shrink-0" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                               )}
                               <span className="font-semibold text-blue-600 text-sm hover:underline">{site.name}</span>
                               <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 capitalize">{site.type}</span>

@@ -149,7 +149,7 @@ export default function SignUpPage() {
             </div>
           )}
 
-          <form onSubmit={handleSignUp} className="space-y-5 mb-6">
+          <form onSubmit={handleSignUp} className="space-y-5 mb-6" aria-label="Create account">
             <div>
               <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Full Name

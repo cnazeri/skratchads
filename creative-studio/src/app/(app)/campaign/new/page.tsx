@@ -226,7 +226,7 @@ export default function NewCampaignPage() {
         </div>
 
         {/* Progress Indicator */}
-        <div className="flex items-center mb-10">
+        <div className="flex items-center mb-10" aria-label="Campaign creation steps">
           {[1, 2, 3, 4].map((s) => (
             <div key={s} className="flex items-center flex-1 last:flex-initial">
               <div className="flex flex-col items-center">
@@ -255,7 +255,7 @@ export default function NewCampaignPage() {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-6" style={{ boxShadow: 'var(--shadow-card)' }}>
+        <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-6" style={{ boxShadow: 'var(--shadow-card)' }} aria-label={`Step ${step}: ${stepLabels[step - 1]}`}>
           {step === 1 && (
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-6">
