@@ -20,15 +20,16 @@ export function trackEvent({ event, category, campaignId, properties }: TrackEve
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) return;
 
-      await supabase.from("analytics_events").insert({
+      const { error } = await supabase.from("analytics_events").insert({
         user_id: session.user.id,
         event_name: event,
         event_category: category,
         campaign_id: campaignId || null,
         properties: properties || {},
       });
+      if (error) console.warn("[analytics] insert failed:", event, error.message);
     } catch (err) {
-      console.debug("[analytics]", event, err);
+      console.warn("[analytics] error:", event, err);
     }
   })();
 }

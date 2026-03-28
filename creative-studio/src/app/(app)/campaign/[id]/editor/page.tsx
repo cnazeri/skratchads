@@ -1368,6 +1368,8 @@ export default function EditorPage() {
   const generateAllStates = async () => {
     if (!campaign) return;
     setGeneratingAllStates(true);
+    const allStatesStart = Date.now();
+    trackGenerationStarted(campaign.id, { state: "all", format: `${canvasWidth}x${canvasHeight}`, count: 5 });
 
     const ctx = buildPromptContext();
     const brandName = ctx.brandName;
@@ -1765,9 +1767,11 @@ export default function EditorPage() {
       }
 
       setGeneratingStatesProgress("");
+      trackGenerationCompleted(campaign.id, { state: "all", format: `${canvasWidth}x${canvasHeight}`, count: 5, success_count: 5, duration_ms: Date.now() - allStatesStart });
 
     } catch (err) {
       console.error("Generate all states failed:", err);
+      trackGenerationFailed(campaign.id, { state: "all", error: err instanceof Error ? err.message : "unknown" });
       showToast("Some states failed to generate. You can edit them manually.", "error");
     } finally {
       setGeneratingAllStates(false);
