@@ -12,6 +12,8 @@ import type { GeneratedBanner } from "@/lib/nanoBanana";
 import { buildAllStatePrompts } from "@/lib/promptEngine";
 import type { PromptContext } from "@/lib/promptEngine";
 import { trackGenerationStarted, trackGenerationCompleted, trackGenerationFailed, trackDraftSaved, trackBannerStateSwitch } from "@/lib/analytics";
+import { TEMPLATES, TEMPLATE_CATEGORIES } from "@/lib/templates";
+import type { BannerTemplate } from "@/lib/templates";
 
 type CanvasState = Record<BannerState, string | null>;
 
@@ -137,6 +139,30 @@ export default function EditorPage() {
     selectedPrize?: { prize: string; relevanceScore: number; rationale: string } | null;
   } | null>(null);
   const [showCampaignSettings, setShowCampaignSettings] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [templateFilter, setTemplateFilter] = useState("all");
+
+  const applyTemplate = (template: BannerTemplate) => {
+    setSettings((prev) => ({
+      ...prev,
+      backgroundColor: template.backgroundColor,
+      fontFamily: template.fontFamily,
+      fontSize: template.fontSize,
+      brandColor: template.states[currentTab].brandColor,
+      headline: template.states[currentTab].headline,
+      cta: template.states[currentTab].cta,
+      prizeText: template.states[currentTab].prizeText,
+    }));
+    setStateCustomizations((prev) => {
+      const next = { ...prev };
+      for (const state of Object.keys(template.states) as BannerState[]) {
+        next[state] = { ...template.states[state] };
+      }
+      return next;
+    });
+    setShowTemplates(false);
+    showToast(`Applied "${template.name}" template.`, "success");
+  };
   const [campaignEdits, setCampaignEdits] = useState({ name: "", brandName: "", targetAudience: "", industry: "", websiteUrl: "" });
   const [isSavingCampaign, setIsSavingCampaign] = useState(false);
   const [lastAutoSave, setLastAutoSave] = useState<Date | null>(null);
@@ -2978,6 +3004,68 @@ export default function EditorPage() {
 
           {/* Right Sidebar - Customization */}
           <div className="lg:col-span-1">
+            {/* Template Picker */}
+            <div className="bg-white rounded-lg shadow mb-4">
+              <button
+                onClick={() => setShowTemplates((v) => !v)}
+                className="w-full px-6 py-3 flex items-center justify-between text-sm font-semibold text-gray-900 uppercase"
+              >
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /></svg>
+                  Templates
+                </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-4 w-4 transition-transform ${showTemplates ? "rotate-180" : ""}`}
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {showTemplates && (
+                <div className="px-4 pb-4">
+                  <div className="flex gap-1 flex-wrap mb-3">
+                    {TEMPLATE_CATEGORIES.map((cat) => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setTemplateFilter(cat.id)}
+                        className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
+                          templateFilter === cat.id
+                            ? "bg-indigo-100 text-indigo-700"
+                            : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 max-h-80 overflow-y-auto">
+                    {TEMPLATES
+                      .filter((t) => templateFilter === "all" || t.category === templateFilter)
+                      .map((template) => (
+                        <button
+                          key={template.id}
+                          onClick={() => applyTemplate(template)}
+                          className="group text-left rounded-xl border border-gray-200 overflow-hidden hover:border-indigo-300 hover:shadow-md transition-all"
+                        >
+                          <div className={`h-16 bg-gradient-to-br ${template.previewGradient} flex items-end p-2`}>
+                            <span className="text-[10px] font-bold text-white/90 drop-shadow-sm">{template.name}</span>
+                          </div>
+                          <div className="p-2">
+                            <p className="text-[10px] text-gray-400 leading-tight line-clamp-2">{template.description}</p>
+                            <div className="flex gap-1 mt-1.5">
+                              {Object.values(template.states).slice(0, 3).map((s, i) => (
+                                <div key={i} className="w-3 h-3 rounded-full border border-white shadow-sm" style={{ backgroundColor: s.brandColor }} />
+                              ))}
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Campaign Settings (collapsible) */}
             <div className="bg-white rounded-lg shadow mb-4">
               <button
