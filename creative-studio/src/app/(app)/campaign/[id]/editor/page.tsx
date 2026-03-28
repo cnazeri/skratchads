@@ -367,9 +367,8 @@ export default function EditorPage() {
             for (const bs of bannerStates) {
               if (bs.state_type in loadedStates) {
                 loadedStates[bs.state_type as BannerState] = bs.canvas_json;
-                // Mark as complete if canvas has a bg image OR if an image_url/preview_url exists in DB
-                loadedSaved[bs.state_type as BannerState] =
-                  canvasJsonHasBgImage(bs.canvas_json) || !!bs.image_url || !!bs.preview_url;
+                // Only show checkmark if canvas JSON actually contains a background image
+                loadedSaved[bs.state_type as BannerState] = canvasJsonHasBgImage(bs.canvas_json);
               }
             }
             setCanvasStates(loadedStates);
@@ -2254,7 +2253,7 @@ export default function EditorPage() {
                     for (const bs of bannerStates) {
                       if (bs.state_type in loadedStates) {
                         loadedStates[bs.state_type as BannerState] = bs.canvas_json;
-                        loadedSaved[bs.state_type as BannerState] = canvasJsonHasBgImage(bs.canvas_json) || !!bs.image_url || !!bs.preview_url;
+                        loadedSaved[bs.state_type as BannerState] = canvasJsonHasBgImage(bs.canvas_json);
                       }
                     }
                   }
