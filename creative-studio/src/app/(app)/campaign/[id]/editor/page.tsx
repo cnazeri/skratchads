@@ -33,11 +33,11 @@ interface StateCustomization {
 }
 
 const DEFAULT_STATE_CUSTOMIZATIONS: Record<BannerState, StateCustomization> = {
-  scratch: { brandColor: "#3B82F6", backgroundColor: "#FFFFFF", headline: "Scratch to Win!", cta: "Scratch Now", prizeText: "Grand Prize", fontFamily: "Arial", fontSize: 16 },
-  win: { brandColor: "#10B981", backgroundColor: "#FFFFFF", headline: "You Won!", cta: "Claim Prize", prizeText: "Grand Prize", fontFamily: "Arial", fontSize: 16 },
-  lose: { brandColor: "#F59E0B", backgroundColor: "#FFFFFF", headline: "Play Again Soon!", cta: "Try Again", prizeText: "", fontFamily: "Arial", fontSize: 16 },
-  redeem: { brandColor: "#8B5CF6", backgroundColor: "#FFFFFF", headline: "Tap to Redeem!", cta: "Redeem Now", prizeText: "Your Prize", fontFamily: "Arial", fontSize: 16 },
-  brand: { brandColor: "#3B82F6", backgroundColor: "#FFFFFF", headline: "Visit Us", cta: "Learn More", prizeText: "", fontFamily: "Arial", fontSize: 16 },
+  scratch: { brandColor: "#3B82F6", backgroundColor: "#FFFFFF", headline: "Scratch Now", cta: "Scratch Now", prizeText: "Grand Prize", fontFamily: "Arial", fontSize: 16 },
+  win: { brandColor: "#10B981", backgroundColor: "#FFFFFF", headline: "Claim Prize", cta: "Claim Prize", prizeText: "Grand Prize", fontFamily: "Arial", fontSize: 16 },
+  lose: { brandColor: "#F59E0B", backgroundColor: "#FFFFFF", headline: "Try Again", cta: "Try Again", prizeText: "", fontFamily: "Arial", fontSize: 16 },
+  redeem: { brandColor: "#8B5CF6", backgroundColor: "#FFFFFF", headline: "Redeem Now", cta: "Redeem Now", prizeText: "Your Prize", fontFamily: "Arial", fontSize: 16 },
+  brand: { brandColor: "#3B82F6", backgroundColor: "#FFFFFF", headline: "Learn More", cta: "Learn More", prizeText: "", fontFamily: "Arial", fontSize: 16 },
 };
 
 interface EditorSettings {
@@ -149,7 +149,7 @@ export default function EditorPage() {
       fontFamily: template.fontFamily,
       fontSize: template.fontSize,
       brandColor: template.states[currentTab].brandColor,
-      headline: template.states[currentTab].headline,
+      headline: template.states[currentTab].cta,
       cta: template.states[currentTab].cta,
       prizeText: template.states[currentTab].prizeText,
     }));
@@ -608,7 +608,7 @@ export default function EditorPage() {
       ...prev,
       brandColor: newTabSettings.brandColor,
       backgroundColor: newTabSettings.backgroundColor,
-      headline: newTabSettings.headline,
+      headline: newTabSettings.cta,
       cta: newTabSettings.cta,
       prizeText: newTabSettings.prizeText,
       fontFamily: newTabSettings.fontFamily,
@@ -3217,40 +3217,23 @@ export default function EditorPage() {
               </div>
 
               {/* Headline */}
+              {/* CTA (Call to Action) - syncs to the first text element on the canvas */}
               <div>
                 <label className="text-xs font-semibold text-gray-700 block mb-1">
-                  Headline
-                </label>
-                <input
-                  type="text"
-                  value={settings.headline}
-                  onChange={(e) => {
-                    const newVal = e.target.value;
-                    setSettings((prev) => ({
-                      ...prev,
-                      headline: newVal,
-                    }));
-                    // Sync text to the canvas Textbox so the banner updates live
-                    syncHeadlineToCanvas(newVal);
-                  }}
-                  className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* CTA (Call to Action) */}
-              <div>
-                <label className="text-xs font-semibold text-gray-700 block mb-1">
-                  CTA <span className="font-normal text-gray-400">(Call to Action, button text)</span>
+                  Call to Action <span className="font-normal text-gray-400">(banner text)</span>
                 </label>
                 <input
                   type="text"
                   value={settings.cta}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const newVal = e.target.value;
                     setSettings((prev) => ({
                       ...prev,
-                      cta: e.target.value,
-                    }))
-                  }
+                      cta: newVal,
+                      headline: newVal,
+                    }));
+                    syncHeadlineToCanvas(newVal);
+                  }}
                   className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
