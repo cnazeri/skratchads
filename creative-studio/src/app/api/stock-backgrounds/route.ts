@@ -42,7 +42,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const prompt = `${CATEGORIES[category]} Dimensions: ${width || 300}x${height || 250} pixels.`;
+    const imgW = width || 300;
+    const imgH = height || 250;
+    const prompt = `${CATEGORIES[category]} The output image MUST be exactly ${imgW}x${imgH} pixels.`;
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${apiKey}`,
@@ -51,7 +53,13 @@ export async function POST(request: NextRequest) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { responseModalities: ["TEXT", "IMAGE"] },
+          generationConfig: {
+            responseModalities: ["TEXT", "IMAGE"],
+            imageGenerationConfig: {
+              width: imgW,
+              height: imgH,
+            },
+          },
         }),
       }
     );

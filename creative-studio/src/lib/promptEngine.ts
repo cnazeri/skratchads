@@ -34,15 +34,17 @@ export function buildFormatHint(w: number, h: number): string {
   const ar = ratio.toFixed(2);
   const arInv = (h / w).toFixed(2);
 
+  const sizeRule = `The output image MUST be exactly ${w}x${h} pixels.`;
+
   if (ratio > 3)
-    return `CRITICAL: Very wide, thin banner (${w}x${h}, ${ar}:1). Image MUST be a wide horizontal strip. Compose all elements in a single horizontal row across the full width. Do NOT create a square or tall image.`;
+    return `CRITICAL: Very wide, thin banner (${w}x${h}, ${ar}:1). ${sizeRule} Image MUST be a wide horizontal strip. Compose all elements in a single horizontal row across the full width. Do NOT create a square or tall image.`;
   if (ratio > 1.5)
-    return `Wide banner (${w}x${h}, ${ar}:1). Lay out elements horizontally across the full width.`;
+    return `Wide banner (${w}x${h}, ${ar}:1). ${sizeRule} Lay out elements horizontally across the full width.`;
   if (ratio >= 0.67)
-    return `Roughly square banner (${w}x${h}, ${ar}:1). Fill the entire frame evenly.`;
+    return `Roughly square banner (${w}x${h}, ${ar}:1). ${sizeRule} Fill the entire frame evenly.`;
   if (ratio < 0.4)
-    return `CRITICAL: Very tall, narrow banner (${w}x${h}, 1:${arInv}). Image MUST be a tall vertical strip. Stack all elements top-to-bottom. Do NOT create a square or wide image.`;
-  return `Portrait banner (${w}x${h}, 1:${arInv}). Stack elements vertically.`;
+    return `CRITICAL: Very tall, narrow banner (${w}x${h}, 1:${arInv}). ${sizeRule} Image MUST be a tall vertical strip. Stack all elements top-to-bottom. Do NOT create a square or wide image.`;
+  return `Portrait banner (${w}x${h}, 1:${arInv}). ${sizeRule} Stack elements vertically.`;
 }
 
 // ---------------------------------------------------------------------------

@@ -29,6 +29,8 @@ async function sleep(ms: number) {
 async function callGemini(
   apiKey: string,
   prompt: string,
+  width: number,
+  height: number,
   referenceImages?: string[],
 ): Promise<string | null> {
   const parts: Array<{ text: string } | { inlineData: { mimeType: string; data: string } }> = [];
@@ -54,7 +56,13 @@ async function callGemini(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts }],
-        generationConfig: { responseModalities: ["TEXT", "IMAGE"] },
+        generationConfig: {
+          responseModalities: ["TEXT", "IMAGE"],
+          imageGenerationConfig: {
+            width,
+            height,
+          },
+        },
       }),
       signal: controller.signal,
     });
@@ -97,11 +105,13 @@ class RateLimitError extends Error {
 async function generateWithRetry(
   apiKey: string,
   prompt: string,
+  width: number,
+  height: number,
   referenceImages?: string[],
 ): Promise<string | null> {
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
-      const imageUrl = await callGemini(apiKey, prompt, referenceImages);
+      const imageUrl = await callGemini(apiKey, prompt, width, height, referenceImages);
       if (imageUrl) return imageUrl;
 
       // No image returned — retry with simplified prompt on last attempt
@@ -187,7 +197,7 @@ export async function POST(request: NextRequest) {
       const batch = prompts.slice(batchStart, batchStart + BATCH_SIZE);
       const batchResults = await Promise.allSettled(
         batch.map(async (p) => {
-          const imageUrl = await generateWithRetry(apiKey, p.prompt, referenceImages);
+          const imageUrl = await generateWithRetry(apiKey, p.prompt, width, height, referenceImages);
           if (!imageUrl) return null;
           return {
             id: `banner-${Date.now()}-${p.variationLabel}`,
