@@ -257,13 +257,14 @@ export default function ExportPage() {
     return `${y}-${m}-${d}`;
   };
 
-  // Map internal state_type names to user-friendly download filenames
+  // Map internal state_type names to user-friendly download filenames.
+  // Numeric prefix ensures correct sort order when unzipped.
   const stateFileLabel: Record<string, string> = {
-    scratch: "Scratch-to-Win",
-    win: "Win",
-    lose: "Lose",
-    redeem: "Redeem",
-    brand: "Default",
+    scratch: "1-Scratch-to-Win",
+    win: "2-Win",
+    lose: "3-Lose",
+    redeem: "4-Redeem",
+    brand: "5-Default",
   };
 
   const handleDownloadSinglePng = async (creative: CreativeData, state: BannerStateData) => {
@@ -286,7 +287,7 @@ export default function ExportPage() {
       const link = document.createElement("a");
       link.href = blobUrl;
       const friendlyState = stateFileLabel[state.state_type] || state.state_type;
-      link.download = `${creative.variation_label}_${friendlyState}_${creative.format_width}x${creative.format_height}_${dateStamp}.png`;
+      link.download = `${shortId(campaignId)}_${creative.variation_label}_${friendlyState}_${creative.format_width}x${creative.format_height}_${dateStamp}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -344,7 +345,7 @@ export default function ExportPage() {
                 base64Data = fetched.split(",")[1];
               }
               const friendlyState = stateFileLabel[stateType] || stateType;
-              const fileName = `${creative.variation_label}_${friendlyState}_${creative.format_width}x${creative.format_height}_${getDateStamp()}.png`;
+              const fileName = `${shortId(campaignId)}_${creative.variation_label}_${friendlyState}_${creative.format_width}x${creative.format_height}_${getDateStamp()}.png`;
               zip.file(fileName, base64Data, { base64: true });
               (creativeConfig.states as Record<string, { file: string }>)[stateType] = { file: fileName };
             }
