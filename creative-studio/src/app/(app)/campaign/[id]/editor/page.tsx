@@ -1161,20 +1161,39 @@ export default function EditorPage() {
     }
   }, [currentTab, settings.format]);
 
-  // Sync headline text from the sidebar input to the first editable Textbox on the canvas.
-  // Only called when the user manually types into the Headline field (not on tab switch or load).
-  const syncHeadlineToCanvas = useCallback((newHeadline: string) => {
-    if (!fabricCanvasRef.current) return;
-    const objects = fabricCanvasRef.current.getObjects();
-    // Find the first editable Textbox (skip bg images and locked objects)
+  // Sync CTA text to the canvas. Creates a textbox if none exists, updates it if one does.
+  const syncHeadlineToCanvas = useCallback((newText: string) => {
+    const fc = fabricCanvasRef.current;
+    if (!fc) return;
+    const objects = fc.getObjects();
     const textbox = objects.find(
       (obj) => obj instanceof Textbox && obj.editable !== false
     ) as InstanceType<typeof Textbox> | undefined;
+
     if (textbox) {
-      textbox.set("text", newHeadline);
-      fabricCanvasRef.current.renderAll();
+      textbox.set("text", newText);
+      fc.renderAll();
+    } else if (newText.trim()) {
+      // No textbox exists yet — create one centered on the canvas
+      const cw = fc.getWidth();
+      const ch = fc.getHeight();
+      const fontSize = Math.max(14, Math.min(cw * 0.06, 36));
+      const tb = new Textbox(newText, {
+        left: cw * 0.05,
+        top: ch * 0.4,
+        width: cw * 0.9,
+        fontSize,
+        fontFamily: settings.fontFamily || "Arial",
+        fontWeight: "bold",
+        fill: "#ffffff",
+        textAlign: "center",
+        editable: true,
+        shadow: new Shadow({ color: "rgba(0,0,0,0.7)", blur: 8, offsetX: 0, offsetY: 2 }),
+      });
+      fc.add(tb);
+      fc.renderAll();
     }
-  }, []);
+  }, [settings.fontFamily]);
 
   //   1. Explicit _isBg marker (set when we create the bg)
   //   2. Non-selectable, non-evented FabricImage (locked bg)
@@ -3249,14 +3268,15 @@ export default function EditorPage() {
                 />
               </div>
 
-              {/* Prize Text */}
+              {/* Prize Text — feeds into AI generation prompts */}
               <div>
                 <label className="text-xs font-semibold text-gray-700 block mb-1">
-                  Prize Text
+                  Prize Text <span className="font-normal text-gray-400">(used by AI generator)</span>
                 </label>
                 <input
                   type="text"
                   value={settings.prizeText}
+                  placeholder="e.g. $25 Gift Card, Free Coffee, 50% Off"
                   onChange={(e) =>
                     setSettings((prev) => ({
                       ...prev,
@@ -3265,6 +3285,9 @@ export default function EditorPage() {
                   }
                   className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                {settings.prizeText && settings.prizeText !== "Grand Prize" && (
+                  <p className="text-[10px] text-gray-400 mt-0.5">AI will generate images featuring this prize</p>
+                )}
               </div>
 
               {/* Font Family */}
