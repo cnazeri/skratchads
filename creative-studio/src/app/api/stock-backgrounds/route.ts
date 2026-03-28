@@ -55,10 +55,6 @@ export async function POST(request: NextRequest) {
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
             responseModalities: ["TEXT", "IMAGE"],
-            imageGenerationConfig: {
-              width: imgW,
-              height: imgH,
-            },
           },
         }),
       }
