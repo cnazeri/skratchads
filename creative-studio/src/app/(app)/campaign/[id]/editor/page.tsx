@@ -9,6 +9,8 @@ import { BANNER_FORMATS } from "@/types";
 import type { Campaign, BannerState } from "@/types";
 import { generateBannerVariations } from "@/lib/nanoBanana";
 import type { GeneratedBanner } from "@/lib/nanoBanana";
+import { buildAllStatePrompts } from "@/lib/promptEngine";
+import type { PromptContext } from "@/lib/promptEngine";
 
 type CanvasState = Record<BannerState, string | null>;
 
@@ -1246,6 +1248,23 @@ export default function EditorPage() {
     await applyBackgroundToCanvas(imageUrl);
   };
 
+  // Build a PromptContext from campaign + research state (shared by both generation flows)
+  const buildPromptContext = (): PromptContext => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const campaignAny = campaign as any;
+    return {
+      brandName: researchPromptContext?.brandName || campaign?.brandName || campaignAny?.brand_name || campaign?.name || "",
+      industry: researchPromptContext?.industry || campaignAny?.industry || "",
+      audience: researchPromptContext?.audience || campaignAny?.target_audience || campaignAny?.targetAudience || "",
+      prizeText: settings.prizeText || "a prize",
+      researchContext: researchPromptContext?.researchContext || "",
+      selectedCopy: researchPromptContext?.selectedCopy || undefined,
+      websiteUrl: campaignAny?.website_url || campaignAny?.websiteUrl || "",
+      brandColor: settings.backgroundColor !== "#ffffff" ? settings.backgroundColor : undefined,
+      logoUrl: settings.logoUrl || undefined,
+    };
+  };
+
   // Generate AI creative suggestions (enriched with research context when available)
   const generateAiSuggestions = async () => {
     if (!campaign) return;
@@ -1254,61 +1273,10 @@ export default function EditorPage() {
     setAiSuggestions([]);
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const campaignAny = campaign as any;
-      const brandName = researchPromptContext?.brandName || campaign.brandName || campaignAny.brand_name || campaign.name;
-      const industry = researchPromptContext?.industry || campaignAny.industry || "";
-      const audience = researchPromptContext?.audience || campaignAny.target_audience || campaignAny.targetAudience || "";
-      const researchContext = researchPromptContext?.researchContext || "";
-
-      // Build a tab-specific prompt so suggestions match the current banner state
-      const prizeText = settings.prizeText || "a prize";
-      const aspectRatio = (canvasWidth / canvasHeight).toFixed(2);
-      const ratio = canvasWidth / canvasHeight;
-      const isVeryWide = ratio > 3;
-      const isWide = ratio > 1.5;
-      const isSquarish = ratio <= 1.5 && ratio >= 0.67;
-      const isTall = ratio < 0.67;
-      const isVeryTall = ratio < 0.4;
-      let formatHint: string;
-      if (isVeryWide) {
-        formatHint = `CRITICAL: This is a very wide, thin banner (${canvasWidth}x${canvasHeight}, aspect ratio ${aspectRatio}:1). The image MUST be a wide horizontal strip. Compose all elements in a single horizontal row, spread across the full width. Do NOT create a square or tall image.`;
-      } else if (isWide) {
-        formatHint = `This is a ${canvasWidth}x${canvasHeight} banner (aspect ratio ${aspectRatio}:1). The image must be wider than it is tall. Lay out all elements horizontally across the full width.`;
-      } else if (isSquarish) {
-        formatHint = `This is a ${canvasWidth}x${canvasHeight} banner (roughly square, aspect ratio ${aspectRatio}:1). Fill the entire frame evenly.`;
-      } else if (isVeryTall) {
-        formatHint = `CRITICAL: This is a very tall, narrow banner (${canvasWidth}x${canvasHeight}, aspect ratio 1:${(canvasHeight / canvasWidth).toFixed(2)}). The image MUST be a tall vertical strip. Stack all elements vertically from top to bottom. Do NOT create a square or wide image.`;
-      } else {
-        formatHint = `This is a ${canvasWidth}x${canvasHeight} portrait/vertical banner (aspect ratio 1:${(canvasHeight / canvasWidth).toFixed(2)}). The image must be taller than it is wide. Stack elements vertically.`;
-      }
-
-      let prompt = "";
-
-      if (currentTab === "redeem") {
-        prompt = `${formatHint} Create a bold, action-oriented banner for a prize redemption screen for "${brandName}". ${industry ? `Industry: ${industry}.` : ""} The image MUST include the bold text "Tap to Redeem!" prominently displayed as if it is emerging from or integrated into the image itself, with a 3D pop-out or embossed effect. The text should feel like part of the scene, not a flat overlay. Show ${prizeText} alongside the text. Use a bright, urgent, rewarding color palette with glow effects around the text. Style: vibrant, bold, inviting, CTA-focused. The "Tap to Redeem!" text MUST be part of the generated image.`;
-      } else if (currentTab === "scratch") {
-        prompt = `${formatHint} Create a vibrant, eye-catching banner background for a scratch-to-win ad for "${brandName}". ${industry ? `Industry: ${industry}.` : ""} ${audience ? `Target audience: ${audience}.` : ""} The image should be exciting and inviting, with bold colors and energy that says "scratch here to win ${prizeText}". Style: bright, high-contrast, festive, gamified. Use direct, clear imagery (not abstract). No text on the image.`;
-      } else if (currentTab === "win") {
-        prompt = `${formatHint} Create a celebratory banner for a "You Won!" screen for "${brandName}". ${industry ? `Industry: ${industry}.` : ""} The image MUST prominently feature a clear, direct depiction of the prize: ${prizeText}. Show the actual prize item/product front and center with a celebratory background (confetti, sparkles, golden glow). Style: bright, joyful, celebratory. Direct product/prize photography style, not abstract. No text on the image.`;
-      } else if (currentTab === "lose") {
-        prompt = `${formatHint} Create a warm, encouraging "Play Again Soon" banner for "${brandName}". ${industry ? `Industry: ${industry}.` : ""} The mood should feel friendly, inviting, and optimistic, like "we'd love to see you back." Use warm tones (soft oranges, warm yellows, gentle gradients) that keep the user feeling positive about the brand. The background should be inviting and brand-friendly, leaving space for a logo and brand name overlay. Style: warm, friendly, hopeful, on-brand. Use direct, clear imagery (not abstract). No text on the image.`;
-      } else if (currentTab === "brand") {
-        prompt = `${formatHint} Create a warm, inviting branded banner for "${brandName}" that will serve as a clickable redirect link. ${industry ? `Industry: ${industry}.` : ""} The image MUST include the company name "${brandName}" as stylish, prominent text integrated into the design. The text should look professionally designed, like part of a brand ad. The image should also feature warm, welcoming imagery directly related to ${prizeText !== "a prize" ? `the campaign giveaway: ${prizeText}` : `the ${industry || "brand"} industry and what the brand offers`}. This is the default banner users see, so it must feel like a branded landing spot: warm lighting, premium feel, and clearly connected to the campaign theme. Leave space for a logo to be overlaid on top. Style: warm tones, soft gradients, welcoming, premium, brand-forward. Use direct, clear imagery (not abstract). The company name "${brandName}" MUST appear as text in the image.`;
-      } else {
-        prompt = `${formatHint} Create a banner ad creative for "${brandName}".`;
-        if (industry) prompt += ` Industry: ${industry}.`;
-        if (audience) prompt += ` Target audience: ${audience}.`;
-        prompt += ` Style: modern, clean, high-contrast. Use direct, clear imagery (not abstract). No text on the image.`;
-      }
-
-      if (researchContext) prompt += ` Research insights: ${researchContext}`;
-      if (researchPromptContext?.selectedCopy) {
-        prompt += ` Suggested headline: "${researchPromptContext.selectedCopy.headline}". CTA: "${researchPromptContext.selectedCopy.cta}".`;
-      }
-
+      const ctx = buildPromptContext();
       const results = await generateBannerVariations({
-        prompt,
+        bannerState: currentTab,
+        promptContext: ctx,
         width: canvasWidth,
         height: canvasHeight,
         count: 3,
@@ -1339,55 +1307,21 @@ export default function EditorPage() {
     if (!campaign) return;
     setGeneratingAllStates(true);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const campaignAny = campaign as any;
-    const brandName = researchPromptContext?.brandName || campaign.brandName || campaignAny.brand_name || campaign.name;
-    const industry = researchPromptContext?.industry || campaignAny.industry || "";
-    const audience = researchPromptContext?.audience || campaignAny.target_audience || "";
-    const researchContext = researchPromptContext?.researchContext || "";
-    const prizeText = settings.prizeText || "a prize";
-    const getPrize = (state: BannerState) => stateCustomizations[state]?.prizeText || prizeText;
-    const websiteUrl = campaignAny.website_url || campaignAny.websiteUrl || "";
+    const ctx = buildPromptContext();
+    const brandName = ctx.brandName;
+    const websiteUrl = ctx.websiteUrl || "";
+    // Override per-state prize text from customizations
+    const getPrize = (state: BannerState) => stateCustomizations[state]?.prizeText || ctx.prizeText || "a prize";
 
-    // Build format-specific prompt hint
-    const buildFormatHint = (w: number, h: number) => {
-      const aspectRatio = (w / h).toFixed(2);
-      const ratio = w / h;
-      if (ratio > 3) return `CRITICAL: This is a very wide, thin banner (${w}x${h}, aspect ratio ${aspectRatio}:1). The image MUST be a wide horizontal strip. Compose all elements in a single horizontal row, spread across the full width. Do NOT create a square or tall image.`;
-      if (ratio > 1.5) return `This is a ${w}x${h} banner (aspect ratio ${aspectRatio}:1). The image must be wider than it is tall. Lay out all elements horizontally across the full width.`;
-      if (ratio >= 0.67) return `This is a ${w}x${h} banner (roughly square, aspect ratio ${aspectRatio}:1). Fill the entire frame evenly.`;
-      if (ratio < 0.4) return `CRITICAL: This is a very tall, narrow banner (${w}x${h}, aspect ratio 1:${(h / w).toFixed(2)}). The image MUST be a tall vertical strip. Stack all elements vertically from top to bottom. Do NOT create a square or wide image.`;
-      return `This is a ${w}x${h} portrait/vertical banner (aspect ratio 1:${(h / w).toFixed(2)}). The image must be taller than it is wide. Stack elements vertically.`;
-    };
-
-    // Build state prompts for a given format hint
-    const buildStatePrompts = (formatHint: string) => [
-      {
-        state: "scratch" as BannerState,
-        label: "Scratch-to-Win",
-        prompt: `${formatHint} Create a vibrant, eye-catching banner background for a scratch-to-win ad for "${brandName}". ${industry ? `Industry: ${industry}.` : ""} ${audience ? `Target audience: ${audience}.` : ""} The image should be exciting and inviting, with bold colors and energy that says "scratch here to win ${getPrize("scratch")}". ${researchContext} Style: bright, high-contrast, festive, gamified. Use direct, clear imagery (not abstract). No text on the image.`,
-      },
-      {
-        state: "win" as BannerState,
-        label: "Win",
-        prompt: `${formatHint} Create a celebratory banner for a "You Won!" screen for "${brandName}". ${industry ? `Industry: ${industry}.` : ""} The image MUST prominently feature a clear, direct depiction of the prize: ${getPrize("win")}. Show the actual prize item/product front and center with a celebratory background (confetti, sparkles, golden glow). Style: bright, joyful, celebratory. Direct product/prize photography style, not abstract. No text on the image.`,
-      },
-      {
-        state: "lose" as BannerState,
-        label: "Lose",
-        prompt: `${formatHint} Create a warm, encouraging "Play Again Soon" banner for "${brandName}". ${industry ? `Industry: ${industry}.` : ""} The mood should feel friendly, inviting, and optimistic, like "we'd love to see you back." Use warm tones (soft oranges, warm yellows, gentle gradients) that keep the user feeling positive about the brand. The background should be inviting and brand-friendly, leaving space for a logo and brand name overlay. Style: warm, friendly, hopeful, on-brand. Use direct, clear imagery (not abstract). No text on the image.`,
-      },
-      {
-        state: "redeem" as BannerState,
-        label: "Redeem",
-        prompt: `${formatHint} Create a bold, action-oriented banner for a prize redemption screen for "${brandName}". ${industry ? `Industry: ${industry}.` : ""} The image MUST include the bold text "Tap to Redeem!" prominently displayed as if it is emerging from or integrated into the image itself, with a 3D pop-out or embossed effect. The text should feel like part of the scene, not a flat overlay. Show ${getPrize("redeem")} alongside the text. Use a bright, urgent, rewarding color palette with glow effects around the text. Style: vibrant, bold, inviting, CTA-focused. Direct and clear imagery, not abstract. The "Tap to Redeem!" text MUST be part of the generated image.`,
-      },
-      {
-        state: "brand" as BannerState,
-        label: "Default",
-        prompt: `${formatHint} Create a warm, inviting branded banner for "${brandName}" that will serve as a clickable redirect link. ${industry ? `Industry: ${industry}.` : ""} The image MUST include the company name "${brandName}" as stylish, prominent text integrated into the design. The text should look professionally designed, like part of a brand ad. The image should also feature warm, welcoming imagery directly related to ${getPrize("brand") !== "a prize" && getPrize("brand") ? `the campaign giveaway: ${getPrize("brand")}` : `the ${industry || "brand"} industry and what the brand offers`}. This is the default banner users see, so it must feel like a branded landing spot: warm lighting, premium feel, and clearly connected to the campaign theme. Leave space for a logo to be overlaid on top. Style: warm tones, soft gradients, welcoming, premium, brand-forward. Use direct, clear imagery (not abstract). The company name "${brandName}" MUST appear as text in the image.`,
-      },
-    ];
+    // Build state prompts using the prompt engine
+    const buildStatePrompts = (w: number, h: number) =>
+      buildAllStatePrompts(ctx, w, h).map((sp) => ({
+        ...sp,
+        // Re-inject per-state prize text if customized
+        prompt: stateCustomizations[sp.state]?.prizeText
+          ? sp.prompt.replace(ctx.prizeText || "a prize", getPrize(sp.state))
+          : sp.prompt,
+      }));
 
     // Helper: generate all 5 states for a given width x height, returns canvas states + bg URLs + preview cache
     const generateForFormat = async (
@@ -1397,8 +1331,7 @@ export default function EditorPage() {
       formatIndex: number,
       totalFormats: number
     ) => {
-      const formatHint = buildFormatHint(fmtW, fmtH);
-      const statePrompts = buildStatePrompts(formatHint);
+      const statePrompts = buildStatePrompts(fmtW, fmtH);
       const fmtCanvasStates: CanvasState = { scratch: null, win: null, lose: null, redeem: null, brand: null };
       const fmtBgUrls: Record<string, string> = {};
       const fmtPreviews: Record<BannerState, string | null> = { scratch: null, win: null, lose: null, redeem: null, brand: null };
