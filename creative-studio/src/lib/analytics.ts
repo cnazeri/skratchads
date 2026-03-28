@@ -50,11 +50,11 @@ export function trackResearchCompleted(campaignId: string, durationMs: number) {
   trackEvent({ event: "research_completed", category: "research", campaignId, properties: { duration_ms: durationMs } });
 }
 
-export function trackGenerationStarted(campaignId: string, props: { state?: string; format?: string; count?: number }) {
+export function trackGenerationStarted(campaignId: string, props: { state?: string; format?: string; count?: number; creative_id?: string }) {
   trackEvent({ event: "generation_started", category: "generation", campaignId, properties: props });
 }
 
-export function trackGenerationCompleted(campaignId: string, props: { state?: string; format?: string; count?: number; success_count?: number; duration_ms?: number }) {
+export function trackGenerationCompleted(campaignId: string, props: { state?: string; format?: string; count?: number; success_count?: number; duration_ms?: number; creative_id?: string }) {
   trackEvent({ event: "generation_completed", category: "generation", campaignId, properties: props });
 }
 

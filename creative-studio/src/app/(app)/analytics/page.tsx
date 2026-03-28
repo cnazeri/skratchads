@@ -347,14 +347,19 @@ export default function AnalyticsPage() {
                           </span>
                         )}
                       </div>
-                      {event.campaign_id && (
-                        <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="text-xs text-indigo-500 font-medium truncate">
-                            {campaignNames[event.campaign_id] || "Campaign"}
-                          </span>
-                          <span className="text-[10px] text-gray-300 font-mono">
-                            {event.campaign_id.slice(0, 8).toUpperCase()}
-                          </span>
+                      {(event.campaign_id || ("creative_id" in (event.properties || {}))) && (
+                        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                          {event.campaign_id && (
+                            <span className="text-xs text-indigo-500 font-medium truncate">
+                              {campaignNames[event.campaign_id] || "Campaign"}{" "}
+                              <span className="text-[10px] text-gray-300 font-mono">{event.campaign_id.slice(0, 8).toUpperCase()}</span>
+                            </span>
+                          )}
+                          {event.properties?.creative_id ? (
+                            <span className="text-[10px] text-gray-400 font-mono bg-gray-50 px-1.5 py-0.5 rounded">
+                              Banner {String(event.properties.creative_id).slice(0, 8).toUpperCase()}
+                            </span>
+                          ) : null}
                         </div>
                       )}
                     </div>

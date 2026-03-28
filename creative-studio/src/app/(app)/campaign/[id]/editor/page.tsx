@@ -1332,7 +1332,7 @@ export default function EditorPage() {
 
     const genStart = Date.now();
     try {
-      trackGenerationStarted(campaign.id, { state: currentTab, format: `${canvasWidth}x${canvasHeight}`, count: 3 });
+      trackGenerationStarted(campaign.id, { state: currentTab, format: `${canvasWidth}x${canvasHeight}`, count: 3, creative_id: activeCreativeId || undefined });
       const ctx = buildPromptContext();
       const results = await generateBannerVariations({
         bannerState: currentTab,
@@ -1343,7 +1343,7 @@ export default function EditorPage() {
       });
 
       setAiSuggestions(results);
-      trackGenerationCompleted(campaign.id, { state: currentTab, format: `${canvasWidth}x${canvasHeight}`, count: 3, success_count: results.length, duration_ms: Date.now() - genStart });
+      trackGenerationCompleted(campaign.id, { state: currentTab, format: `${canvasWidth}x${canvasHeight}`, count: 3, success_count: results.length, duration_ms: Date.now() - genStart, creative_id: activeCreativeId || undefined });
     } catch (err) {
       console.error("AI generation failed:", err);
       trackGenerationFailed(campaign.id, { state: currentTab, error: err instanceof Error ? err.message : "unknown" });
@@ -1369,7 +1369,7 @@ export default function EditorPage() {
     if (!campaign) return;
     setGeneratingAllStates(true);
     const allStatesStart = Date.now();
-    trackGenerationStarted(campaign.id, { state: "all", format: `${canvasWidth}x${canvasHeight}`, count: 5 });
+    trackGenerationStarted(campaign.id, { state: "all", format: `${canvasWidth}x${canvasHeight}`, count: 5, creative_id: activeCreativeId || undefined });
 
     const ctx = buildPromptContext();
     const brandName = ctx.brandName;
@@ -1767,7 +1767,7 @@ export default function EditorPage() {
       }
 
       setGeneratingStatesProgress("");
-      trackGenerationCompleted(campaign.id, { state: "all", format: `${canvasWidth}x${canvasHeight}`, count: 5, success_count: 5, duration_ms: Date.now() - allStatesStart });
+      trackGenerationCompleted(campaign.id, { state: "all", format: `${canvasWidth}x${canvasHeight}`, count: 5, success_count: 5, duration_ms: Date.now() - allStatesStart, creative_id: activeCreativeId || undefined });
 
     } catch (err) {
       console.error("Generate all states failed:", err);
