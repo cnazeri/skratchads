@@ -389,6 +389,44 @@ export default function EditorPage() {
     fetchCampaign();
   }, [campaignId]);
 
+  // Refresh creatives list from DB when the page regains focus (e.g. after
+  // navigating back from the variations page where a creative may have been deleted).
+  useEffect(() => {
+    const refreshCreatives = async () => {
+      const { data } = await supabase
+        .from("creatives")
+        .select("id, variation_label, format_name, format_width, format_height")
+        .eq("campaign_id", campaignId)
+        .order("created_at", { ascending: true });
+      if (data) {
+        setCampaignCreatives(data.map((c: any) => ({
+          id: c.id, variation_label: c.variation_label,
+          format_name: c.format_name, format_width: c.format_width, format_height: c.format_height,
+        })));
+        // If the active creative was deleted, switch to the latest one
+        if (activeCreativeId && !data.some((c: any) => c.id === activeCreativeId)) {
+          if (data.length > 0) {
+            const latest = data[data.length - 1];
+            setActiveCreativeId(latest.id);
+            setCanvasRefreshKey((k) => k + 1);
+          } else {
+            setActiveCreativeId(null);
+          }
+        }
+      }
+    };
+    const onFocus = () => refreshCreatives();
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") refreshCreatives();
+    });
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onFocus);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [campaignId, activeCreativeId]);
+
   // Initialize canvas
   useEffect(() => {
     if (!canvasRef.current) return;
