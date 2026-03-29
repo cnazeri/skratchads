@@ -27,7 +27,7 @@ export function trackEvent({ event, category, campaignId, properties }: TrackEve
         campaign_id: campaignId || null,
         properties: properties || {},
       });
-      if (error) console.warn("[analytics] insert failed:", event, error.message);
+      if (error) console.warn("[analytics]", event, error.message);
     } catch (err) {
       console.warn("[analytics] error:", event, err);
     }
