@@ -1411,12 +1411,15 @@ export default function EditorPage() {
           ? ` IMPORTANT: Match the visual style, color palette, and overall aesthetic of the reference image(s) provided. The entire banner sequence must look like a cohesive set from the same campaign.`
           : "";
 
+        // Add a unique seed so each generation run produces visually distinct results
+        const diversityHint = ` Use creative approach #${variationCounter}-${Date.now() % 10000}. Make this design visually unique and distinct.`;
+
         try {
           const res = await fetch("/api/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              prompt: sp.prompt + continuityHint,
+              prompt: sp.prompt + continuityHint + diversityHint,
               width: fmtW,
               height: fmtH,
               count: 1,
@@ -1593,6 +1596,9 @@ export default function EditorPage() {
       return { canvasStates: fmtCanvasStates, bgUrls: fmtBgUrls, previews: fmtPreviews };
     };
 
+    // Running counter for variation labels across multiple format saves
+    let variationCounter = campaignCreatives.length;
+
     // Helper: save a format's generated states to DB as a creative record
     const saveFormatToDB = async (
       fmtName: string,
@@ -1611,7 +1617,8 @@ export default function EditorPage() {
           .update({ format_name: fmtName, format_width: fmtW, format_height: fmtH })
           .eq("id", creativeId);
       } else {
-        const variationNum = campaignCreatives.length + 1;
+        variationCounter++;
+        const label = `Variation ${variationCounter} - ${fmtName}`;
         const { data: creative, error: creativeError } = await supabase
           .from("creatives")
           .insert({
@@ -1619,7 +1626,7 @@ export default function EditorPage() {
             format_name: fmtName,
             format_width: fmtW,
             format_height: fmtH,
-            variation_label: `${fmtName}`,
+            variation_label: label,
             selected: false,
           })
           .select()
@@ -1631,7 +1638,7 @@ export default function EditorPage() {
         // Track the new creative locally
         setCampaignCreatives((prev) => [...prev, {
           id: creativeId,
-          variation_label: fmtName,
+          variation_label: label,
           format_name: fmtName,
           format_width: fmtW,
           format_height: fmtH,
@@ -1642,7 +1649,7 @@ export default function EditorPage() {
       const previewUrls = await renderAllPreviews(fmtCanvasStates);
 
       const upsertRows = BANNER_STATES
-        .filter((state) => fmtCanvasStates[state] || fmtBgUrls[state])
+        .filter((state) => fmtCanvasStates[state] || fmtBgUrls[state] || fmtPreviews[state] || previewUrls[state])
         .map((state) => ({
           creative_id: creativeId,
           state_type: state,
