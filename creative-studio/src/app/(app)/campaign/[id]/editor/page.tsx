@@ -1307,6 +1307,22 @@ export default function EditorPage() {
   };
 
   // Build a PromptContext from campaign + research state (shared by both generation flows)
+  // Get the next variation number by querying the DB for the max existing number.
+  // This avoids stale counts from campaignCreatives state after deletions.
+  const getNextVariationNumber = async (): Promise<number> => {
+    const { data } = await supabase
+      .from("creatives")
+      .select("variation_label")
+      .eq("campaign_id", campaignId);
+    if (!data || data.length === 0) return 1;
+    let maxNum = 0;
+    for (const c of data) {
+      const match = c.variation_label?.match(/Variation\s+(\d+)/);
+      if (match) maxNum = Math.max(maxNum, parseInt(match[1]));
+    }
+    return maxNum + 1;
+  };
+
   const buildPromptContext = (): PromptContext => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const campaignAny = campaign as any;
@@ -1596,8 +1612,9 @@ export default function EditorPage() {
       return { canvasStates: fmtCanvasStates, bgUrls: fmtBgUrls, previews: fmtPreviews };
     };
 
-    // Running counter for variation labels across multiple format saves
-    let variationCounter = campaignCreatives.length;
+    // Running counter for variation labels across multiple format saves.
+    // Start from the actual DB max to avoid duplicates after deletions.
+    let variationCounter = (await getNextVariationNumber()) - 1;
 
     // Helper: save a format's generated states to DB as a creative record
     const saveFormatToDB = async (
@@ -1968,8 +1985,9 @@ export default function EditorPage() {
           })
           .eq("id", creativeId);
       } else {
-        // Create new creative record
-        const variationNum = campaignCreatives.length + 1;
+        // Create new creative record - query DB for the next number to avoid stale counts
+        const variationNum = await getNextVariationNumber();
+        const label = `Variation ${variationNum}`;
         const { data: creative, error: creativeError } = await supabase
           .from("creatives")
           .insert({
@@ -1977,7 +1995,7 @@ export default function EditorPage() {
             format_name: settings.format?.name || "Custom",
             format_width: canvasWidth,
             format_height: canvasHeight,
-            variation_label: `Variation ${variationNum}`,
+            variation_label: label,
             selected: false,
           })
           .select()
@@ -1988,7 +2006,7 @@ export default function EditorPage() {
         setActiveCreativeId(creativeId);
         setCampaignCreatives((prev) => [...prev, {
           id: creativeId,
-          variation_label: `Variation ${variationNum}`,
+          variation_label: label,
           format_name: settings.format?.name || "Custom",
           format_width: canvasWidth,
           format_height: canvasHeight,
@@ -2101,7 +2119,8 @@ export default function EditorPage() {
           })
           .eq("id", creativeId);
       } else {
-        const variationNum = campaignCreatives.length + 1;
+        const variationNum = await getNextVariationNumber();
+        const label = `Variation ${variationNum}`;
         const { data: creative, error: creativeError } = await supabase
           .from("creatives")
           .insert({
@@ -2109,7 +2128,7 @@ export default function EditorPage() {
             format_name: settings.format?.name || "Custom",
             format_width: canvasWidth,
             format_height: canvasHeight,
-            variation_label: `Variation ${variationNum}`,
+            variation_label: label,
             selected: true,
           })
           .select()
@@ -2302,9 +2321,20 @@ export default function EditorPage() {
             ))}
             <button
               onClick={async () => {
-                // Save current canvas state to memory, persist to DB in background
+                // Save current work to DB BEFORE clearing - await to prevent data loss
                 saveCurrentState();
-                saveDraftCore(true).catch((err) => console.error("Background save failed:", err));
+                await saveDraftCore(true);
+                // Refresh creatives list from DB so variation buttons stay in sync
+                const { data: freshCreatives } = await supabase
+                  .from("creatives")
+                  .select("id, variation_label, format_name, format_width, format_height")
+                  .eq("campaign_id", campaignId);
+                if (freshCreatives) {
+                  setCampaignCreatives(freshCreatives.map((c: any) => ({
+                    id: c.id, variation_label: c.variation_label,
+                    format_name: c.format_name, format_width: c.format_width, format_height: c.format_height,
+                  })));
+                }
                 // Reset canvas for new variation
                 const emptyStates: CanvasState = { scratch: null, win: null, lose: null, redeem: null, brand: null };
                 setCanvasStates(emptyStates);
