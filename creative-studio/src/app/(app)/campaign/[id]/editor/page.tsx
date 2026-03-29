@@ -1304,6 +1304,8 @@ export default function EditorPage() {
     // Small delay to let the canvas re-init before applying the image
     await new Promise((r) => setTimeout(r, 100));
     await applyBackgroundToCanvas(imageUrl);
+    // Auto-save so the AI image is persisted immediately
+    saveDraftCore(true).catch((err) => console.error("Auto-save after AI apply failed:", err));
   };
 
   // Build a PromptContext from campaign + research state (shared by both generation flows)
@@ -2311,7 +2313,7 @@ export default function EditorPage() {
                   }
                 }}
                 className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
-                  c.id === activeCreativeId
+                  c.id === activeCreativeId || (!activeCreativeId && campaignCreatives.indexOf(c) === campaignCreatives.length - 1)
                     ? "bg-indigo-500 text-white"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
